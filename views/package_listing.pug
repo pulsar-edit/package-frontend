@@ -1,0 +1,16 @@
+div(class='package-body')
+  div(class='package-title')
+    a(href=`/packages/${pack.name}`) #{pack.name}
+  div(class='package-description')
+    p= pack.metadata.description
+  div(class='package-keywords')
+    p= pack.metadata.keywords
+div(class='package-meta')
+  div(class='package-author')
+    p= pack.metadata.author
+  div(class='package-options')
+    div(class='package-downloads')
+      p= pack.downloads
+    div(class='package-stars')
+      p= pack.stargazers_count
+    div(class='package-install')
