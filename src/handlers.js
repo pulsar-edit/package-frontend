@@ -12,7 +12,7 @@ async function fullListingPage(req, res) {
     .get(`${apiurl}/api/packages`)
     .query(req.query)
     .then(ret => {
-      
+
       utils.prepareForListing(ret.body)
         .then(pack => {
           res.render('package_list', { packages: pack });
@@ -28,7 +28,10 @@ async function singlePackageListing(req, res) {
     .get(`${apiurl}/api/packages/${decodeURIComponent(req.params.packageName)}`)
     .query(req.query)
     .then(ret => {
-
+      utils.prepareForDetail(ret.body)
+        .then(pack => {
+          res.render('package_detail', { pack: pack });
+        });
     })
     .catch(err => {
       utils.displayError(req, res, err.status);

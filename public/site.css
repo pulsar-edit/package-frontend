@@ -16,20 +16,7 @@
 }
 
 body[theme="original-theme"] {
-  --svg-stroke: #999;
-  --chip-background-colour: #d1d5db;
-  --card-border-colour: #ddd;
-  --card-meta-detail-colour: #fafafa;
-  --card-meta-box-colour: #fcfcfc;
-  --page-background-colour: white;
-  --page-text-colour: black;
-  --link-text-colour: #3b9b6d;
-  --card-meta-box-border-colour: #d5d5d5;
-  --header-background-colour: #584b4f;
-  --header-link-text-colour: #efeae1;
-  --footer-background-colour: #efeae1;
-  --footer-link-text-colour: #574c4f;
-  font-family: "Helvetica Neue", Helvetica, arial, freesans, clean, sans-serif;
+  
 }
 
 body {

@@ -26,21 +26,39 @@ function prepareForListing(obj) {
 
         pack.name = obj[i].name ? obj[i].name : "";
         pack.description = obj[i].metadata.description ? obj[i].metadata.description : "";
-        pack.keywords = obj[i].metadata.keywords ? obj[i].metadata.keywords : "";
-        //pack.author = (typeof obj[i].metadata.author === "string") ? obj[i].metadata.author : (typeof obj[i].metadata.author === "object" ? obj[i].metadata.author.name : "");
+        pack.keywords = obj[i].metadata.keywords ? obj[i].metadata.keywords : [];
         pack.author = findAuthorField(obj[i]);
-        pack.downloads = obj[i].downloads ? obj[i].downloads : "";
-        pack.stars = obj[i].stargazers_count ? obj[i].stargazers_count : "";
+        pack.downloads = obj[i].downloads ? obj[i].downloads : 0;
+        pack.stars = obj[i].stargazers_count ? obj[i].stargazers_count : 0;
 
         packList.push(pack);
       } catch(err) {
         console.log(err);
         console.log("Error Caused by:");
         console.log(obj[i]);
+        reject(err);
       }
     }
 
     resolve(packList);
+  });
+}
+
+function prepareForDetail(obj) {
+  return new Promise((resolve, reject) => {
+    let pack = {};
+
+    pack.name = obj.name ? obj.name : "";
+    pack.description = obj.metadata.description ? obj.metadata.description : "";
+    pack.keywords = obj.metadata.keywords ? obj.metadata.keywords : [];
+    pack.author = findAuthorField(obj);
+    pack.downloads = obj.downloads ? obj.downloads : 0;
+    pack.stars = obj.stargazers_count ? obj.stargazers_count : 0;
+    pack.license = obj.metadata.license ? obj.metadata.license : "";
+    pack.version = obj.metadata.version ? obj.metadata.version : "";
+    pack.repoLink = obj.metadata.repository ? obj.metadata.repository : (typeof obj.metadata.repository === "object" ? obj.metadata.repository.url : "");
+
+    resolve(pack);
   });
 }
 
@@ -61,4 +79,5 @@ function findAuthorField(obj) {
 module.exports = {
   displayError,
   prepareForListing,
+  prepareForDetail,
 };

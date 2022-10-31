@@ -1,0 +1,23 @@
+extends layout
+
+block header
+  title= pack.name
+
+block content
+  div(class='package-list')
+    div(class='package-card')
+      include package_listing
+  div(class='package-btn-links')
+    a(href='repo')
+      svg(class="icon")
+        use(href="/public/feather-sprite.svg#book")
+    a(href='bugs')
+      svg(class="icon")
+        use(href="/public/feather-sprite.svg#alert-circle")
+    a(href='version')
+      svg(class="icon")
+        use(href="/public/feather-sprite.svg#tag")
+    a(href='license')
+      svg(class="icon")
+        use(href="/public/feather-sprite.svg#flag")
+  div(class='package-readme')
