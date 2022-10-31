@@ -12,7 +12,11 @@ async function fullListingPage(req, res) {
     .get(`${apiurl}/api/packages`)
     .query(req.query)
     .then(ret => {
-      res.render('package_list', { packages: ret.body });
+      
+      utils.prepareForListing(ret.body)
+        .then(pack => {
+          res.render('package_list', { packages: pack });
+        });
     })
     .catch(err => {
       utils.displayError(req, res, err.status);

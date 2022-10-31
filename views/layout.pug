@@ -4,5 +4,17 @@ html(lang="en")
     link(rel="stylesheet" href="/public/site.css")
     block header
   body
+    div(class='header')
+      a(href='https://pulsar-edit.dev') Website
+      a(href='') Package Home
+      a(href='/packages') All Packages
+      div(class='theme-selector')
+        button(onclick='changeThemeBtn()' class='dropbtn') Change Theme
+        div(class='dropdown-content' id='dropdown-list')
+          div(class='dropdown-item' onclick='changeTheme("original-theme")') Original Theme
+          div(class='dropdown-item') Dark Theme
     block content
-    block foot
+    footer
+      div(class='footer')
+        a(href='') FAQ
+    script(src='/public/site.js')
