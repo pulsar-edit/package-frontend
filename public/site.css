@@ -16,7 +16,7 @@
 }
 
 body[theme="original-theme"] {
-  
+
 }
 
 body {
@@ -215,4 +215,13 @@ a {
   display: inline-block;
   margin-left: 5px;
   vertical-align: super;
+}
+
+.package-fullpage-details {
+  width: 75%;
+  height: 100%;
+  padding-right: 40px;
+  padding-left: 40px;
+  margin: 0 auto 20px auto;
+  padding-bottom: 40px;
 }

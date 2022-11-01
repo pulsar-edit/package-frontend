@@ -1,3 +1,14 @@
+
+const MarkdownIt = require("markdown-it");
+let md = new MarkdownIt({
+  html: true
+}).use(require("markdown-it-highlightjs"), {
+  auto: true,
+  code: true,
+  inline: true
+}).use(require("markdown-it-emoji"), {
+  
+});
 // Collection of utility functions for the frontend
 
 async function displayError(req, res, errStatus) {
@@ -31,6 +42,10 @@ function prepareForListing(obj) {
         pack.downloads = obj[i].downloads ? obj[i].downloads : 0;
         pack.stars = obj[i].stargazers_count ? obj[i].stargazers_count : 0;
 
+        // Cleanup the data
+        pack.stars = Number(pack.stars).toLocaleString();
+        pack.downloads = Number(pack.downloads).toLocaleString();
+
         packList.push(pack);
       } catch(err) {
         console.log(err);
@@ -57,6 +72,15 @@ function prepareForDetail(obj) {
     pack.license = obj.metadata.license ? obj.metadata.license : "";
     pack.version = obj.metadata.version ? obj.metadata.version : "";
     pack.repoLink = obj.metadata.repository ? obj.metadata.repository : (typeof obj.metadata.repository === "object" ? obj.metadata.repository.url : "");
+
+    // Since filters are rendered at compile time they won't work the way I'd hoped to display
+    // Markdown on the page, by using the `markdown-it` filter.
+    // So the best method will likely be to instead provide the `readme` key as straight HTML.
+    pack.readme = md.render(obj.readme);
+
+    // Then we want to do some cleanup on these final values. Mostly ensuring numbers look pretty enough
+    pack.stars = Number(pack.stars).toLocaleString();
+    pack.downloads = Number(pack.downloads).toLocaleString();
 
     resolve(pack);
   });
