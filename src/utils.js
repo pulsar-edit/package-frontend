@@ -41,6 +41,7 @@ function prepareForListing(obj) {
         pack.author = findAuthorField(obj[i]);
         pack.downloads = obj[i].downloads ? obj[i].downloads : 0;
         pack.stars = obj[i].stargazers_count ? obj[i].stargazers_count : 0;
+        pack.install = `atom://settings-view/show-package?package=${pack.name}`;
 
         // Cleanup the data
         pack.stars = Number(pack.stars).toLocaleString();
@@ -72,6 +73,7 @@ function prepareForDetail(obj) {
     pack.license = obj.metadata.license ? obj.metadata.license : "";
     pack.version = obj.metadata.version ? obj.metadata.version : "";
     pack.repoLink = obj.metadata.repository ? obj.metadata.repository : (typeof obj.metadata.repository === "object" ? obj.metadata.repository.url : "");
+    pack.install = `atom://settings-view/show-package?package=${pack.name}`;
 
     // Since filters are rendered at compile time they won't work the way I'd hoped to display
     // Markdown on the page, by using the `markdown-it` filter.

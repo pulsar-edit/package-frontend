@@ -18,6 +18,4 @@ node_modules/
 
 # Custom Added
 LICENSE
-package-lock.json
-package.json
 README.md

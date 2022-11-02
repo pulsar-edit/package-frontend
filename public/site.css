@@ -31,6 +31,10 @@ a {
   color: var(--link-text-colour);
 }
 
+a .package-install {
+  color: var(--page-text-colour);
+}
+
 .header {
   overflow: hidden;
   background-color: var(--header-background-colour);
