@@ -7,7 +7,7 @@ let md = new MarkdownIt({
   code: true,
   inline: true
 }).use(require("markdown-it-emoji"), {
-  
+
 });
 // Collection of utility functions for the frontend
 
@@ -37,7 +37,7 @@ function prepareForListing(obj) {
 
         pack.name = obj[i].name ? obj[i].name : "";
         pack.description = obj[i].metadata.description ? obj[i].metadata.description : "";
-        pack.keywords = obj[i].metadata.keywords ? obj[i].metadata.keywords : [];
+        pack.keywords = obj[i].metadata.keywords ? obj[i].metadata.keywords : [ "no-keywords" ];
         pack.author = findAuthorField(obj[i]);
         pack.downloads = obj[i].downloads ? obj[i].downloads : 0;
         pack.stars = obj[i].stargazers_count ? obj[i].stargazers_count : 0;

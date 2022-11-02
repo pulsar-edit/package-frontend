@@ -12,6 +12,8 @@
   --header-link-text-colour: #efeae1;
   --footer-background-colour: #efeae1;
   --footer-link-text-colour: #574c4f;
+  --btn-bg-colour: #eee;
+  --btn-border: 1px solid #d5d5d5;
   font-family: "Helvetica Neue", Helvetica, arial, freesans, clean, sans-serif;
 }
 
@@ -224,4 +226,56 @@ a {
   padding-left: 40px;
   margin: 0 auto 20px auto;
   padding-bottom: 40px;
+}
+
+.search-bar-container {
+  width: 75%;
+  height: 100%;
+  padding-right: 40px;
+  padding-left: 40px;
+  margin: 50px auto 20px auto;
+  padding-bottom: 40px;
+}
+
+.banner-msg {
+  text-align: center;
+}
+
+.search-form {
+  text-align: center;
+}
+
+.search-input {
+  font-size: 18px;
+  width: 50%;
+  margin-right: 10px;
+  margin-left: 10px;
+  padding: 0.75rem 0.375rem;
+  border: var(--btn-border);
+  border-radius: 0.375rem;
+}
+
+.search-button {
+  margin-left: 10px;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  border-radius: 0.375rem;
+  text-decoration: none;
+  background-color: var(--btn-bg-colour);
+  padding: 0.75rem 0.375rem;
+  border: var(--btn-border);
+}
+
+.package-list-header {
+  display: inline-block;
+}
+
+.package-list-header .banner-msg {
+  display: inline-block;
+}
+
+.package-list-header .icon {
+  width: 32px;
+  height: 32px;
 }

@@ -43,7 +43,39 @@ async function featuredPackageListing(req, res) {
     .get(`${apiurl}/api/packages/featured`)
     .query(req.query)
     .then(ret => {
-      res.render('package_list', { packages: ret.body });
+      utils.prepareForListing(ret.body)
+        .then(pack => {
+          res.render('package_list', { packages: pack });
+        });
+    })
+    .catch(err => {
+      utils.displayError(req, res, err.status);
+    });
+}
+
+async function homePage(req, res) {
+  superagent
+    .get(`${apiurl}/api/packages/featured`)
+    .then(ret => {
+      utils.prepareForListing(ret.body)
+        .then(pack => {
+          res.render('home', { featured: pack });
+        });
+    })
+    .catch(err => {
+      utils.displayError(req, res, err.status);
+    });
+}
+
+async function searchHandler(req, res) {
+  superagent
+    .get(`${apiurl}/api/packages/search`)
+    .query(req.query)
+    .then(ret => {
+      utils.prepareForListing(ret.body)
+        .then(pack => {
+          res.render('search', { packages: pack, search: req.query.q });
+        });
     })
     .catch(err => {
       utils.displayError(req, res, err.status);
@@ -52,6 +84,8 @@ async function featuredPackageListing(req, res) {
 
 module.exports = {
   statusPage,
+  homePage,
+  searchHandler,
   fullListingPage,
   singlePackageListing,
   featuredPackageListing,

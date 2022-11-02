@@ -1,0 +1,12 @@
+extends layout
+
+block header
+  title= "Search #{search}"
+
+block content
+  include search-bar
+  div(class='package-list')
+    div(class='package-card')
+      each pack in packages
+        div(class='package-card')
+          include package_listing

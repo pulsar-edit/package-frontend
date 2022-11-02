@@ -15,6 +15,10 @@ app.use("/public", express.static("./public"));
 app.get("/", async (req, res) => {
   // This should later on include features like a search bar, and likely showing the featured packages section
   // and so on.
+  await handlers.homePage(req, res);
+});
+
+app.get("/status", async (req, res) => {
   await handlers.statusPage(req, res);
 });
 
@@ -30,6 +34,7 @@ app.get("/packages/featured", async (req, res) => {
 
 app.get("/packages/search", async (req, res) => {
   // execute a search for packages
+  await handlers.searchHandler(req, res);
 });
 
 app.get("/packages/:packageName", async (req, res) => {

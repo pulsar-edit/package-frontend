@@ -2,3 +2,4 @@ runtime: nodejs16
 
 env_variables:
   PORT: 8080
+  APIURL: "https://api.pulsar-edit.dev"
