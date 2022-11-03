@@ -9,6 +9,7 @@ let md = new MarkdownIt({
 }).use(require("markdown-it-emoji"), {
 
 });
+
 // Collection of utility functions for the frontend
 
 async function displayError(req, res, errStatus) {
@@ -75,6 +76,34 @@ function prepareForDetail(obj) {
     pack.repoLink = obj.metadata.repository ? obj.metadata.repository : (typeof obj.metadata.repository === "object" ? obj.metadata.repository.url : "");
     pack.install = `atom://settings-view/show-package?package=${pack.name}`;
 
+    // Add custom handling of image links. This aims to fix the common issue of users specifying local paths in their links.
+    // Which result in them not loading here since they live on GitHub.
+    // This is declared here, since this needs access to the repo the package is on.
+    let defaultImageRender = md.renderer.rules.image;
+    let localImageRef = /^\.\//;
+
+    md.renderer.rules.image = function(tokens, idx, options, env, self) {
+      let token = tokens[idx];
+      let aIndex = token.attrIndex('src');
+
+      // Lets say a user adds: ./my-cool-image.png
+      // We need to turn it into this:
+      // https://github.com/USER/REPO/raw/HEAD/my-cool-image.png
+      // While we could reference git.usercontent This seems more straightforward.
+      // Additionally GitHub does support us using `HEAD` here, to avoid having to know the master branch.
+      // We also have to ensure that the repo doesn't use .git at the end.
+      if (localImageRef.test(token.attrGet('src'))) {
+
+        // Lets prepare our links.
+        let cleanRepo = pack.repoLink.replace(".git", "");
+        let rawLink = token.attrGet('src');
+        rawLink = rawLink.replace("./", "");
+        token.attrSet('src', `${cleanRepo}/raw/HEAD/${rawLink}`);
+      }
+
+      // pass token to default renderer.
+      return defaultImageRender(tokens, idx, options, env, self);
+    }
     // Since filters are rendered at compile time they won't work the way I'd hoped to display
     // Markdown on the page, by using the `markdown-it` filter.
     // So the best method will likely be to instead provide the `readme` key as straight HTML.
