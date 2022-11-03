@@ -4,9 +4,15 @@ function changeThemeBtn() {
 
 function changeTheme(theme) {
   switch(theme) {
+    case "github-dark":
+      document.body.setAttribute("theme", "github-dark");
+      localStorage.setItem("theme", "github-dark");
+      break;
     case "original-theme":
     default:
       document.body.setAttribute("theme", "original-theme");
+      localStorage.setItem("theme", "original-theme");
+      break;
   }
 }
 
@@ -21,3 +27,10 @@ window.onclick = function(event) {
     }
   }
 }
+
+window.onload = function(event) {
+  if (localStorage.getItem("theme")) {
+    // If a theme has been set or saved.
+    changeTheme(localStorage.getItem("theme"));
+  }
+};
