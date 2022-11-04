@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const handlers = require("./handlers.js");
+const utils = require("./utils.js");
 
 app.set("views", "./views");
 app.set("view engine", "pug");
@@ -42,9 +43,9 @@ app.get("/packages/:packageName", async (req, res) => {
   await handlers.singlePackageListing(req, res);
 });
 
-app.use((req, res) => {
+app.use(async (req, res) => {
   // 404 here, keep at last position
-  res.render('404');
+  await utils.displayError(req, res, 404);
 });
 
 module.exports = app;

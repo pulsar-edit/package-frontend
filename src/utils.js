@@ -15,13 +15,13 @@ let md = new MarkdownIt({
 async function displayError(req, res, errStatus) {
   switch(errStatus) {
     case 404:
-      res.render('404');
+      res.status(404).render('404');
       break;
     case 505:
-      res.render('505');
+      res.status(505).render('505');
       break;
     default:
-      res.render('505');
+      res.status(505).render('505');
       break;
   }
 }
