@@ -14,11 +14,48 @@
   --footer-link-text-colour: #574c4f;
   --btn-bg-colour: #eee;
   --btn-border: 1px solid #d5d5d5;
+  --search-bar-bg-colour: white;
   font-family: "Helvetica Neue", Helvetica, arial, freesans, clean, sans-serif;
 }
 
 body[theme="original-theme"] {
+  --svg-stroke: #999;
+  --chip-background-colour: #d1d5db;
+  --card-border-colour: #ddd;
+  --card-meta-detail-colour: #fafafa;
+  --card-meta-box-colour: #fcfcfc;
+  --page-background-colour: white;
+  --page-text-colour: black;
+  --link-text-colour: #3b9b6d;
+  --card-meta-box-border-colour: #d5d5d5;
+  --header-background-colour: #584b4f;
+  --header-link-text-colour: #efeae1;
+  --footer-background-colour: #efeae1;
+  --footer-link-text-colour: #574c4f;
+  --btn-bg-colour: #eee;
+  --btn-border: 1px solid #d5d5d5;
+  --search-bar-bg-colour: white;
+  font-family: "Helvetica Neue", Helvetica, arial, freesans, clean, sans-serif;
+}
 
+body[theme="github-dark"] {
+  --svg-stroke: #8b949e;
+  --chip-background-colour: rgba(56,139,253,0.15);
+  --card-border-colour: #30363d;
+  --card-meta-detail-colour: #161b22;
+  --card-meta-box-colour: #21262d;
+  --page-background-colour: #0d1117;
+  --page-text-colour: #c9d1d9;
+  --link-text-colour: #58a6ff;
+  --card-meta-box-border-colour: rgba(240,246,252,0.1);
+  --header-background-colour: #161b22;
+  --header-link-text-colour: #f0f6fc;
+  --footer-background-colour: #161b22;
+  --footer-link-text-colour: #f0f6fc;
+  --btn-bg-colour: #21262d;
+  --btn-border: 1px solid rgba(240,246,252,0.1);
+  --search-bar-bg-colour: #0d1117;
+  font-family: "Helvetica Neue", Helvetica, arial, freesans, clean, sans-serif;
 }
 
 body {
@@ -257,6 +294,7 @@ a .package-install {
   padding: 0.75rem 0.375rem;
   border: var(--btn-border);
   border-radius: 0.375rem;
+  background-color: var(--search-bar-bg-colour);
 }
 
 .search-button {
@@ -269,6 +307,7 @@ a .package-install {
   background-color: var(--btn-bg-colour);
   padding: 0.75rem 0.375rem;
   border: var(--btn-border);
+  color: var(--page-text-colour);
 }
 
 .package-list-header {
