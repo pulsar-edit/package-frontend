@@ -1,0 +1,7 @@
+User-agent: *
+User-agent: AdsBot-Google-Mobile
+User-agent: AdsBot-Google
+User-agent: Mediapartners-Google
+User-agent: AdsBot-Google-Mobile-Apps
+Allow: /
+Sitemap: https://web.pulsar-edit.dev/sitemap.xml

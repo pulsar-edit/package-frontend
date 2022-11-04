@@ -43,6 +43,16 @@ app.get("/packages/:packageName", async (req, res) => {
   await handlers.singlePackageListing(req, res);
 });
 
+// Static specfic files to send.
+
+app.get("/robots.txt", (req, res) => {
+  res.sendFile("./static/robots.txt");
+});
+
+app.get("/sitemap.xml", (req, res) => {
+  res.sendFile("./static/sitemap.xml");
+});
+
 app.use(async (req, res) => {
   // 404 here, keep at last position
   await utils.displayError(req, res, 404);
