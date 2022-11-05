@@ -16,7 +16,10 @@ app.use("/public", express.static("./public"));
 app.get("/", async (req, res) => {
   // This should later on include features like a search bar, and likely showing the featured packages section
   // and so on.
+  let start = performance.now();
+  console.log(`Received Request Express`);
   await handlers.homePage(req, res);
+  console.log(`Done handling Request Express - ${performance.now() - start}ms`);
 });
 
 app.get("/status", async (req, res) => {

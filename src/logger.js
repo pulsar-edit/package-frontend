@@ -35,12 +35,9 @@ function httpLog(req, res) {
  * @example <caption>Logging Output Format</caption>
  * ERROR:: IP "HTTP_METHOD URL PROTOCOL" STATUS_CODE DURATION_OF_REQUESTms ! ERROR
  */
-function errorLog(req, res, err) {
+function errorLog(err) {
   // this will be a generic error logger to grab some stats about what happened, how the server handled it. And of course the error.
-  let duration = Date.now() - req.start;
-  console.log(
-    `ERROR:: ${req.ip} "${req.method} ${req.url} ${req.protocol}" ${res.statusCode} ${duration}ms ! ${err}`
-  );
+  console.log(`ERROR:: ${err}`);
 }
 
 /**
