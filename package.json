@@ -5,7 +5,7 @@
   "main": "./src/server.js",
   "scripts": {
     "start": "node ./src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest ./src/tests/"
   },
   "author": "confused-Techie",
   "license": "MIT",
@@ -18,5 +18,8 @@
     "markdown-it-highlightjs": "^4.0.1",
     "pug": "^3.0.2",
     "superagent": "^8.0.1"
+  },
+  "devDependencies": {
+    "jest": "^29.2.2"
   }
 }
