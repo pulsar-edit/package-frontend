@@ -10,18 +10,20 @@ let md = new MarkdownIt({
 
 });
 
+const reg = require("./reg.js");
+
 // Collection of utility functions for the frontend
 
 async function displayError(req, res, errStatus) {
   switch(errStatus) {
     case 404:
-      res.render('404');
+      res.status(404).render('404');
       break;
     case 505:
-      res.render('505');
+      res.status(505).render('505');
       break;
     default:
-      res.render('505');
+      res.status(505).render('505');
       break;
   }
 }
@@ -73,14 +75,13 @@ function prepareForDetail(obj) {
     pack.stars = obj.stargazers_count ? obj.stargazers_count : 0;
     pack.license = obj.metadata.license ? obj.metadata.license : "";
     pack.version = obj.metadata.version ? obj.metadata.version : "";
-    pack.repoLink = obj.metadata.repository ? obj.metadata.repository : (typeof obj.metadata.repository === "object" ? obj.metadata.repository.url : "");
+    pack.repoLink = findRepoField(obj);
     pack.install = `atom://settings-view/show-package?package=${pack.name}`;
 
     // Add custom handling of image links. This aims to fix the common issue of users specifying local paths in their links.
     // Which result in them not loading here since they live on GitHub.
     // This is declared here, since this needs access to the repo the package is on.
     let defaultImageRender = md.renderer.rules.image;
-    let localImageRef = /^\.\//;
 
     md.renderer.rules.image = function(tokens, idx, options, env, self) {
       let token = tokens[idx];
@@ -92,12 +93,23 @@ function prepareForDetail(obj) {
       // While we could reference git.usercontent This seems more straightforward.
       // Additionally GitHub does support us using `HEAD` here, to avoid having to know the master branch.
       // We also have to ensure that the repo doesn't use .git at the end.
-      if (localImageRef.test(token.attrGet('src'))) {
+      if (reg.localLinks.currentDir.test(token.attrGet('src'))) {
 
         // Lets prepare our links.
         let cleanRepo = pack.repoLink.replace(".git", "");
         let rawLink = token.attrGet('src');
-        rawLink = rawLink.replace("./", "");
+        rawLink = rawLink.replace(reg.localLinks.currentDir, "");
+        token.attrSet('src', `${cleanRepo}/raw/HEAD/${rawLink}`);
+      } else if (reg.localLinks.rootDir.test(token.attrGet('src'))) {
+        // Lets prepare our links.
+        let cleanRepo = pack.repoLink.replace(".git", "");
+        let rawLink = token.attrGet('src');
+        rawLink = rawLink.replace(reg.localLinks.rootDir, "");
+        token.attrSet('src', `${cleanRepo}/raw/HEAD/${rawLink}`);
+      } else if (!token.attrGet('src').startsWith("http")) {
+        // Check for implicit relative urls
+        let cleanRepo = pack.repoLink.replace(".git", "");
+        let rawLink = token.attrGet('src');
         token.attrSet('src', `${cleanRepo}/raw/HEAD/${rawLink}`);
       }
 
@@ -120,15 +132,53 @@ function prepareForDetail(obj) {
 function findAuthorField(obj) {
   let author = "";
   if (typeof obj.metadata.author === "string") {
+
+    // We know this is not an object, but we must ensure this isn't a compressed author object.
+    if (reg.author.compact.test(obj.metadata.author)) {
+      // It matches, so we know we have to parse it
+      let constru = obj.metadata.author.match(reg.author.compact);
+      author = constru[1];
+    } else {
+      // It doesn't match, and we will assume it's a basic author field.
+      author = obj.metadata.author;
+    }
     author = obj.metadata.author;
   } else if (typeof obj.metadata.author === "object" && obj.metadata.author.hasOwnProperty("name")) {
     author = obj.metadata.author.name;
   } else {
     // If no standards are found, lets instead use the name pulled from the repo.
-    author = "repository-field";
+    let repo = findRepoField(obj);
+    let repoConstru = repo.match(reg.repoLink.standard);
+
+    if (repoConstru !== null && repoConstru.length > 1) {
+      author = repoConstru[1];
+    } else {
+      author = repo;
+    }
   }
 
   return author;
+}
+
+function findRepoField(obj) {
+  let repo = (typeof obj.metadata.repository === "string" ? obj.metadata.repository :
+                (typeof obj.metadata.repository === "object" ? obj.metadata.repository.url : "" ));
+  /**
+    * For Information: ./docs/repository-urls.md
+  */
+
+  if (reg.repoLink.standard.test(repo)) {
+    // Standard repo definition, it's a valid link. Return
+    return repo;
+  } else if (reg.repoLink.protocol.test(repo)) {
+    // Git Protocol Defined. Create normalized link.
+    let constru = repo.match(reg.repoLink.protocol);
+    return `https://github.com/${constru[1]}/${constru[2].replace(".git","")}`;
+  } else {
+    // We couldn't determine what to do here. Just return.
+    return repo;
+  }
+
 }
 
 module.exports = {
