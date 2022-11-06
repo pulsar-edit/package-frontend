@@ -51,3 +51,21 @@ Currently `loadStats()` is unable to display how long certain actions took, whic
 
 * The time `ExpressJS` took to handle the request itself.
 * The time `PugJS`/`Jade` templates took to handle creating and displaying the page.
+
+---
+
+## Developers
+
+To run and test `package-frontend` locally should be rather simple.
+
+After cloning the repository, run `npm install` within the root of the folder.
+
+Then copy or rename `app.example.yaml` to `app.yaml`. When working with a local app config file you can change settings of the backend API to interact with to use a local version, or change the port the frontend is exposed on.
+
+Within the config file exists the key `GOOGLE_APPLICATION_CREDENTIALS` this key is used to point to a KeyFile containing Google Application Credentails to interact with Remote Caches. If you don't have access to this file set it to `"no-file"` like so:
+
+```yaml
+GOOGLE_APPLICATION_CREDENTIALS: "no-file"
+```
+
+This is a special value that will cause the caching service to automatically ignore any cache requests, and force request through to the backend service. Allowing to fail gracefully.
