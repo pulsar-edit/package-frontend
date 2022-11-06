@@ -181,8 +181,29 @@ function findRepoField(obj) {
 
 }
 
+class Timecop {
+  constructor() {
+    this.timetable = {};
+  }
+  start(service) {
+    this.timetable[service] = {
+      start: performance.now(),
+      end: undefined,
+      duration: undefined
+    }
+  }
+
+  end(service) {
+    this.timetable[service].end = performance.now();
+    this.timetable[service].duration =
+      this.timetable[service].end -
+      this.timetable[service].start;
+  }
+}
+
 module.exports = {
   displayError,
   prepareForListing,
   prepareForDetail,
+  Timecop,
 };

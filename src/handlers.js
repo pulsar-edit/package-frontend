@@ -8,15 +8,18 @@ async function statusPage(req, res) {
   res.render('status', { message: `Server is up and running ${server_version}` });
 }
 
-async function fullListingPage(req, res) {
+async function fullListingPage(req, res, timecop) {
+  timecop.start("api-request");
   superagent
     .get(`${apiurl}/api/packages`)
     .query(req.query)
     .then(ret => {
-
+      timecop.end("api-request");
+      timecop.start("transcribe-json");
       utils.prepareForListing(ret.body)
         .then(pack => {
-          res.render('package_list', { packages: pack });
+          timecop.end("transcribe-json");
+          res.render('package_list', { packages: pack, timecop: timecop.timetable });
         });
     })
     .catch(err => {
@@ -24,14 +27,18 @@ async function fullListingPage(req, res) {
     });
 }
 
-async function singlePackageListing(req, res) {
+async function singlePackageListing(req, res, timecop) {
+  timecop.start("api-request");
   superagent
     .get(`${apiurl}/api/packages/${decodeURIComponent(req.params.packageName)}`)
     .query(req.query)
     .then(ret => {
+      timecop.end("api-request");
+      timecop.start("transcribe-json");
       utils.prepareForDetail(ret.body)
         .then(pack => {
-          res.render('package_detail', { pack: pack });
+          timecop.end("transcribe-json");
+          res.render('package_detail', { pack: pack, timecop: timecop.timetable });
         });
     })
     .catch(err => {
@@ -39,14 +46,18 @@ async function singlePackageListing(req, res) {
     });
 }
 
-async function featuredPackageListing(req, res) {
+async function featuredPackageListing(req, res, timecop) {
+  timecop.start("api-request");
   superagent
     .get(`${apiurl}/api/packages/featured`)
     .query(req.query)
     .then(ret => {
+      timecop.end("api-request");
+      timecop.start("transcribe-json");
       utils.prepareForListing(ret.body)
         .then(pack => {
-          res.render('package_list', { packages: pack });
+          timecop.end("transcribe-json");
+          res.render('package_list', { packages: pack, timecop: timecop.timetable });
         });
     })
     .catch(err => {
@@ -54,21 +65,28 @@ async function featuredPackageListing(req, res) {
     });
 }
 
-async function homePage(req, res) {
+async function homePage(req, res, timecop) {
   // First lets check the cache
+  timecop.start("cache-check");
   let cached = await cache.getFeatured();
 
   if (cached !== null) {
+    timecop.end("cache-check");
     // We know our cache is good and lets serve the data
-    res.render('home', { featured: cached });
+    res.render('home', { featured: cached, timecop: timecop.timetable });
   } else {
     // the cache is invalid. We need to find the data, and cache it
+    timecop.end("cache-check");
+    timecop.start("api-request");
     superagent
       .get(`${apiurl}/api/packages/featured`)
       .then(ret => {
+        timecop.end("api-request");
+        timecop.start("transcribe-json");
         utils.prepareForListing(ret.body)
           .then(pack => {
-            res.render('home', { featured: pack });
+            timecop.end("transcribe-json");
+            res.render('home', { featured: pack, timecop: timecop.timetable });
             // then set featured cache
             cache.setFeatured(pack);
           });
@@ -76,14 +94,18 @@ async function homePage(req, res) {
   }
 }
 
-async function searchHandler(req, res) {
+async function searchHandler(req, res, timecop) {
+  timecop.start("api-request");
   superagent
     .get(`${apiurl}/api/packages/search`)
     .query(req.query)
     .then(ret => {
+      timecop.end("api-request");
+      timecop.start("transcribe-json");
       utils.prepareForListing(ret.body)
         .then(pack => {
-          res.render('search', { packages: pack, search: req.query.q });
+          timecop.end("transcribe-json");
+          res.render('search', { packages: pack, search: req.query.q, timecop: timecop.timetable });
         });
     })
     .catch(err => {

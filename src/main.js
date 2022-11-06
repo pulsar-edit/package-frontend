@@ -14,7 +14,8 @@ app.use((req, res, next) => {
 app.use("/public", express.static("./public"));
 
 app.get("/", async (req, res) => {
-  await handlers.homePage(req, res);
+  let timecop = new utils.Timecop();
+  await handlers.homePage(req, res, timecop);
 });
 
 app.get("/status", async (req, res) => {
@@ -23,22 +24,26 @@ app.get("/status", async (req, res) => {
 
 app.get("/packages", async (req, res) => {
   // the main package listing
-  await handlers.fullListingPage(req, res);
+  let timecop = new utils.Timecop();
+  await handlers.fullListingPage(req, res, timecop);
 });
 
 app.get("/packages/featured", async (req, res) => {
   // view list of featured packages
-  await handlers.featuredPackageListing(req, res);
+  let timecop = new utils.Timecop();
+  await handlers.featuredPackageListing(req, res, timecop);
 });
 
 app.get("/packages/search", async (req, res) => {
   // execute a search for packages
-  await handlers.searchHandler(req, res);
+  let timecop = new utils.Timecop();
+  await handlers.searchHandler(req, res, timecop);
 });
 
 app.get("/packages/:packageName", async (req, res) => {
   // view details of a package
-  await handlers.singlePackageListing(req, res);
+  let timecop = new utils.Timecop();
+  await handlers.singlePackageListing(req, res, timecop);
 });
 
 // Static specfic files to send.
