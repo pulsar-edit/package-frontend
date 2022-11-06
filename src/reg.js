@@ -7,6 +7,10 @@ const matches = {
   },
   author: {
     compact: new RegExp(/^(.*)\s\<(.*)\>\s\((.*)\)$/)
+  },
+  localLinks: {
+    currentDir: new RegExp(/^\.\//),
+    rootDir: new RegExp(/^\//)
   }
 };
 

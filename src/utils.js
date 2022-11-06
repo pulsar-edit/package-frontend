@@ -82,7 +82,6 @@ function prepareForDetail(obj) {
     // Which result in them not loading here since they live on GitHub.
     // This is declared here, since this needs access to the repo the package is on.
     let defaultImageRender = md.renderer.rules.image;
-    let localImageRef = /^\.\//;
 
     md.renderer.rules.image = function(tokens, idx, options, env, self) {
       let token = tokens[idx];
@@ -94,12 +93,23 @@ function prepareForDetail(obj) {
       // While we could reference git.usercontent This seems more straightforward.
       // Additionally GitHub does support us using `HEAD` here, to avoid having to know the master branch.
       // We also have to ensure that the repo doesn't use .git at the end.
-      if (localImageRef.test(token.attrGet('src'))) {
+      if (reg.localLinks.currentDir.test(token.attrGet('src'))) {
 
         // Lets prepare our links.
         let cleanRepo = pack.repoLink.replace(".git", "");
         let rawLink = token.attrGet('src');
-        rawLink = rawLink.replace("./", "");
+        rawLink = rawLink.replace(reg.localLinks.currentDir, "");
+        token.attrSet('src', `${cleanRepo}/raw/HEAD/${rawLink}`);
+      } else if (reg.localLinks.rootDir.test(token.attrGet('src'))) {
+        // Lets prepare our links.
+        let cleanRepo = pack.repoLink.replace(".git", "");
+        let rawLink = token.attrGet('src');
+        rawLink = rawLink.replace(reg.localLinks.rootDir, "");
+        token.attrSet('src', `${cleanRepo}/raw/HEAD/${rawLink}`);
+      } else if (!token.attrGet('src').startsWith("http")) {
+        // Check for implicit relative urls
+        let cleanRepo = pack.repoLink.replace(".git", "");
+        let rawLink = token.attrGet('src');
         token.attrSet('src', `${cleanRepo}/raw/HEAD/${rawLink}`);
       }
 
