@@ -11,7 +11,6 @@ let md = new MarkdownIt({
 });
 
 const reg = require("./reg.js");
-const { performance } = require("node:perf_hooks");
 
 // Collection of utility functions for the frontend
 
