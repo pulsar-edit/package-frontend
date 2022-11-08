@@ -4,6 +4,6 @@ service: package-browser
 env_variables:
   PORT: 8080
   APIURL: "https://api.pulsar-edit.dev"
-  GOOGLE_APPLICATION_CREDENTIALS: "./key-file.json"
+  GOOGLE_APPLICATION_CREDENTIALS: "no-file"
   GCLOUD_STORAGE_BUCKET: "bucket-name"
   DEBUG: true

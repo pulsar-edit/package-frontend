@@ -24,39 +24,48 @@ async function getFeatured() {
     return local_cache.featured;
 
   } else {
-    checkGCS();
-
-    try {
-      let contents = await gcs_storage
-        .bucket(GCLOUD_STORAGE_BUCKET)
-        .file("featured-cache.json")
-        .download();
-
-      logger.debugLog("Utilizing Remote Cache - Featured");
-
-      local_cache.featured = JSON.parse(contents);
-      return local_cache.featured;
-
-    } catch(err) {
-      logger.errorLog(`ERROR: ${err}`);
+    if (GOOGLE_APPLICATION_CREDENTIALS == "no-file") {
+      // Having this set as no-file is a supported way to fail gracefully on cache checks.
       return null;
+    } else {
+      checkGCS();
+
+      try {
+        let contents = await gcs_storage
+          .bucket(GCLOUD_STORAGE_BUCKET)
+          .file("featured-cache.json")
+          .download();
+
+        logger.debugLog("Utilizing Remote Cache - Featured");
+
+        local_cache.featured = JSON.parse(contents);
+        return local_cache.featured;
+
+      } catch(err) {
+        logger.errorLog(`ERROR: ${err}`);
+        return null;
+      }
     }
   }
 }
 
 async function setFeatured(data) {
-  checkGCS();
+  if (GOOGLE_APPLICATION_CREDENTIALS == "no-file") {
+    logger.debugLog("Application Credentials have been set as special 'no-file', skipping setting Featured Cache.");
+  } else {
+    checkGCS();
 
-  try {
+    try {
 
-    await gcs_storage
-      .bucket(GCLOUD_STORAGE_BUCKET)
-      .file("featured-cache.json")
-      .save(JSON.stringify(data, null, 2));
+      await gcs_storage
+        .bucket(GCLOUD_STORAGE_BUCKET)
+        .file("featured-cache.json")
+        .save(JSON.stringify(data, null, 2));
 
-    logger.debugLog(`Featured Remote Cache Updated - ${Date.now()}`);
-  } catch(err) {
-    logger.errorLog(`Error Updating Featured Remote Cache - ${err}`);
+      logger.debugLog(`Featured Remote Cache Updated - ${Date.now()}`);
+    } catch(err) {
+      logger.errorLog(`Error Updating Featured Remote Cache - ${err}`);
+    }
   }
 }
 

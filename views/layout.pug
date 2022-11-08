@@ -5,6 +5,9 @@ html(lang="en")
     link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css")
     block header
   body
+    if timecop
+      script.
+        let timetable = !{JSON.stringify(timecop)};
     div(class='header')
       a(href='https://pulsar-edit.dev') Website
       a(href='/') Package Home

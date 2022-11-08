@@ -16,6 +16,14 @@ function changeTheme(theme) {
   }
 }
 
+function loadStats() {
+  if (timetable) {
+    console.log(timetable);
+  } else {
+    console.error("No stats found!");
+  }
+}
+
 window.onclick = function(event) {
   if (!event.target.matches('.dropbtn')) {
     let dropdowns = document.getElementsByClassName("dropdown-content");
