@@ -269,6 +269,19 @@ a .package-install {
   padding-bottom: 40px;
 }
 
+.package-btn-links, .package-btn-group {
+  display:flex;
+  align-items:center;
+}
+
+.package-btn-links {
+  gap: 10px;
+}
+
+.package-btn-group {
+  gap: 3px
+}
+
 .search-bar-container {
   width: 75%;
   height: 100%;
