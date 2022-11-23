@@ -9,18 +9,27 @@ block content
       include package_listing
   div(class='package-fullpage-details')
     div(class='package-btn-links')
-      a(href='repo')
+      a(class='package-btn-group' href=pack.repoLink)
         svg(class="icon")
           use(href="/public/feather-sprite.svg#book")
-      a(href='bugs')
-        svg(class="icon")
-          use(href="/public/feather-sprite.svg#alert-circle")
-      a(href='version')
+        span.
+          GitHub
+      if pack.bugLink
+        a(class='package-btn-group' href=pack.bugLink)
+          svg(class="icon")
+            use(href="/public/feather-sprite.svg#alert-circle")
+          span.
+            Bug Reports
+      div(class='package-btn-group')
         svg(class="icon")
           use(href="/public/feather-sprite.svg#tag")
-      a(href='license')
+        span.
+          #{pack.version}
+      div(class='package-btn-group')
         svg(class="icon")
           use(href="/public/feather-sprite.svg#flag")
+        span.
+          #{pack.license}
     div(class='package-readme')
       .
         !{pack.readme}

@@ -76,6 +76,7 @@ function prepareForDetail(obj) {
     pack.license = obj.metadata.license ? obj.metadata.license : "";
     pack.version = obj.metadata.version ? obj.metadata.version : "";
     pack.repoLink = findRepoField(obj);
+    pack.bugLink = obj.metadata.bugs ? obj.metadata.bugs.url : "";
     pack.install = `atom://settings-view/show-package?package=${pack.name}`;
 
     // Add custom handling of image links. This aims to fix the common issue of users specifying local paths in their links.
