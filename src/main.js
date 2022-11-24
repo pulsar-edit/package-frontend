@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const path = require("path");
 const handlers = require("./handlers.js");
 const utils = require("./utils.js");
 
@@ -49,11 +50,11 @@ app.get("/packages/:packageName", async (req, res) => {
 // Static specfic files to send.
 
 app.get("/robots.txt", (req, res) => {
-  res.sendFile("./static/robots.txt");
+  res.sendFile(path.resolve("./static/robots.txt"));
 });
 
 app.get("/sitemap.xml", (req, res) => {
-  res.sendFile("./static/sitemap.xml");
+  res.sendFile(path.resolve("./static/sitemap.xml"));
 });
 
 app.use(async (req, res) => {
