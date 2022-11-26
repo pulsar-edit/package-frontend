@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <title><%=name%></title>
+    <link rel="stylesheet" href="/public/site.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css" />
+  </head>
+  <body>
+    <% if (timecop) { %>
+      <script>
+        let timetable = <%= JSON.stringify(timecop)%>;
+      </script>
+    <% } %>
+    <div class="header">
+      <a href="https://pulsar-edit.dev">Website</a>
+      <a href="/">Package Home</a>
+      <a href="/packages">All Packages</a>
+      <div class="theme-selector">
+        <button onclick="changeThemeBtn()" class="dropbtn">Change Theme</button>
+        <div class="dropdown-content" id="dropdown-list">
+          <div class="dropdown-item" onclick="changeTheme('original-theme')">Atom.io Theme</div>
+          <div class="dropdown-item" onclick="changeTheme('github-dark')">GitHub Dark Theme</div>
+        </div>
+      </div>
+    </div>

@@ -4,8 +4,12 @@ const path = require("path");
 const handlers = require("./handlers.js");
 const utils = require("./utils.js");
 
-app.set("views", "./views");
-app.set("view engine", "pug");
+app.set("views", "./ejs-views");
+app.set("view engine", "ejs");
+
+//app.set("views", "./views");
+//app.set("view engine", "pug");
+
 
 app.use((req, res, next) => {
   req.start = Date.now();
@@ -44,7 +48,12 @@ app.get("/packages/search", async (req, res) => {
 app.get("/packages/:packageName", async (req, res) => {
   // view details of a package
   let timecop = new utils.Timecop();
-  await handlers.singlePackageListing(req, res, timecop);
+  //await handlers.singlePackageListing(req, res, timecop);
+  await handlers.singlePackageListingEJS(req, res, timecop);
+});
+
+app.get("/image/packages/:packageName", async (req, res) => {
+  await handlers.packageImage(req, res);
 });
 
 // Static specfic files to send.

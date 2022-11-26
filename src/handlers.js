@@ -46,6 +46,35 @@ async function singlePackageListing(req, res, timecop) {
     });
 }
 
+async function singlePackageListingEJS(req, res, timecop) {
+  timecop.start("api-request");
+  superagent
+    .get(`${apiurl}/api/packages/${decodeURIComponent(req.params.packageName)}`)
+    .query(req.query)
+    .then(ret => {
+      timecop.end("api-request");
+      timecop.start("transcribe-json");
+      utils.prepareForDetail(ret.body)
+        .then(pack => {
+          timecop.end("transcribe-json");
+          res.render('package_detail', { pack: pack, timecop: timecop.timetable });
+        });
+    })
+    .catch(err => {
+      utils.displayError(req, res, err.status);
+    });
+}
+
+async function packageImage(req, res) {
+  try {
+    let api = await superagent.get(`${apiurl}/api/packages/${decodeURIComponent(req.params.packageName)}`).query(req.query);
+    let img = await utils.generateImage(api.body);
+    res.status(200).setHeader('Content-Type', 'image/png').end(img);
+  } catch(err) {
+    utils.displayError(req, res, err);
+  }
+}
+
 async function featuredPackageListing(req, res, timecop) {
   timecop.start("api-request");
   superagent
@@ -120,4 +149,6 @@ module.exports = {
   fullListingPage,
   singlePackageListing,
   featuredPackageListing,
+  singlePackageListingEJS,
+  packageImage,
 };

@@ -1,4 +1,6 @@
 
+const puppeteer = require("puppeteer");
+
 const MarkdownIt = require("markdown-it");
 let md = new MarkdownIt({
   html: true
@@ -202,9 +204,182 @@ class Timecop {
   }
 }
 
+async function generateImage(obj) {
+  // The below functionality enables custom created sharing images.
+  // For reference on implmentation see:
+  //  - https://github.blog/2021-06-22-framework-building-open-graph-images/
+  //  - https://github.com/vercel/og-image
+  try {
+    const html = await generateImageHTML(obj);
+    const file = await getScreenshot(html);
+    return file;
+  } catch(err) {
+    console.log(err);
+    return null;
+  }
+}
+
+async function generateImageHTML(obj) {
+  console.log(obj);
+  return `<!DOCTYPE html>
+  <html>
+    <meta charset="utf-8">
+    <title>Generated Image</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      ${getCss()}
+    </style>
+    <body class="container">
+      <div class="heading">
+        <div class="title">
+          ${obj.name}
+        </div>
+        <div class="author">
+          @${findAuthorField(obj)}
+        </div>
+      </div>
+      <div class="subtitle">
+        <div class="link">
+          ${findRepoField(obj)}
+        </div>
+        <div class="version">
+          - v${obj.metadata.version}
+        </div>
+      </div>
+      <div class="description">
+        ${obj.metadata.description}
+      </div>
+      <div class="bottom-icons">
+        <div class="downloads">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          ${obj.downloads}
+          <span class="desc">Downloads</span>
+        </div>
+        <div class="stars">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          ${obj.stargazers_count}
+          <span class="desc">Stargazers</span>
+        </div>
+        <div class="license">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-flag"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
+          ${obj.metadata.license}
+          <span class="desc">License</span>
+        </div>
+      </div>
+    </body>
+  </html>`;
+}
+
+function getCss() {
+  return `
+  .container {
+  padding: 30px;
+  margin: 20px;
+  width: 80%;
+  height: 80%;
+  align-content: center;
+}
+
+.icon {
+  stroke: black;
+  width: 24px;
+  height: 24px;
+  stroke-width: 2;
+}
+.heading {
+  font-weight: 600;
+  font-size: 100px;
+  display: flex;
+}
+
+.title {
+  color: black;
+}
+
+.author {
+  padding-left: 5px;
+  color: grey;
+  font-size: 90px;
+}
+
+.subtitle {
+  font-weight: 400;
+  font-size: 40px;
+  display: flex;
+  padding-top: 5px;
+}
+
+.link {
+  color: blue;
+  text-decoration: underline;
+}
+
+.version {
+  padding-left: 5px;
+  color: grey;
+}
+
+.description {
+  padding-top: 15px;
+  color: black;
+  font-size: 50px;
+}
+
+.bottom-icons {
+  display: inline-block;
+  padding-top: 50px;
+  padding-left: 5px;
+  font-size: larger;
+  width: 100%;
+  text-align: justify;
+  font-size: 70px;
+}
+
+.downloads {
+  padding-left: 30px;
+  display: inline-block;
+}
+
+.downloads .desc {
+  display: block;
+  color: grey;
+}
+
+.stars {
+  padding-left: 33px;
+  display: inline-block;
+}
+
+.stars .desc {
+  display: block;
+  color: grey;
+}
+
+.license {
+  padding-left: 33px;
+  display: inline-block;
+}
+
+.license .desc {
+  display: block;
+  color: grey;
+}
+  `;
+}
+
+async function getScreenshot(html) {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.setViewport({ width: 1200, height: 600 });
+  await page.setContent(html);
+  const file = await page.screenshot({ type: 'png' });
+  return file;
+}
+
 module.exports = {
   displayError,
   prepareForListing,
   prepareForDetail,
   Timecop,
+  generateImage,
 };
