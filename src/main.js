@@ -14,6 +14,8 @@ app.use((req, res, next) => {
 
 app.use("/public", express.static("./public"));
 
+app.use("/", express.static("./static"));
+
 app.get("/", async (req, res) => {
   let timecop = new utils.Timecop();
   await handlers.homePage(req, res, timecop);
@@ -53,13 +55,17 @@ app.get("/image/packages/:packageName", async (req, res) => {
 
 // Static specfic files to send.
 
-app.get("/robots.txt", (req, res) => {
-  res.sendFile(path.resolve("./static/robots.txt"));
-});
+//app.get("/robots.txt", (req, res) => {/
+//  res.sendFile(path.resolve("./static/robots.txt"));
+//});
 
-app.get("/sitemap.xml", (req, res) => {
-  res.sendFile(path.resolve("./static/sitemap.xml"));
-});
+//app.get("/sitemap.xml", (req, res) => {
+//  res.sendFile(path.resolve("./static/sitemap.xml"));
+//});
+
+//app.get("/favicon.svg", (req, res) => {
+//  res.sendFile(path.resolve("./static/favicon.svg"));
+//});
 
 app.use(async (req, res) => {
   // 404 here, keep at last position

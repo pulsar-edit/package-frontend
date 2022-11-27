@@ -1,7 +1,37 @@
 <!DOCTYPE HTML>
 <html lang="en">
   <head>
-    <title><%=name%></title>
+    <title><%=page.name%></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="<%=page.name%>">
+    <meta property="og:url" content="<%=page.og_url%>">
+    <meta property="og:site_name" content="Pulsar Package Repository">
+    <meta property="og:description" content="<%=page.og_description%>">
+    <meta property="og:image" content="<%=page.og_image%>">
+    <meta property="og:image:type" content="<%=page.og_image_type%>">
+    <% if (page.og_image_type !== "image/svg+xml") { %>
+    <meta property="og:image:width" content="<%=page.og_image_width%>">
+    <meta property="og:image:height" content="<%page.og_image_height%>">
+    <% } %>
+    <meta property="og:locale" content="en_US">
+    <meta name="description" content="<%=page.og_description%>">
+    <meta charset="UTF-8">
+    <meta name="application-name" content="ExpressJS">
+    <link rel="alternate" href="https://web.pulsar-edit.dev/" hreflang="x-default">
+    <link rel="alternate" href="https://web.pulsar-edit.dev/" hreflang="en">
+    <link rel="shortcut icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon-precomposed" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="color-scheme" content="dark light">
     <link rel="stylesheet" href="/public/site.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css" />
   </head>
