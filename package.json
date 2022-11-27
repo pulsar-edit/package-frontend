@@ -1,6 +1,6 @@
 {
   "name": "package-web",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "Package Frontend for the Pulsar Package Backend.",
   "main": "./src/server.js",
   "scripts": {
