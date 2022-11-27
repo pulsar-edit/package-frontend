@@ -69,3 +69,15 @@ GOOGLE_APPLICATION_CREDENTIALS: "no-file"
 ```
 
 This is a special value that will cause the caching service to automatically ignore any cache requests, and force request through to the backend service. Allowing to fail gracefully.
+
+### Creating a new Social Card
+
+The Pulsar Package Frontend now supports social cards.
+
+These cards will be suggested when services create a link preview from a link to `https://web.pulsar-edit.dev/packages/packageName`.
+
+These Social Cards are created on demand and us HTML that's then converted into a PNG to be served back to the client. To modify a template edit it's respective files in `./src/images-templates/socialCardName/`.
+
+Keep in mind that these will follow EJS syntax.
+
+But if a user decides to share an image directly, such as to place on their Repository Readme or elsewhere on the web, the following link will work to do so `https://web.pulsar-edit.dev/image/packages/packageName`. But there is interest in supporting query parameters to allow different images to be generated. Currently we support two social cards `iconic` and `default`. Query parameters are not yet implemented to support users choosing these just yet.
