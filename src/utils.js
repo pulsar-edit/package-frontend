@@ -227,7 +227,6 @@ async function generateImage(obj) {
 }
 
 async function generateImageHTML(obj, kind) {
-  console.log(obj);
   let css = getCss(kind);
   let html = getHtml(kind);
 

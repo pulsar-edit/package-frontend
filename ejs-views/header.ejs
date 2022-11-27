@@ -8,7 +8,7 @@
   <body>
     <% if (timecop) { %>
       <script>
-        let timetable = <%= JSON.stringify(timecop)%>;
+        let timetable = <%- JSON.stringify(timecop)%>;
       </script>
     <% } %>
     <div class="header">

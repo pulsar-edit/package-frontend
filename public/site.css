@@ -89,20 +89,46 @@ a .package-install {
   border-radius: 4px;
 }
 
-.footer {
-  background-color: var(--footer-background-colour);
-  padding: 15px;
+.footer-wrapper {
+  padding-left: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  border-top: 1px solid var(--btn-border);
   text-align: center;
 }
 
-.footer a {
-  color: var(--footer-link-text-colour);
-  text-decoration: none;
+.footer-wrapper .socialsBar {
+  display: flex;
+  gap: 25px;
+  font-size: 25px;
+  justify-content: center;
 }
 
-.theme-selector {
-  position: relative;
-  display: inline-block;
+.footer-wrapper .linksBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.footer-wrapper .linksBox .linksBoxLeft {
+  margin: 0 60px 0 0;
+  text-align: left;
+}
+
+.footer-wrapper .linksBox .linksBoxMid {
+  margin: 0 60px;
+  text-align: left;
+}
+
+.footer-wrapper .linksBox .linksBoxRight {
+  margin: 0 0 0 60px;
+  text-align: left;
+}
+
+.footer-wrapper .copyrightBar {
+  display: block;
 }
 
 .dropbtn {

@@ -1,0 +1,11 @@
+<%- include('header', { name: "Search Packages" }); %>
+
+<div class="package-list">
+  <% packages.forEach((pack) => { %>
+    <div class="package-card">
+      <%- include('package_listing', { pack }); %>
+    </div>
+  <% }); %>
+</div>
+
+<%- include('footer'); %>

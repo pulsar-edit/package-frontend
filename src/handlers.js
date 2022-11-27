@@ -10,59 +10,30 @@ async function statusPage(req, res) {
 
 async function fullListingPage(req, res, timecop) {
   timecop.start("api-request");
-  superagent
-    .get(`${apiurl}/api/packages`)
-    .query(req.query)
-    .then(ret => {
-      timecop.end("api-request");
-      timecop.start("transcribe-json");
-      utils.prepareForListing(ret.body)
-        .then(pack => {
-          timecop.end("transcribe-json");
-          res.render('package_list', { packages: pack, timecop: timecop.timetable });
-        });
-    })
-    .catch(err => {
-      utils.displayError(req, res, err.status);
-    });
+  try {
+    let api = await superagent.get(`${apiurl}/api/packages`).query(req.query);
+    timecop.end("api-request");
+    timecop.start("transcribe-json");
+    let obj = await utils.prepareForListing(api.body);
+    timecop.end("transcribe-json");
+    res.render("package_list", { packages: obj, timecop: timecop.timetable });
+  } catch(err) {
+    utils.displayError(req, res, err);
+  }
 }
 
 async function singlePackageListing(req, res, timecop) {
   timecop.start("api-request");
-  superagent
-    .get(`${apiurl}/api/packages/${decodeURIComponent(req.params.packageName)}`)
-    .query(req.query)
-    .then(ret => {
-      timecop.end("api-request");
-      timecop.start("transcribe-json");
-      utils.prepareForDetail(ret.body)
-        .then(pack => {
-          timecop.end("transcribe-json");
-          res.render('package_detail', { pack: pack, timecop: timecop.timetable });
-        });
-    })
-    .catch(err => {
-      utils.displayError(req, res, err.status);
-    });
-}
-
-async function singlePackageListingEJS(req, res, timecop) {
-  timecop.start("api-request");
-  superagent
-    .get(`${apiurl}/api/packages/${decodeURIComponent(req.params.packageName)}`)
-    .query(req.query)
-    .then(ret => {
-      timecop.end("api-request");
-      timecop.start("transcribe-json");
-      utils.prepareForDetail(ret.body)
-        .then(pack => {
-          timecop.end("transcribe-json");
-          res.render('package_detail', { pack: pack, timecop: timecop.timetable });
-        });
-    })
-    .catch(err => {
-      utils.displayError(req, res, err.status);
-    });
+  try {
+    let api = await superagent.get(`${apiurl}/api/packages/${decodeURIComponent(req.params.packageName)}`).query(req.query);
+    timecop.end("api-request");
+    timecop.start("transcribe-json");
+    let obj = await utils.prepareForDetail(api.body);
+    timecop.end("transcribe-json");
+    res.render("package_detail", { pack: obj, timecop: timecop.timetable });
+  } catch(err) {
+    utils.displayError(req, res, err);
+  }
 }
 
 async function packageImage(req, res) {
@@ -77,69 +48,58 @@ async function packageImage(req, res) {
 
 async function featuredPackageListing(req, res, timecop) {
   timecop.start("api-request");
-  superagent
-    .get(`${apiurl}/api/packages/featured`)
-    .query(req.query)
-    .then(ret => {
-      timecop.end("api-request");
-      timecop.start("transcribe-json");
-      utils.prepareForListing(ret.body)
-        .then(pack => {
-          timecop.end("transcribe-json");
-          res.render('package_list', { packages: pack, timecop: timecop.timetable });
-        });
-    })
-    .catch(err => {
-      utils.displayError(req, res, err.status);
-    });
+  try {
+    let api = await superagent.get(`${apiurl}/api/packages/featured`).query(req.query);
+    timecop.end("api-request");
+    timecop.start("transcribe-json");
+    let obj = await utils.prepareForListing(api.body);
+    timecop.end("transcribe-json");
+    res.render("package_list", { packages: obj, timecop: timecop.timetable });
+  } catch(err) {
+    utils.displayError(req, res, err);
+  }
 }
 
 async function homePage(req, res, timecop) {
-  // First lets check the cache
   timecop.start("cache-check");
   let cached = await cache.getFeatured();
 
   if (cached !== null) {
     timecop.end("cache-check");
     // We know our cache is good and lets serve the data
-    res.render('home', { featured: cached, timecop: timecop.timetable });
+    res.render("home", { featured: cached, timecop: timecop.timetable });
   } else {
-    // the cache is invalid. We need to find the data, and cache it
+    // the cache is invalid.
     timecop.end("cache-check");
     timecop.start("api-request");
-    superagent
-      .get(`${apiurl}/api/packages/featured`)
-      .then(ret => {
-        timecop.end("api-request");
-        timecop.start("transcribe-json");
-        utils.prepareForListing(ret.body)
-          .then(pack => {
-            timecop.end("transcribe-json");
-            res.render('home', { featured: pack, timecop: timecop.timetable });
-            // then set featured cache
-            cache.setFeatured(pack);
-          });
-      });
+    try {
+      let api = await superagent.get(`${apiurl}/api/packages/featured`);
+      timecop.end("api-request");
+      timecop.start("transcribe-json");
+      let obj = await utils.prepareForListing(api.body);
+      timecop.end("transcribe-json");
+      res.render("home", { featured: obj, timecop: timecop.timetable });
+      // then set featured cache
+      cache.setFeatured(obj);
+    } catch(err) {
+      utils.displayError(req, res, err);
+    }
   }
 }
 
 async function searchHandler(req, res, timecop) {
   timecop.start("api-request");
-  superagent
-    .get(`${apiurl}/api/packages/search`)
-    .query(req.query)
-    .then(ret => {
-      timecop.end("api-request");
-      timecop.start("transcribe-json");
-      utils.prepareForListing(ret.body)
-        .then(pack => {
-          timecop.end("transcribe-json");
-          res.render('search', { packages: pack, search: req.query.q, timecop: timecop.timetable });
-        });
-    })
-    .catch(err => {
-      utils.displayError(req, res, err.status);
-    });
+  try {
+    let api = await superagent.get(`${apiurl}/api/packages/search`).query(req.query);
+    timecop.end("api-request");
+    timecop.start("transcribe-json");
+    let obj = await utils.prepareForListing(api.body);
+    timecop.end("transcribe-json");
+    res.render("search", { packages: obj, search: req.query.q, timecop: timecop.timetable });
+  } catch(err) {
+    console.log(err);
+    utils.displayError(req, res, err);
+  }
 }
 
 module.exports = {
@@ -149,6 +109,5 @@ module.exports = {
   fullListingPage,
   singlePackageListing,
   featuredPackageListing,
-  singlePackageListingEJS,
   packageImage,
 };
