@@ -19,3 +19,4 @@ node_modules/
 # Custom Added
 LICENSE
 README.md
+.cache/puppeteer/
