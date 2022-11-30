@@ -5,7 +5,9 @@
   "main": "./src/server.js",
   "scripts": {
     "start": "node ./src/server.js",
-    "test": "jest ./src/tests/"
+    "test": "jest ./src/tests/",
+    "postinatall": "node node_modules/puppeteer/install.js",
+    "deploy_script": "echo 'Do not run!' && gcloud app deploy --no-cache"
   },
   "author": "confused-Techie",
   "license": "MIT",
