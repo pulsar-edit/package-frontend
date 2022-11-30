@@ -39,7 +39,7 @@ async function singlePackageListing(req, res, timecop) {
     res.render("package_detail", { pack: obj, timecop: timecop.timetable, page: {
       name: obj.name,
       og_url: `https://web.pulsar-edit.dev/packages/${obj.name}`,
-      og_description: obj.metadata.description,
+      og_description: obj.description,
       og_image: `https://web.pulsar-edit.dev/image/packages/${obj.name}`,
       og_image_type: "image/png",
       og_image_width: 1200,
