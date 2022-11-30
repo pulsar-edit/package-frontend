@@ -1,4 +1,8 @@
 
+const puppeteer = require("puppeteer");
+const fs = require("fs");
+const ejs = require("ejs");
+
 const MarkdownIt = require("markdown-it");
 let md = new MarkdownIt({
   html: true
@@ -202,9 +206,82 @@ class Timecop {
   }
 }
 
+async function generateImage(obj) {
+  // The below functionality enables custom created sharing images.
+  // For reference on implmentation see:
+  //  - https://github.blog/2021-06-22-framework-building-open-graph-images/
+  //  - https://github.com/vercel/og-image
+  try {
+    // In an effort to support multiple types of images to return, we will determine them before here.
+    // But for now will set the default
+
+    let kind = "default";
+
+    const html = await generateImageHTML(obj, kind);
+    const file = await getScreenshot(html);
+    return file;
+  } catch(err) {
+    console.log(err);
+    return null;
+  }
+}
+
+async function generateImageHTML(obj, kind) {
+  let css = getCss(kind);
+  let html = getHtml(kind);
+
+  // Now before calling ejs.render because EJS doesn't have access to our function scope,
+  // Meaning we can't call any functions in here, we need to expose them to the ejs instance
+  // by attaching the helper functions to the object.
+
+  let final = ejs.render(html, { stylesheet: css, obj: obj, utils: require("./template-utils.js") });
+  return final;
+}
+
+function getCss(kind) {
+  try {
+    switch(kind) {
+      case "iconic":
+        return fs.readFileSync("./src/image-templates/iconic-mascot/template.css", { encoding: "utf8" });
+      case "default":
+      default:
+        return fs.readFileSync("./src/image-templates/default/template.css", { encoding: "utf8" });
+    }
+  } catch(err) {
+    console.log(err);
+    return "";
+  }
+}
+
+function getHtml(kind) {
+  try {
+    switch(kind) {
+      case "iconic":
+        return fs.readFileSync("./src/image-templates/iconic-mascot/template.ejs", { encoding: "utf8" });
+      case "default":
+      default:
+        return fs.readFileSync("./src/image-templates/default/template.ejs", { encoding: "utf8" });
+    }
+  } catch(err) {
+    console.log(err);
+    return "";
+  }
+}
+
+async function getScreenshot(html) {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.setViewport({ width: 1200, height: 600 });
+  await page.setContent(html);
+  await page.evaluateHandle('document.fonts.ready');
+  const file = await page.screenshot({ type: 'png' });
+  return file;
+}
+
 module.exports = {
   displayError,
   prepareForListing,
   prepareForDetail,
   Timecop,
+  generateImage,
 };
