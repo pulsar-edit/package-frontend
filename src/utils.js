@@ -284,4 +284,5 @@ module.exports = {
   prepareForDetail,
   Timecop,
   generateImage,
+  generateImageHTML
 };
