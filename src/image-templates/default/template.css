@@ -15,6 +15,9 @@ display: flex;
 color: black;
 font-family: 'Jura', sans-serif;
 padding-bottom: 30px;
+white-space:nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
 }
 
 .subtitle {
@@ -45,7 +48,6 @@ font-family: 'Jura', sans-serif;
 width: 920px;
 height: 250px;
 overflow: hidden;
-text-overflow: ellipsis;
 }
 
 .bottom-icons {
