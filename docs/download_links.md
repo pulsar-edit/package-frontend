@@ -35,6 +35,8 @@ All `type` Options:
 - `linux_rpm`
 - `linux_deb`
 
+Example: https://web.pulsar-edit.dev/download?os=windows&type=windows_portable
+
 Full Table:
 
 | Binary Name | Query `os` Value | Query `type` Value |
