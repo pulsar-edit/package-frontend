@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node ./src/server.js",
     "test": "jest ./src/tests/",
-    "postinatall": "node node_modules/puppeteer/install.js",
+    "postinstall": "node node_modules/puppeteer/install.js",
+    "start:dev": "cross-env PULSAR_STATUS=dev node ./src/server.js",
     "deploy_script": "echo 'Do not run!' && gcloud app deploy --no-cache"
   },
   "author": "confused-Techie",
@@ -24,6 +25,7 @@
     "superagent": "^8.0.1"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "jest": "^29.2.2"
   }
 }

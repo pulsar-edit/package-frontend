@@ -14,6 +14,9 @@ If you'd like to read about some of the challenges of normalizing the data acros
   * [Authors](/docs/authors.md)
   * [Links](/docs/links.md)
 
+Additionally for anyone crafting a direct download link to our Pulsar Binaries from Cirrus CI:
+  * [Download Link Table](/docs/download_links.md)
+
 ---
 
 When browsing the website, if you'd like to investigate what's caused the page load to take a long time there's now a built in utility to help determine that. While it can't show every aspect of the page load it could at least help to rule out some aspects.
@@ -69,6 +72,12 @@ GOOGLE_APPLICATION_CREDENTIALS: "no-file"
 ```
 
 This is a special value that will cause the caching service to automatically ignore any cache requests, and force request through to the backend service. Allowing to fail gracefully.
+
+### Running In Dev Mode
+
+Using `npm run start:dev` you can run the Package Frontend Server in Development mode. This does two notable things:
+  - Disables Remote Cache Features Natively. Setting `GOOGLE_APPLICATION_CREDENTIALS: "no-file"` is not necessary when run in dev mode.
+  - Exposes a secret API endpoint. `/dev/image/packages/:packageName` will be available when in dev mode, and gives direct access to the HTML code used to display the Social Cards. Using this can allow easier modification and editing of our Social Cards.
 
 ### Creating a new Social Card
 

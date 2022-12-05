@@ -1,41 +1,28 @@
 .container {
-padding: 30px;
+padding: 20px 30px 30px 30px;
 margin: 20px;
-width: 80%;
 height: 80%;
 align-content: center;
 }
 
-.icon {
-stroke: black;
-width: 24px;
-height: 24px;
-stroke-width: 2;
-}
-
 .heading {
 font-weight: 600;
-font-size: 100px;
+font-size: 90px;
 display: flex;
 }
 
 .title {
 color: black;
-margin-right: 400px;
 font-family: 'Jura', sans-serif;
-padding-top: 10px;
 padding-bottom: 30px;
-}
-
-.author {
-padding-left: 5px;
-color: grey;
-font-size: 90px;
+white-space:nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
 }
 
 .subtitle {
 font-weight: 400;
-font-size: 40px;
+font-size: 35px;
 display: flex;
 padding-bottom: 5px;
 }
@@ -56,21 +43,26 @@ font-family: 'Jura', sans-serif;
 .description {
 padding-top: 15px;
 color: black;
-font-size: 50px;
+font-size: 40px;
 font-family: 'Jura', sans-serif;
+width: 920px;
+height: 250px;
+overflow: hidden;
 }
 
 .bottom-icons {
 display: inline-block;
-padding-top: 50px;
-padding-left: 5px;
-width: 100%;
+padding: 50px 0px 15px 5px;
 text-align: justify;
 font-size: 40px;
 font-family: 'Jura', sans-serif;
 position: absolute;
 bottom: 20px;
 left: 30px;
+}
+
+.bottom-icons > div > svg {
+  vertical-align: bottom;
 }
 
 .downloads {
@@ -107,6 +99,6 @@ color: grey;
 
 .pulsar-logo {
   position: absolute;
-  right: 80px;
-  bottom: 20px;
+  left: 940px;
+  bottom: 15px;
 }

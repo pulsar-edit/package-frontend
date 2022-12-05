@@ -53,19 +53,13 @@ app.get("/image/packages/:packageName", async (req, res) => {
   await handlers.packageImage(req, res);
 });
 
-// Static specfic files to send.
+app.get("/dev/image/packages/:packageName", async (req, res) => {
+  await handlers.devPackageImage(req, res);
+});
 
-//app.get("/robots.txt", (req, res) => {/
-//  res.sendFile(path.resolve("./static/robots.txt"));
-//});
-
-//app.get("/sitemap.xml", (req, res) => {
-//  res.sendFile(path.resolve("./static/sitemap.xml"));
-//});
-
-//app.get("/favicon.svg", (req, res) => {
-//  res.sendFile(path.resolve("./static/favicon.svg"));
-//});
+app.get("/download", async (req, res) => {
+  await handlers.downloadLink(req, res);
+});
 
 app.use(async (req, res) => {
   // 404 here, keep at last position

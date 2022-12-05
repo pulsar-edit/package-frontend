@@ -24,7 +24,7 @@ async function getFeatured() {
     return local_cache.featured;
 
   } else {
-    if (GOOGLE_APPLICATION_CREDENTIALS == "no-file") {
+    if (GOOGLE_APPLICATION_CREDENTIALS == "no-file" || process.env.PULSAR_STATUS === "dev") {
       // Having this set as no-file is a supported way to fail gracefully on cache checks.
       return null;
     } else {
