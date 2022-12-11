@@ -40,20 +40,20 @@ body[theme="original-theme"] {
 
 body[theme="github-dark"] {
   --svg-stroke: #8b949e;
-  --chip-background-colour: rgba(56,139,253,0.15);
+  --chip-background-colour: rgba(56, 139, 253, 0.15);
   --card-border-colour: #30363d;
   --card-meta-detail-colour: #161b22;
   --card-meta-box-colour: #21262d;
   --page-background-colour: #0d1117;
   --page-text-colour: #c9d1d9;
   --link-text-colour: #58a6ff;
-  --card-meta-box-border-colour: rgba(240,246,252,0.1);
+  --card-meta-box-border-colour: rgba(240, 246, 252, 0.1);
   --header-background-colour: #161b22;
   --header-link-text-colour: #f0f6fc;
   --footer-background-colour: #161b22;
   --footer-link-text-colour: #f0f6fc;
   --btn-bg-colour: #21262d;
-  --btn-border: 1px solid rgba(240,246,252,0.1);
+  --btn-border: 1px solid rgba(240, 246, 252, 0.1);
   --search-bar-bg-colour: #0d1117;
   font-family: "Helvetica Neue", Helvetica, arial, freesans, clean, sans-serif;
 }
@@ -223,10 +223,6 @@ a .package-install {
   text-align: center;
 }
 
-.package-list .package-card .package-body .package-description {
-
-}
-
 .package-list .package-card .package-body .package-keywords {
   display: flex;
   flex-direction: row;
@@ -251,7 +247,6 @@ a .package-install {
 }
 
 .package-list .package-card .package-meta .package-author {
-
 }
 
 .package-list .package-card .package-meta .package-options {
@@ -286,6 +281,29 @@ a .package-install {
   vertical-align: super;
 }
 
+.package-list-header {
+  display: inline-block;
+}
+
+.package-list-header .banner-msg {
+  display: inline-block;
+}
+
+.package-list-header .icon {
+  width: 32px;
+  height: 32px;
+}
+
+/**
+ * Package Readme Styles
+ * 1. Ensure images from the readme content match the width of the
+ *    container.
+ */
+
+.package-readme img {
+  max-width: 100%;
+}
+
 .package-fullpage-details {
   width: 75%;
   height: 100%;
@@ -295,9 +313,10 @@ a .package-install {
   padding-bottom: 40px;
 }
 
-.package-btn-links, .package-btn-group {
-  display:flex;
-  align-items:center;
+.package-btn-links,
+.package-btn-group {
+  display: flex;
+  align-items: center;
 }
 
 .package-btn-links {
@@ -305,7 +324,7 @@ a .package-install {
 }
 
 .package-btn-group {
-  gap: 3px
+  gap: 3px;
 }
 
 .search-bar-container {
@@ -348,17 +367,4 @@ a .package-install {
   padding: 0.75rem 0.375rem;
   border: var(--btn-border);
   color: var(--page-text-colour);
-}
-
-.package-list-header {
-  display: inline-block;
-}
-
-.package-list-header .banner-msg {
-  display: inline-block;
-}
-
-.package-list-header .icon {
-  width: 32px;
-  height: 32px;
 }
