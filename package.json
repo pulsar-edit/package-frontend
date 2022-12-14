@@ -8,6 +8,8 @@
     "test": "jest ./src/tests/",
     "postinstall": "node node_modules/puppeteer/install.js",
     "start:dev": "cross-env PULSAR_STATUS=dev node ./src/server.js",
+    "tailwind:dev": "tailwindcss -i ./src/site.css -o ./public/site.css --watch",
+    "tailwind:build": "tailwindcss -i ./src/site.css -o ./public/site.css",
     "deploy_script": "echo 'Do not run!' && gcloud app deploy --no-cache"
   },
   "author": "confused-Techie",

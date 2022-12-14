@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --svg-stroke: #999;
   --chip-background-colour: #d1d5db;
