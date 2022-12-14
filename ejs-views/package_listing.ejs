@@ -1,38 +1,24 @@
-<div class="package-body">
-  <div class="package-title">
-    <a href="/packages/<%=pack.name%>"><%=pack.name%></a>
-  </div>
-  <div class="package-description">
-    <p><%=pack.description%></p>
-  </div>
-  <div class="package-keywords">
-
-  </div>
-</div>
-<div class="package-meta">
-  <div class="package-author">
-    <p><%=pack.author%></p>
-  </div>
-  <div class="package-options">
-    <div class="package-downloads box">
-      <svg class="icon">
-        <use href="/public/feather-sprite.svg#download" />
-      </svg>
-      <p><%=pack.downloads%></p>
+<div>
+  <a href="/packages/<%=pack.name%>" class="text-3xl text-primary"><%=pack.name%></a>
+  <p class="text-sm text-gray-600 min-h-[80px] py-3"><%=pack.description%></p>
+  <div class="flex gap-3">
+    <div class="flex justify-between bg-secondary p-3 rounded flex-1">
+      <p>
+        <i class="fas fa-user"></i>
+        <span class="opacity-40"><%=pack.author%></span>
+      </p>
+      <p>
+        <i class="fas fa-download"></i>
+        <span class="opacity-40"><%=pack.downloads%></span>
+      </p>
+      <p>
+        <i class="fas fa-star"></i>
+        <span class="opacity-40"><%=pack.stars%></span>
+      </p>
     </div>
-    <div class="package-stars box">
-      <svg class="icon">
-        <use href="/public/feather-sprite.svg#star" />
-      </svg>
-      <p><%=pack.stars%></p>
-    </div>
-    <a href="<%=pack.install%>">
-      <div class="package-install box">
-        <svg class="icon">
-          <use href="/public/feather-sprite.svg#download" />
-        </svg>
-        <p>Install</p>
-      </div>
+    <a href="<%=pack.install%>" class="flex items-center justify-center text-white bg-primary p-3 rounded">
+      <i class="fas fa-download mr-2"></i>
+      <span>Install</span>
     </a>
   </div>
 </div>

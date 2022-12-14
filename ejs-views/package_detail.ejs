@@ -8,30 +8,30 @@
 <div class="package-fullpage-details">
   <div class="package-btn-links">
     <a class="package-btn-group" href="<%=pack.repoLink%>">
-      <svg class="icon">
-        <use href="/public/feather-sprite.svg#book" />
-      </svg>
-      <span>GitHub</span>
+      <span>
+        <i class="fas fa-book"></i>
+        GitHub
+      </span>
     </a>
     <% if (pack.bugLink) { %>
       <a class="package-btn-group" href="<%=pack.bugLink%>">
-        <svg class="icon">
-          <use href="/public/feather-sprite.svg#alert-circle" />
-        </svg>
-        <span>Bug Reports</span>
+        <span>
+          <i class="fas fa-bug"></i>
+          Bug Reports
+        </span>
       </a>
     <% } %>
     <div class="package-btn-group">
-      <svg class="icon">
-        <use href="/public/feather-sprite.svg#tag" />
-      </svg>
-      <span><%=pack.version%></span>
+      <span>
+        <i class="fas fa-tag"></i>
+        <%=pack.version%>
+      </span>
     </div>
     <div class="package-btn-group">
-      <svg class="icon">
-        <use href="/public/feather-sprite.svg#flag" />
-      </svg>
-      <span><%=pack.license%></span>
+      <span>
+        <i class="fas fa-flag"></i>
+        <%=pack.license%>
+      </span>
     </div>
   </div>
   <div class="package-readme">

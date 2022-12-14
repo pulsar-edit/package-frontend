@@ -1,21 +1,17 @@
 <%- include('header', { page }); %>
 
-<%- include('search_bar'); %>
-
-<div class="package-list featured">
-  <div class="package-list-header">
-    <a href="/packages/featured">
-      <svg class="icon">
-        <use href="/public/feather-sprite.svg#award" />
-      </svg>
-      <h2 class="banner-msg"> Featured Packages</h2>
-    </a>
-  </div>
-  <div class="package-card">
+<article class="mx-auto max-w-[1024px]">
+  <%- include('search_bar'); %>
+  <h2 class="mt-12 text-3xl">
+    <i class="fas fa-bullhorn text-primary"></i> 
+    Featured Packages
+  </h2>
+  <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-6 py-6">
     <% featured.forEach(pack => { %>
-      <div class="package-card">
+      <div class="w-full border border-secondary rounded p-3">
         <%- include('package_listing', { pack }); %>
       </div>
     <% }); %>
-
+  </div>
+</article>
 <%- include('footer'); %>
