@@ -338,7 +338,13 @@ async function downloadLink(req, res) {
     console.log(err);
     utils.displayError(req, res, err);
   }
+}
 
+async function loginHandler(req, res, timecop) {
+
+}
+
+async function userPageHandler(req, res, timecop) {
 
 }
 
@@ -351,5 +357,7 @@ module.exports = {
   featuredPackageListing,
   packageImage,
   devPackageImage,
-  downloadLink
+  downloadLink,
+  loginHandler,
+  userPageHandler,
 };
