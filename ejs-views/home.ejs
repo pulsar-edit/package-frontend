@@ -12,10 +12,26 @@
     </a>
   </div>
   <div class="package-card">
-    <% featured.forEach(pack => { %>
+    <% featuredPackages.forEach(pack => { %>
       <div class="package-card">
         <%- include('package_listing', { pack }); %>
       </div>
     <% }); %>
+  </div>
+  <div class="package-list-header">
+    <a href="/packages/featured">
+      <svg class="icon">
+        <use href="/public/feather-sprite.svg#award" />
+      </svg>
+      <h2 class="banner-msg"> Featured Themes</h2>
+    </a>
+  </div>
+  <div class="package-card">
+    <% featuredThemes.forEach(pack => { %>
+      <div class="package-card">
+        <%- include('package_listing', { pack }); %>
+      </div>
+    <% }); %>
+  </div>
 
 <%- include('footer'); %>
