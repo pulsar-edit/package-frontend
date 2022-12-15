@@ -8,6 +8,10 @@ function changeTheme(theme) {
       document.body.setAttribute("theme", "github-dark");
       localStorage.setItem("theme", "github-dark");
       break;
+    case "dracula":
+      document.body.setAttribute("theme", "dracula");
+      localStorage.setItem("theme", "dracula");
+      break;
     case "original-theme":
     default:
       document.body.setAttribute("theme", "original-theme");

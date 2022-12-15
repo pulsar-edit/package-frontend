@@ -1,8 +1,8 @@
 <div class="w-full border border-secondary rounded p-3">
   <a href="/packages/<%=pack.name%>" class="text-3xl text-primary"><%=pack.name%></a>
   <p class="text-sm text-gray-600 min-h-[80px] py-3"><%=pack.description%></p>
-  <div class="flex gap-3">
-    <div class="flex items-center justify-between bg-secondary p-3 rounded flex-1">
+  <div class="md:flex sm:flex-col md:flex-row gap-3">
+    <div class="md:flex items-center justify-between bg-secondary p-3 rounded flex-1">
       <p class="flex items-center">
         <i class="fas fa-user mr-2"></i>
         <span class="opacity-40 truncate inline-block max-w-[150px]"><%=pack.author%></span>

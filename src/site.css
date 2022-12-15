@@ -18,6 +18,14 @@ body[theme="github-dark"] {
   --text: #c9d1d9;
 }
 
+body[theme="dracula"] {
+  --canvas: #282a36	;
+  --primary: #bd93f9	;
+  --accent: #44475a	;
+  --secondary: rgba(255, 255, 255, 0.1);
+  --text: #f8f8f2;
+}
+
 /**************************/
 /******** GLOBALS *********/
 /**************************/
@@ -44,7 +52,7 @@ header button {
 }
 
 article {
-  @apply mx-auto max-w-[1024px];
+  @apply mx-auto max-w-[1024px] px-6;
 }
 
 article button {
