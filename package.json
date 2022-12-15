@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "node node_modules/puppeteer/install.js",
     "start": "npm run tailwind:build && npm run node:prod",
-    "start:dev": "concurrently 'npm:tailwind:watch' 'npm:node:dev'",
+    "start:dev": "concurrently -n tailwind,node -c blue,yellow 'npm:tailwind:watch' 'npm:node:dev'",
     "node:dev": "cross-env PULSAR_STATUS=dev nodemon ./src/server.js",
     "node:prod": "node ./src/server.js",
     "tailwind:watch": "tailwindcss -i ./src/site.css -o ./public/site.css --watch",
