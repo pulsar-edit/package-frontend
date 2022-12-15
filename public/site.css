@@ -368,3 +368,63 @@ a .package-install {
   border: var(--btn-border);
   color: var(--page-text-colour);
 }
+
+.login-container {
+  width: 75%;
+  height: 100%;
+  padding-right: 40px;
+  padding-left: 40px;
+  margin: 50px auto 20px auto;
+  padding-bottom: 40px;
+}
+
+.pat-signup {
+  text-align: center;
+}
+
+.pat-signup .pat-signup-text {
+  display: block;
+  padding-bottom: 10px;
+}
+
+.pat-signup .pat-token-input {
+  font-size: 18px;
+  width: 50%;
+  margin-right: 10px;
+  margin-left: 10px;
+  padding: 0.75rem 0.375rem;
+  border: var(--btn-border);
+  border-radius: 0.375rem;
+  background-color: var(--search-bar-bg-colour);
+  color: var(--page-text-colour);
+}
+
+.pat-signup .pat-token-button {
+  margin-left: 10px;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  border-radius: 0.375rem;
+  text-decoration: none;
+  background-color: var(--btn-bg-colour);
+  padding: 0.75rem 0.375rem;
+  border: var(--btn-border);
+  color: var(--page-text-colour);
+}
+
+.oauth-signup {
+  text-align: center;
+}
+
+.oauth-signup .oauth-signup-button {
+  margin-left: 10px;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  border-radius: 0.375rem;
+  text-decoration: none;
+  background-color: var(--btn-bg-colour);
+  padding: 0.75rem 0.375rem;
+  border: var(--btn-border);
+  color: var(--page-text-colour);
+}
