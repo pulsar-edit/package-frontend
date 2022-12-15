@@ -1,4 +1,5 @@
 :root {
+  --container-width: 1024px;
   --svg-stroke: #999;
   --chip-background-colour: #d1d5db;
   --card-border-colour: #ddd;
@@ -69,6 +70,47 @@ a {
 }
 
 a .package-install {
+  color: var(--page-text-colour);
+}
+
+/**
+ * Util class names (one-off styles e.g. mb-0).
+ */
+.mb-0 {
+  margin-bottom: 0;
+}
+
+/**
+ * Global Container
+ */
+.container {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.flex-wrap {
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+}
+
+@media screen and (min-width: 768px) {
+  .flex-wrap {
+    flex-direction: row;
+    gap: 4rem;
+  }
+}
+
+/**
+ * Base Input Styles
+ */
+.input {
+  font-size: 18px;
+  padding: 0.75rem 0.375rem;
+  border: var(--btn-border);
+  border-radius: 0.375rem;
+  background-color: var(--search-bar-bg-colour);
   color: var(--page-text-colour);
 }
 
@@ -301,7 +343,7 @@ a .package-install {
  */
 
 .package-readme img {
-  max-width: 100%;
+  max-width: 100%; /* [1] */
 }
 
 .package-fullpage-details {
@@ -387,6 +429,7 @@ a .package-install {
   padding-bottom: 10px;
 }
 
+/** @TODO, replace with global input */
 .pat-signup .pat-token-input {
   font-size: 18px;
   width: 50%;
@@ -427,4 +470,76 @@ a .package-install {
   padding: 0.75rem 0.375rem;
   border: var(--btn-border);
   color: var(--page-text-colour);
+}
+
+/**
+ * Heading Styles for Your Account Page
+ */
+.your-account-heading {
+  margin-bottom: 2rem;
+}
+
+/**
+ * API Token Block
+ */
+.api-token-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.api-token-heading {
+  margin-bottom: 1rem;
+  margin-top: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .api-token-block {
+    flex-direction: row;
+  }
+}
+
+.api-token-block .api-token-block-button {
+  font-size: 1rem;
+  padding: 0.75rem 1.25rem;
+  margin-top: 1rem;
+}
+
+@media screen and (min-width: 768px) {
+  .api-token-block .api-token-block-button {
+    margin-left: 0.75rem;
+    margin-top: 0;
+  }
+}
+
+.api-token-block .api-token-block-input {
+  padding: 0.75rem 1rem;
+}
+
+/**
+ * User Information Block
+ */
+.user-info-block {
+  display: flex;
+  align-items: flex-start;
+}
+
+.user-info-block .user-info-block-avatar {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-info-block .user-info-block-details {
+  margin: 0 0 0 1rem;
+}
+
+.user-info-block .user-info-block-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.user-info-block .user-info-block-handle {
+  display: block;
+  font-size: 1rem;
+  font-weight: 400;
 }
