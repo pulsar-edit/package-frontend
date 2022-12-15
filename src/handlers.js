@@ -163,17 +163,23 @@ async function downloadLink(req, res) {
   }
 
   try {
-
     let baseQuery = `
-      query GetLatestBuildID {
-        ownerRepository(platform: "github", owner: "pulsar-edit", name: "pulsar") {
-          id
-          platform
-          owner
-          name
-          masterBranch
-          lastDefaultBranchBuild {
-            id
+      query getRepositoryBuildStatuses {
+        repository(id: 6483909499158528) {
+          builds(branch: "master", last: 10) {
+            pageInfo {
+              hasNextPage
+              hasPreviousPage
+              startCursor
+              endCursor
+            }
+            edges {
+              cursor
+              node {
+                id
+                status
+              }
+            }
           }
         }
       }
@@ -185,9 +191,18 @@ async function downloadLink(req, res) {
 
     let baseResponse = baseGraph.body;
 
+    let buildID;
+
+    for (let i = 0; i < baseResponse.data.repository.builds.edges.length; i++) {
+      if (baseResponse.data.repository.builds.edges[i].node.status === "COMPLETED") {
+        buildID = baseResponse.data.repository.builds.edges[i].node.id;
+        break;
+      }
+    }
+
     let buildQuery = `
       query GetTasksFromBuild {
-        build(id: "${baseResponse.data.ownerRepository.lastDefaultBranchBuild.id}") {
+        build(id: "${buildID}") {
           status
           tasks {
             name
