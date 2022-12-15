@@ -1,0 +1,30 @@
+<%- include('../partials/header', { page }); %>
+
+<article class="md:flex md:gap-24">
+  <div class="flex-1">
+    <h1 class="mb-4">Your Account</h1>
+    <div class="flex items-center gap-6">
+      <div class="w-24 h-24 bg-cover bg-center rounded-full bg-[url(https://images.pexels.com/photos/3777943/pexels-photo-3777943.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)]"></div>
+      <div>
+        <h2>Joe Bloggs</h2>
+        <p>@joe.bloggs</p>
+        <p class="mt-3">Account Created: {TIMESTAMP}</p>
+      </div>
+    </div>
+  </div>
+  <div class="flex-1 my-12 md:my-0">
+    <h1 class="mb-4">Your Pulsar API Token</h1>
+    <input
+      type="text"
+      disabled
+      value="api-token-goes-here"
+      class="bg-secondary copy-to-clipboard-input-js"
+    />
+    <button class="copy-to-clipboard-button-js">
+      <i class="fas fa-clipboard mr-2"></i>
+      Copy Token
+    </button>
+  </div>
+</article>
+
+<%- include('../partials/footer'); %>
