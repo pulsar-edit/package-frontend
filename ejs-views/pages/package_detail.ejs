@@ -1,0 +1,10 @@
+<%- include('../partials/header', { page: page }); %>
+
+<article>
+  <%- include('../partials/package_listing', {verbose: true}); %>
+  <div id="readme" class="mt-12">
+    <%-pack.readme%>
+  </div>
+</article>
+
+<%- include('../partials/footer'); %>

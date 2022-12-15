@@ -1,0 +1,48 @@
+<div class="w-full border border-secondary rounded p-3">
+  <a href="/packages/<%=pack.name%>" class="text-3xl text-primary"><%=pack.name%></a>
+  <p class="text-sm text-gray-600 min-h-[80px] py-3"><%=pack.description%></p>
+  <div class="flex gap-3">
+    <div class="flex items-center justify-between bg-secondary p-3 rounded flex-1">
+      <p class="flex items-center">
+        <i class="fas fa-user mr-2"></i>
+        <span class="opacity-40 truncate inline-block max-w-[150px]"><%=pack.author%></span>
+      </p>
+      <p class="flex items-center">
+        <i class="fas fa-download mr-2"></i>
+        <span class="opacity-40"><%=pack.downloads%></span>
+      </p>
+      <p class="flex items-center">
+        <i class="fas fa-star mr-2"></i>
+        <span class="opacity-40"><%=pack.stars%></span>
+      </p>
+      <% if (verbose && pack.bugLink) { %>
+        <p>
+          <i class="fas fa-bug mr-2"></i>
+          <a href="<%=pack.bugLink%>" target="_blank" class="text-primary">Bug Reports</a>
+        </p>
+      <% } %>
+      <% if (verbose) { %>
+      <p>
+        <i class="fas fa-tag mr-2"></i>
+        <span class="opacity-40"><%=pack.version%></span>
+      </p>
+      <% } %>
+      <% if (verbose) { %>
+      <p class="flex items-center">
+        <i class="fas fa-flag mr-2"></i>
+        <span class="opacity-40"><%=pack.license%></span>
+      </p>
+      <% } %>
+      <% if (verbose) { %>
+        <p class="flex items-center">
+          <i class="fas fa-book mr-2"></i>
+          <a href="<%=pack.repoLink%>" target="_blank" class="text-primary">GitHub</a>
+        </p>
+      <% } %>
+    </div>
+    <a href="<%=pack.install%>" class="flex items-center justify-center text-white bg-primary p-3 rounded">
+      <i class="fas fa-download mr-2"></i>
+      <span>Install</span>
+    </a>
+  </div>
+</div>
