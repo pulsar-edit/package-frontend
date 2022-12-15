@@ -51,14 +51,13 @@
       <a href="/" class="hover:opacity-80">
         <img src="/public/logo-name-navbar-dark.svg" class="h-10" />
       </a>
-      <a href="/">Featured</a>
-      <a href="/packages">Packages</a>
-      <a href="/themes">Themes</a>
+      <a class="<% if (page.og_url === 'https://web.pulsar-edit.dev/') { %> text-primary <% } %>" href="/">Featured</a>
+      <a class="<% if (page.og_url === 'https://web.pulsar-edit.dev/packages') { %> text-primary <% } %>" href="/packages">Packages</a>
       <a href="https://pulsar-edit.dev" target="_blank">Website</a>
       <div class="flex-1 text-right">
         <button onclick="changeThemeBtn()">Change Theme <i class="fas fa-caret-down ml-2"></i></button>
         <div class="hidden absolute bg-accent right-3 mt-12 p-3" id="dropdown-list">
-          <button onclick="changeTheme('original-theme')">Atom.io</button><br>
+          <button onclick="changeTheme('original-theme')">Atom.io (Default)</button><br>
           <button onclick="changeTheme('github-dark')">GitHub Dark</button><br>
           <button onclick="changeTheme('dracula')">Dracula</button>
         </div>

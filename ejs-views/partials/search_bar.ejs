@@ -1,7 +1,7 @@
 <div class="text-center">
   <h1>Packages make Pulsar do amazing things.</h1>
   <form class="my-12" action="/packages/search">
-    <input type="search" name="q" placeholder="Search Packages..." class="border border-secondary bg-transparent rounded w-2/3 max-w-3xl p-3" />
+    <input type="search" value="<% if (locals.search) { %><%- search %><% } %>" name="q" placeholder="Search Packages..." class="border border-secondary bg-transparent rounded w-2/3 max-w-3xl p-3" />
     <button type="submit" class="">
       <i class="fas fa-magnifying-glass"></i>
       Search
