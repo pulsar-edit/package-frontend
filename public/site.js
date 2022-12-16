@@ -119,7 +119,7 @@ function userAccountLocal() {
 }
 
 function userAccountAPI(token) {
-  fetch("https://api.pulsar-edit.dev/api/packages/hey-pane", {
+  fetch("https://api.pulsar-edit.dev/users", {
     headers: {
       Authorization: token,
     },
