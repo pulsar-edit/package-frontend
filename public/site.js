@@ -63,6 +63,9 @@ window.onload = function (event) {
     changeTheme(localStorage.getItem("theme"));
   }
 
+  // Add the header links if we are logged in
+  if (isLoggedIn()) { modifyNavigation(); }
+    
   // Check to see if we are on the User Account Page
   if (window.location.href.startsWith("https://web.pulsar-edit.dev/users")) {
   //if (window.location.href.indexOf("/users")) {
@@ -102,6 +105,10 @@ function userAccountActions() {
     // The user needs to access the API to retreive user details. Ignore any local data.
     userAccountAPI(token);
   }
+}
+
+function isLoggedIn() {
+  return !!localStorage.getItem("user");
 }
 
 function userAccountLocal() {
@@ -178,4 +185,23 @@ function modifyUserPage(user) {
 
   // Modify Token
   tokenBox.value = user.token;
+}
+
+function modifyNavigation() {
+  // Obtain references to the header
+  const header = document.querySelector(".header");
+  const headerLinks = document.querySelectorAll('.header > a');
+
+  // Set the "log in" link to now be "log out"
+  const loginLink = Array.from(headerLinks).find(i => i.href === `${document.location.origin}/login`);
+  loginLink.innerHTML = 'Log Out';
+  loginLink.href = '/logout';
+
+  // Create a new button to go to their account
+  const accountLink = document.createElement("a");
+  accountLink.href = '/users';
+  accountLink.innerHTML = 'My Account';
+
+  // Insert the button before the "log out" button
+  header.insertBefore(accountLink, loginLink);
 }

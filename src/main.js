@@ -61,6 +61,12 @@ app.get("/login", async (req, res) => {
   await handlers.loginHandler(req, res, timecop);
 });
 
+app.get("/logout", async (req, res) => {
+  // The Login/Sign Up Page showing all sign in options
+  let timecop = new utils.Timecop();
+  await handlers.logoutHandler(req, res, timecop);
+});
+
 app.get("/image/packages/:packageName", async (req, res) => {
   await handlers.packageImage(req, res);
 });
