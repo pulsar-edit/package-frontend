@@ -116,14 +116,14 @@ async function homePage(req, res, timecop) {
     timecop.end("cache-check");
     timecop.start("api-request");
     try {
-      let featured = await Promise.all([
+      let obj = await Promise.all([
         superagent.get(`${apiurl}/api/packages/featured`),
         superagent.get(`${apiurl}/api/themes/featured`)
       ])
-      .then(featured => {
+      .then(obj => {
         timecop.end("api-request");
         timecop.start("transcribe-json")
-        return featured;
+        return obj;
       })
       .then(([featuredPackages, featuredThemes]) => Promise.all([
         utils.prepareForListing(featuredPackages.body),
@@ -136,7 +136,7 @@ async function homePage(req, res, timecop) {
       timecop.end("transcribe-json")
       res.render("home", { ...featured, timecop: timecop.timetable, page: homePage });
       // then set featured cache
-      cache.setFeatured(featured);
+      cache.setFeatured(obj);
     } catch(err) {
       utils.displayError(req, res, err);
     }
