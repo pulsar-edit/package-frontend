@@ -68,7 +68,8 @@ window.onload = function (event) {
   }
 
   // Check to see if we are on the User Account Page
-  if (window.location.href.indexOf("/users")) {
+  if (window.location.href.startsWith("https://web.pulsar-edit.dev/users")) {
+  //if (window.location.href.indexOf("/users")) {
     // This should work locally in dev and on public, as long as the slug "users"
     // is never reused.
     // But now that we know we are on the user page, lets start requesting their user data
@@ -98,7 +99,7 @@ function userAccountActions() {
 
   let token = params.token;
 
-  if (typeof token === undefined) {
+  if (typeof token === undefined || !token) {
     // The user expects to already be logged in. Do they have data saved locally?
     userAccountLocal();
   } else {
@@ -111,6 +112,9 @@ function userAccountLocal() {
   if (localStorage.getItem("user")) {
     let user = localStorage.getItem("user");
 
+    user = JSON.parse(user);
+    modifyUserPage(user);
+
     // Now we have a user matching the object available in userAccountAPI
   } else {
     // They haven't given us any query parameters, but don't have any local data either
@@ -120,11 +124,13 @@ function userAccountLocal() {
 }
 
 function userAccountAPI(token) {
-  fetch("https://api.pulsar-edit.dev/api/packages/hey-pane", {
+  fetch("https://api.pulsar-edit.dev/api/users", {
+    method: "GET",
     headers: {
-      Authorization: token,
+      'Authorization': token,
+      'Access-Control-Allow-Credentials': true
     },
-    mode: "no-cors",
+    credentials: 'include'
   })
     .then((response) => {
       if (response.ok) {
@@ -143,9 +149,37 @@ function userAccountAPI(token) {
       // data.node_id
       // data.token
       // data.packages
+
+      // Now with our user we want to modify the page, and save the user to local storage.
+      modifyUserPage(data);
+
+      localStorage.setItem("user", JSON.stringify(data));
     })
     .catch((err) => {
       // Handle error
       console.log("error", err);
     });
+}
+
+function modifyUserPage(user) {
+  // This expects to be handed a proper user object.
+  let img = document.getElementById("user-account-avatar");
+  let username = document.getElementById("user-info-block-name").childNodes[0];
+  let userhandle = document.getElementById("user-info-block-handle");
+  let accountcreated = document.getElementById("account-created");
+  let tokenBox = document.getElementById("api-token");
+
+  // Modify Image
+  img.src = user.avatar;
+  img.alt = user.username;
+
+  // Modify User Name Details
+  username.textContent = user.username;
+  userhandle.textContent = `@${user.username}`; // We may want to look at removing this.
+
+  // Modify Creation Date
+  accountcreated.textContent = `Account Created: ${user.created_at}`;
+
+  // Modify Token
+  tokenBox.value = user.token;
 }
