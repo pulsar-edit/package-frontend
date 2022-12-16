@@ -134,7 +134,7 @@ async function homePage(req, res, timecop) {
         featuredThemes
       }));
       timecop.end("transcribe-json")
-      res.render("home", { ...featured, timecop: timecop.timetable, page: homePage });
+      res.render("home", { ...obj, timecop: timecop.timetable, page: homePage });
       // then set featured cache
       cache.setFeatured(obj);
     } catch(err) {
