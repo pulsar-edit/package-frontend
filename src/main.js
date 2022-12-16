@@ -49,6 +49,18 @@ app.get("/packages/:packageName", async (req, res) => {
   await handlers.singlePackageListing(req, res, timecop);
 });
 
+app.get("/users", async (req, res) => {
+  // The Signed in User Details Page
+  let timecop = new utils.Timecop();
+  await handlers.userPageHandler(req, res, timecop);
+});
+
+app.get("/login", async (req, res) => {
+  // The Login/Sign Up Page showing all sign in options
+  let timecop = new utils.Timecop();
+  await handlers.loginHandler(req, res, timecop);
+});
+
 app.get("/image/packages/:packageName", async (req, res) => {
   await handlers.packageImage(req, res);
 });
