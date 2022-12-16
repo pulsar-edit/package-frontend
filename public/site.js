@@ -64,7 +64,8 @@ window.onload = function (event) {
   }
 
   // Check to see if we are on the User Account Page
-  if (window.location.href.indexOf("/users")) {
+  if (window.location.href.startsWith("https://web.pulsar-edit.dev/users")) {
+  //if (window.location.href.indexOf("/users")) {
     // This should work locally in dev and on public, as long as the slug "users"
     // is never reused.
     // But now that we know we are on the user page, lets start requesting their user data
@@ -119,11 +120,13 @@ function userAccountLocal() {
 }
 
 function userAccountAPI(token) {
-  fetch("https://api.pulsar-edit.dev/users", {
+  fetch("https://api.pulsar-edit.dev/api/users", {
+    method: "GET",
     headers: {
-      Authorization: token,
+      'Authorization': token,
+      'Access-Control-Allow-Credentials': true
     },
-    mode: "no-cors",
+    credentials: 'include'
   })
     .then((response) => {
       if (response.ok) {
