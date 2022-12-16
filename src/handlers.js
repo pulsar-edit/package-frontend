@@ -119,16 +119,21 @@ async function homePage(req, res, timecop) {
       let featured = await Promise.all([
         superagent.get(`${apiurl}/api/packages/featured`),
         superagent.get(`${apiurl}/api/themes/featured`)
-      ]).then(([featuredPackages, featuredThemes]) => Promise.all([
+      ])
+      .then(featured => {
+        timecop.end("api-request");
+        timecop.start("transcribe-json")
+        return featured;
+      })
+      .then(([featuredPackages, featuredThemes]) => Promise.all([
         utils.prepareForListing(featuredPackages.body),
         utils.prepareForListing(featuredThemes.body)
-      ])).then(([featuredPackages, featuredThemes]) => ({
+      ]))
+      .then(([featuredPackages, featuredThemes]) => ({
         featuredPackages,
         featuredThemes
       }));
-      timecop.end("api-request");
-      timecop.start("transcribe-json");
-      timecop.end("transcribe-json");
+      timecop.end("transcribe-json")
       res.render("home", { ...featured, timecop: timecop.timetable, page: homePage });
       // then set featured cache
       cache.setFeatured(featured);
