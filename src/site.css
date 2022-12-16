@@ -46,6 +46,10 @@ h3 {
   @apply text-xl;
 }
 
+input {
+  @apply border border-secondary bg-transparent rounded w-2/3 max-w-3xl p-3
+}
+
 header a,
 header button {
   @apply text-white/80 hover:text-primary transition-all;
