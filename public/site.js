@@ -59,6 +59,10 @@ window.onclick = function (event) {
       }
     }
   }
+  if (event.target.matches(".nav-toggle")) {
+    let nav = document.querySelector('nav');
+    nav.classList.toggle('active')
+  }
 };
 
 window.onload = function (event) {

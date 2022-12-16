@@ -9,6 +9,9 @@ module.exports = {
         accent: "var(--accent)",
         secondary: "var(--secondary)",
         text: "var(--text)"
+      },
+      boxShadow: {
+        'right': '2px 0px 10px black'
       }
     },
   },
