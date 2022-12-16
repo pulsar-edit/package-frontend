@@ -94,7 +94,7 @@ function userAccountActions() {
 
   let token = params.token;
 
-  if (typeof token === undefined) {
+  if (typeof token === undefined || !token) {
     // The user expects to already be logged in. Do they have data saved locally?
     userAccountLocal();
   } else {
@@ -106,6 +106,9 @@ function userAccountActions() {
 function userAccountLocal() {
   if (localStorage.getItem("user")) {
     let user = localStorage.getItem("user");
+
+    user = JSON.parse(user);
+    modifyUserPage(user);
 
     // Now we have a user matching the object available in userAccountAPI
   } else {
@@ -139,9 +142,37 @@ function userAccountAPI(token) {
       // data.node_id
       // data.token
       // data.packages
+
+      // Now with our user we want to modify the page, and save the user to local storage.
+      modifyUserPage(data);
+
+      localStorage.setItem("user", JSON.stringify(data));
     })
     .catch((err) => {
       // Handle error
       console.log("error", err);
     });
+}
+
+function modifyUserPage(user) {
+  // This expects to be handed a proper user object.
+  let img = document.getElementById("user-account-avatar");
+  let username = document.getElementById("user-info-block-name").childNodes[0];
+  let userhandle = document.getElementById("user-info-block-handle");
+  let accountcreated = document.getElementById("account-created");
+  let tokenBox = document.getElementById("api-token");
+
+  // Modify Image
+  img.src = user.avatar;
+  img.alt = user.username;
+
+  // Modify User Name Details
+  username.textContent = user.username;
+  userhandle.textContent = `@${user.username}`; // We may want to look at removing this.
+
+  // Modify Creation Date
+  accountcreated.textContent = `Account Created: ${user.created_at}`;
+
+  // Modify Token
+  tokenBox.value = user.token;
 }

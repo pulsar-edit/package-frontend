@@ -6,7 +6,8 @@
   <div class="flex-wrap">
     <div class="user-info-block">
       <img
-        src="https://images.pexels.com/photos/3777943/pexels-photo-3777943.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+        id="user-account-avatar"
+        src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
         class="user-info-block-avatar"
         alt="{USER_FIRST_NAME}{USER_LAST_NAME}"
         loading="lazy"
@@ -15,12 +16,12 @@
       />
 
       <div class="user-info-block-details">
-        <p class="user-info-block-name">
-          Joe Bloggs
-          <span class="user-info-block-handle">@joe.bloggs</span>
+        <p class="user-info-block-name" id="user-info-block-name">
+          John Smith
+          <span class="user-info-block-handle" id="user-info-block-handle">@john.smith</span>
         </p>
 
-        <p class="mb-0">Account Created: {TIMESTAMP}</p>
+        <p class="mb-0" id="account-created">Account Created: {TIMESTAMP}</p>
       </div>
     </div>
 
@@ -29,6 +30,7 @@
 
       <div class="api-token-block">
         <input
+          id="api-token"
           type="text"
           disabled
           value="api-token-goes-here"
