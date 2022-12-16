@@ -170,15 +170,16 @@ function modifyUserPage(user) {
   let tokenBox = document.getElementById("api-token");
 
   // Modify Image
-  img.src = user.avatar;
-  img.alt = user.username;
+  console.log(img);
+  console.log(user.avatar);
+  img.style.backgroundImage = `url(${user.avatar})`;
 
   // Modify User Name Details
   username.textContent = user.username;
   userhandle.textContent = `@${user.username}`; // We may want to look at removing this.
 
   // Modify Creation Date
-  accountcreated.textContent = `Account Created: ${user.created_at}`;
+  accountcreated.textContent = `Account Created: ${new Date(user.created_at).toISOString().slice(0, 10)}`;
 
   // Modify Token
   tokenBox.value = user.token;
