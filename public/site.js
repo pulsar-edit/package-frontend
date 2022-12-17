@@ -72,11 +72,8 @@ window.onload = function (event) {
   }
 
   // Check to see if we are on the User Account Page
-  if (window.location.href.startsWith("https://web.pulsar-edit.dev/users")) {
-  //if (window.location.href.indexOf("/users")) {
-    // This should work locally in dev and on public, as long as the slug "users"
-    // is never reused.
-    // But now that we know we are on the user page, lets start requesting their user data
+  if (window.location.pathname === "/users") {
+    // Now that we know we are on the user page, lets start requesting their user data
     userAccountActions();
   }
 
@@ -142,7 +139,6 @@ function userAccountAPI(token) {
       }
 
       // Handle exception
-      console.log("Response:", response);
     })
     .then((data) => {
       // Now we should have a data object matching the below.
@@ -174,8 +170,6 @@ function modifyUserPage(user) {
   let tokenBox = document.getElementById("api-token");
 
   // Modify Image
-  console.log(img);
-  console.log(user.avatar);
   img.style.backgroundImage = `url(${user.avatar})`;
 
   // Modify User Name Details
