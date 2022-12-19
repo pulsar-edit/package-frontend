@@ -192,7 +192,7 @@ function modifyUserPage(user) {
 
 function modifyNavigation() {
   // Obtain references to the header
-  const header = document.querySelector("header");
+  const header = document.querySelector("header > nav");
   const headerLinks = document.querySelectorAll('header > nav > a');
 
   // Set the "log in" link to now be "log out"
