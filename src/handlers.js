@@ -366,6 +366,17 @@ async function loginHandler(req, res, timecop) {
   }});
 }
 
+async function logoutHandler(req, res, timecop) {
+  // This is a very simple return with no api, so we will just render
+  res.render("logout", { timecop: timecop.timetable, page: {
+    name: "Pulsar Logout",
+    og_url: "https://web.pulsar-edit.dev/logout",
+    og_description: "The Pulsar Log Out Page",
+    og_image: "https://web.pulsar-edit.dev/public/pulsar_name.svg",
+    og_image_type: "image/svg+xml"
+  }});
+}
+
 async function userPageHandler(req, res, timecop) {
   // This is the signed in user page.
   // Since we will let the JavaScript on the page handle any API call needed here lets just
@@ -390,5 +401,6 @@ module.exports = {
   devPackageImage,
   downloadLink,
   loginHandler,
+  logoutHandler,
   userPageHandler,
 };
