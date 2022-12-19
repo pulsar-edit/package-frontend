@@ -73,7 +73,7 @@ window.onload = function (event) {
 
   // Add the header links if we are logged in
   if (isLoggedIn()) { modifyNavigation(); }
-    
+
   // Check to see if we are on the User Account Page
   if (window.location.pathname === "/users") {
     // Now that we know we are on the user page, lets start requesting their user data
@@ -192,8 +192,8 @@ function modifyUserPage(user) {
 
 function modifyNavigation() {
   // Obtain references to the header
-  const header = document.querySelector(".header");
-  const headerLinks = document.querySelectorAll('.header > a');
+  const header = document.querySelector("header");
+  const headerLinks = document.querySelectorAll('header > nav > a');
 
   // Set the "log in" link to now be "log out"
   const loginLink = Array.from(headerLinks).find(i => i.href === `${document.location.origin}/login`);
