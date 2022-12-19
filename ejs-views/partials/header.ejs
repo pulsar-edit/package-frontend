@@ -39,23 +39,35 @@
     <meta name="color-scheme" content="dark light">
     <link rel="stylesheet" href="/public/site.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
   </head>
-  <body>
+  <body class="bg-canvas text-text mb-12">
     <% if (timecop) { %>
       <script>
-        let timetable = <%- JSON.stringify(timecop)%>;
+        let timetable = <%- JSON.stringify(timecop) %>;
       </script>
     <% } %>
-    <div class="header">
-      <a href="https://pulsar-edit.dev">Website</a>
-      <a href="/">Package Home</a>
-      <a href="/packages">All Packages</a>
-      <a href="/login">Sign In</a>
-      <div class="theme-selector">
-        <button onclick="changeThemeBtn()" class="dropbtn">Change Theme</button>
-        <div class="dropdown-content" id="dropdown-list">
-          <div class="dropdown-item" onclick="changeTheme('original-theme')">Atom.io Theme</div>
-          <div class="dropdown-item" onclick="changeTheme('github-dark')">GitHub Dark Theme</div>
+    <header class="bg-accent p-3 flex items-center gap-6 mb-12">
+      <a href="/" class="hover:opacity-80">
+        <img src="/public/logo-name-navbar-dark.svg" class="h-10" />
+      </a>
+      <nav class="fixed flex-col text-center p-24 shadow-right md:static md:p-0 md:flex-row md:shadow-none md:h-auto flex z-10 h-screen top-0 -left-96 bg-accent gap-6 transition-all">
+        <i class="nav-toggle md:!hidden fas fa-times absolute top-5 right-5 text-white text-2xl cursor-pointer"></i>
+        <a class="<% if (page.og_url === 'https://web.pulsar-edit.dev/') { %> text-primary <% } %>" href="/">Featured</a>
+        <a class="<% if (page.og_url === 'https://web.pulsar-edit.dev/packages') { %> text-primary <% } %>" href="/packages">Packages</a>
+        <a class="<% if (page.og_url === 'https://web.pulsar-edit.dev/login') { %> text-primary <% } %>" href="/login">Sign In</a>
+        <a href="https://pulsar-edit.dev" target="_blank">
+          <i class="fas fa-arrow-up-right-from-square"></i> 
+          Website
+        </a>
+      </nav>
+      <i class="nav-toggle md:!hidden fas fa-bars text-white opacity-80 text-2xl hover:opacity-100 cursor-pointer"></i>
+      <div class="flex-1 text-right">
+        <button onclick="changeThemeBtn()">Change Theme <i class="fas fa-caret-down ml-2"></i></button>
+        <div class="hidden absolute bg-accent right-3 mt-12 p-3" id="dropdown-list">
+          <button onclick="changeTheme('original-theme')">Atom.io (Default)</button><br>
+          <button onclick="changeTheme('github-dark')">GitHub Dark</button><br>
+          <button onclick="changeTheme('dracula')">Dracula</button>
         </div>
       </div>
-    </div>
+    </header>

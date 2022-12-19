@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --canvas: #fff;
+  --primary: #3b9b6d;
+  --accent: #584b4f;
+  --secondary: rgba(0, 0, 0, 0.1);
+  --text: #000;
+}
+
+body[theme="github-dark"] {
+  --canvas: #0d1117;
+  --primary: #58a6ff;
+  --accent: #161b22;
+  --secondary: rgba(255, 255, 255, 0.1);
+  --text: #c9d1d9;
+}
+
+body[theme="dracula"] {
+  --canvas: #282a36	;
+  --primary: #bd93f9	;
+  --accent: #44475a	;
+  --secondary: rgba(255, 255, 255, 0.1);
+  --text: #f8f8f2;
+}
+
+/**************************/
+/******** GLOBALS *********/
+/**************************/
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-bold;
+}
+
+h1 {
+  @apply text-3xl;
+}
+
+h2 {
+  @apply text-2xl;
+}
+
+h3 {
+  @apply text-xl;
+}
+
+input {
+  @apply border border-secondary bg-transparent rounded w-2/3 max-w-3xl p-3
+}
+
+header a,
+header button {
+  @apply text-white/80 hover:text-primary transition-all;
+}
+
+article {
+  @apply mx-auto max-w-[1024px] px-6;
+}
+
+article button {
+  @apply p-3 rounded !bg-primary text-white transition-all hover:opacity-90;
+}
+
+/**************************/
+/****** MOBILE NAV ********/
+/**************************/
+
+nav.active {
+  @apply left-0;
+}
+
+/**************************/
+/****** THEME SELECT ******/
+/**************************/
+
+#dropdown-list.show {
+  @apply !block;
+}
+
+#dropdown-list:before {
+  @apply absolute -top-4 right-10 content-[''] w-0 h-0 border-8 border-transparent border-b-accent;
+}
+
+/**************************/
+/***** PACKAGE README *****/
+/**************************/
+
+#readme h1,
+#readme h2,
+#readme h3,
+#readme h4,
+#readme h5,
+#readme h6 {
+  @apply mt-12 mb-2;
+}
+
+#readme p > img {
+  @apply mt-2;
+}
+
+#readme a {
+  @apply inline-block;
+}

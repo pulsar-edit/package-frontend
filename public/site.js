@@ -8,6 +8,10 @@ function changeTheme(theme) {
       document.body.setAttribute("theme", "github-dark");
       localStorage.setItem("theme", "github-dark");
       break;
+    case "dracula":
+      document.body.setAttribute("theme", "dracula");
+      localStorage.setItem("theme", "dracula");
+      break;
     case "original-theme":
     default:
       document.body.setAttribute("theme", "original-theme");
@@ -55,6 +59,10 @@ window.onclick = function (event) {
       }
     }
   }
+  if (event.target.matches(".nav-toggle")) {
+    let nav = document.querySelector('nav');
+    nav.classList.toggle('active')
+  }
 };
 
 window.onload = function (event) {
@@ -64,11 +72,8 @@ window.onload = function (event) {
   }
 
   // Check to see if we are on the User Account Page
-  if (window.location.href.startsWith("https://web.pulsar-edit.dev/users")) {
-  //if (window.location.href.indexOf("/users")) {
-    // This should work locally in dev and on public, as long as the slug "users"
-    // is never reused.
-    // But now that we know we are on the user page, lets start requesting their user data
+  if (window.location.pathname === "/users") {
+    // Now that we know we are on the user page, lets start requesting their user data
     userAccountActions();
   }
 
@@ -134,7 +139,6 @@ function userAccountAPI(token) {
       }
 
       // Handle exception
-      console.log("Response:", response);
     })
     .then((data) => {
       // Now we should have a data object matching the below.
@@ -166,15 +170,14 @@ function modifyUserPage(user) {
   let tokenBox = document.getElementById("api-token");
 
   // Modify Image
-  img.src = user.avatar;
-  img.alt = user.username;
+  img.style.backgroundImage = `url(${user.avatar})`;
 
   // Modify User Name Details
   username.textContent = user.username;
   userhandle.textContent = `@${user.username}`; // We may want to look at removing this.
 
   // Modify Creation Date
-  accountcreated.textContent = `Account Created: ${user.created_at}`;
+  accountcreated.textContent = `Account Created: ${new Date(user.created_at).toISOString().slice(0, 10)}`;
 
   // Modify Token
   tokenBox.value = user.token;

@@ -4,7 +4,7 @@ const path = require("path");
 const handlers = require("./handlers.js");
 const utils = require("./utils.js");
 
-app.set("views", "./ejs-views");
+app.set("views", "./ejs-views/pages");
 app.set("view engine", "ejs");
 
 app.use((req, res, next) => {
