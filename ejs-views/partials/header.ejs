@@ -41,7 +41,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
   </head>
-  <body class="bg-canvas text-text mb-12">
+  <body class="bg-canvas flex flex-col min-h-screen text-text">
     <% if (timecop) { %>
       <script>
         let timetable = <%- JSON.stringify(timecop) %>;

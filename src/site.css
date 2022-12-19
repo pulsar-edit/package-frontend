@@ -56,7 +56,7 @@ header button {
 }
 
 article {
-  @apply mx-auto max-w-[1024px] px-6;
+  @apply mx-auto max-w-[1024px] px-6 flex-1;
 }
 
 article button {
