@@ -4,7 +4,7 @@ const path = require("path");
 const handlers = require("./handlers.js");
 const utils = require("./utils.js");
 
-app.set("views", "./ejs-views");
+app.set("views", "./ejs-views/pages");
 app.set("view engine", "ejs");
 
 app.use((req, res, next) => {
@@ -47,6 +47,24 @@ app.get("/packages/:packageName", async (req, res) => {
   // view details of a package
   let timecop = new utils.Timecop();
   await handlers.singlePackageListing(req, res, timecop);
+});
+
+app.get("/users", async (req, res) => {
+  // The Signed in User Details Page
+  let timecop = new utils.Timecop();
+  await handlers.userPageHandler(req, res, timecop);
+});
+
+app.get("/login", async (req, res) => {
+  // The Login/Sign Up Page showing all sign in options
+  let timecop = new utils.Timecop();
+  await handlers.loginHandler(req, res, timecop);
+});
+
+app.get("/logout", async (req, res) => {
+  // The Login/Sign Up Page showing all sign in options
+  let timecop = new utils.Timecop();
+  await handlers.logoutHandler(req, res, timecop);
 });
 
 app.get("/image/packages/:packageName", async (req, res) => {
