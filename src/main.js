@@ -71,10 +71,6 @@ app.get("/image/packages/:packageName", async (req, res) => {
   await handlers.packageImage(req, res);
 });
 
-app.get("/dev/image/packages/:packageName", async (req, res) => {
-  await handlers.devPackageImage(req, res);
-});
-
 app.get("/download", async (req, res) => {
   await handlers.downloadLink(req, res);
 });

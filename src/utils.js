@@ -1,9 +1,8 @@
 
-const puppeteer = require("puppeteer");
-const fs = require("fs");
-const ejs = require("ejs");
-
+const { createCanvas, loadImage, registerFont } = require('canvas');
 const MarkdownIt = require("markdown-it");
+const utils = require('./template-utils');
+
 let md = new MarkdownIt({
   html: true
 }).use(require("markdown-it-highlightjs"), {
@@ -15,6 +14,9 @@ let md = new MarkdownIt({
 });
 
 const reg = require("./reg.js");
+
+registerFont('src/fonts/Jura/Jura-Bold.ttf', { family: 'Jura' });
+registerFont('src/fonts/Jura/Jura-Light.ttf', { family: 'Jura-Light' })
 
 // Collection of utility functions for the frontend
 
@@ -212,70 +214,92 @@ async function generateImage(obj) {
   //  - https://github.blog/2021-06-22-framework-building-open-graph-images/
   //  - https://github.com/vercel/og-image
   try {
-    // In an effort to support multiple types of images to return, we will determine them before here.
-    // But for now will set the default
 
-    let kind = "default";
+    const [width, height] = [1200, 600];
+    const c = createCanvas(width, height);
+    const ctx = c.getContext('2d');
 
-    const html = await generateImageHTML(obj, kind);
-    const file = await getScreenshot(html);
-    return file;
+    const [github, download, star, flag, logo] = await Promise.all([
+      loadImage('data:image/svg+xml;base64,ICAgICAgICAgICAgPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDQ5NiA1MTIiPjwhLS0hIEZvbnQgQXdlc29tZSBQcm8gNi4yLjEgYnkgQGZvbnRhd2Vzb21lIC0gaHR0cHM6Ly9mb250YXdlc29tZS5jb20gTGljZW5zZSAtIGh0dHBzOi8vZm9udGF3ZXNvbWUuY29tL2xpY2Vuc2UgKENvbW1lcmNpYWwgTGljZW5zZSkgQ29weXJpZ2h0IDIwMjIgRm9udGljb25zLCBJbmMuIC0tPjxwYXRoIGQ9Ik0xNjUuOSAzOTcuNGMwIDItMi4zIDMuNi01LjIgMy42LTMuMy4zLTUuNi0xLjMtNS42LTMuNiAwLTIgMi4zLTMuNiA1LjItMy42IDMtLjMgNS42IDEuMyA1LjYgMy42em0tMzEuMS00LjVjLS43IDIgMS4zIDQuMyA0LjMgNC45IDIuNiAxIDUuNiAwIDYuMi0ycy0xLjMtNC4zLTQuMy01LjJjLTIuNi0uNy01LjUuMy02LjIgMi4zem00NC4yLTEuN2MtMi45LjctNC45IDIuNi00LjYgNC45LjMgMiAyLjkgMy4zIDUuOSAyLjYgMi45LS43IDQuOS0yLjYgNC42LTQuNi0uMy0xLjktMy0zLjItNS45LTIuOXpNMjQ0LjggOEMxMDYuMSA4IDAgMTEzLjMgMCAyNTJjMCAxMTAuOSA2OS44IDIwNS44IDE2OS41IDIzOS4yIDEyLjggMi4zIDE3LjMtNS42IDE3LjMtMTIuMSAwLTYuMi0uMy00MC40LS4zLTYxLjQgMCAwLTcwIDE1LTg0LjctMjkuOCAwIDAtMTEuNC0yOS4xLTI3LjgtMzYuNiAwIDAtMjIuOS0xNS43IDEuNi0xNS40IDAgMCAyNC45IDIgMzguNiAyNS44IDIxLjkgMzguNiA1OC42IDI3LjUgNzIuOSAyMC45IDIuMy0xNiA4LjgtMjcuMSAxNi0zMy43LTU1LjktNi4yLTExMi4zLTE0LjMtMTEyLjMtMTEwLjUgMC0yNy41IDcuNi00MS4zIDIzLjYtNTguOS0yLjYtNi41LTExLjEtMzMuMyAyLjYtNjcuOSAyMC45LTYuNSA2OSAyNyA2OSAyNyAyMC01LjYgNDEuNS04LjUgNjIuOC04LjVzNDIuOCAyLjkgNjIuOCA4LjVjMCAwIDQ4LjEtMzMuNiA2OS0yNyAxMy43IDM0LjcgNS4yIDYxLjQgMi42IDY3LjkgMTYgMTcuNyAyNS44IDMxLjUgMjUuOCA1OC45IDAgOTYuNS01OC45IDEwNC4yLTExNC44IDExMC41IDkuMiA3LjkgMTcgMjIuOSAxNyA0Ni40IDAgMzMuNy0uMyA3NS40LS4zIDgzLjYgMCA2LjUgNC42IDE0LjQgMTcuMyAxMi4xQzQyOC4yIDQ1Ny44IDQ5NiAzNjIuOSA0OTYgMjUyIDQ5NiAxMTMuMyAzODMuNSA4IDI0NC44IDh6TTk3LjIgMzUyLjljLTEuMyAxLTEgMy4zLjcgNS4yIDEuNiAxLjYgMy45IDIuMyA1LjIgMSAxLjMtMSAxLTMuMy0uNy01LjItMS42LTEuNi0zLjktMi4zLTUuMi0xem0tMTAuOC04LjFjLS43IDEuMy4zIDIuOSAyLjMgMy45IDEuNiAxIDMuNi43IDQuMy0uNy43LTEuMy0uMy0yLjktMi4zLTMuOS0yLS42LTMuNi0uMy00LjMuN3ptMzIuNCAzNS42Yy0xLjYgMS4zLTEgNC4zIDEuMyA2LjIgMi4zIDIuMyA1LjIgMi42IDYuNSAxIDEuMy0xLjMuNy00LjMtMS4zLTYuMi0yLjItMi4zLTUuMi0yLjYtNi41LTF6bS0xMS40LTE0LjdjLTEuNiAxLTEuNiAzLjYgMCA1LjkgMS42IDIuMyA0LjMgMy4zIDUuNiAyLjMgMS42LTEuMyAxLjYtMy45IDAtNi4yLTEuNC0yLjMtNC0zLjMtNS42LTJ6Ii8+PC9zdmc+Cg=='),
+      loadImage('data:image/svg+xml;base64,ICAgICAgICA8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9ImZlYXRoZXIgZmVhdGhlci1kb3dubG9hZCI+PHBhdGggZD0iTTIxIDE1djRhMiAyIDAgMCAxLTIgMkg1YTIgMiAwIDAgMS0yLTJ2LTQiPjwvcGF0aD48cG9seWxpbmUgcG9pbnRzPSI3IDEwIDEyIDE1IDE3IDEwIj48L3BvbHlsaW5lPjxsaW5lIHgxPSIxMiIgeTE9IjE1IiB4Mj0iMTIiIHkyPSIzIj48L2xpbmU+PC9zdmc+Cg=='),
+      loadImage('data:image/svg+xml;base64,ICAgICAgICA8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9ImZlYXRoZXIgZmVhdGhlci1zdGFyIj48cG9seWdvbiBwb2ludHM9IjEyIDIgMTUuMDkgOC4yNiAyMiA5LjI3IDE3IDE0LjE0IDE4LjE4IDIxLjAyIDEyIDE3Ljc3IDUuODIgMjEuMDIgNyAxNC4xNCAyIDkuMjcgOC45MSA4LjI2IDEyIDIiPjwvcG9seWdvbj48L3N2Zz4K'),
+      loadImage('data:image/svg+xml;base64,ICAgICAgICA8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9ImZlYXRoZXIgZmVhdGhlci1mbGFnIj48cGF0aCBkPSJNNCAxNXMxLTEgNC0xIDUgMiA4IDIgNC0xIDQtMVYzcy0xIDEtNCAxLTUtMi04LTItNCAxLTQgMXoiPjwvcGF0aD48bGluZSB4MT0iNCIgeTE9IjIyIiB4Mj0iNCIgeTI9IjE1Ij48L2xpbmU+PC9zdmc+Cg=='),
+      loadImage('public/pulsar_name.svg')
+    ]);
+
+    ctx.fillStyle = '#fff'
+    ctx.fillRect(0, 0, width, height);
+    
+    // Title
+    ctx.font = '70pt Jura'
+    ctx.fillStyle = 'black';
+    ctx.fillText(obj.name, 50, 100)
+
+    // Repo
+    ctx.drawImage(github, 50, 150, 50, 50);
+    ctx.font = '30pt Jura'
+    ctx.fillStyle = 'blue';
+    ctx.fillText(utils.getOwnerRepo(obj), 120, 188)
+
+    // Version
+    const repoDims = ctx.measureText(utils.getOwnerRepo(obj));
+    const posX = 120 + repoDims.width + 20;
+    ctx.font = '30pt Jura-Light'
+    ctx.fillStyle = 'grey';
+    ctx.fillText(`v${obj.metadata.version}`, posX, 188);
+
+    // Description
+    ctx.fillStyle = 'black';
+    getLines(ctx, obj.metadata.description, width - 100).forEach((line, index) => 
+      ctx.fillText(line, 50, 270 + (50 * index))
+    );
+
+    // Downloads
+    const downloadDims = ctx.measureText(obj.downloads);
+    ctx.drawImage(download, 50, height - 90, 50, 50);
+    ctx.fillText(obj.downloads, 120, height - 50);
+
+    // Stargazers
+    const starDims = ctx.measureText(obj.stargazers_count);
+    ctx.drawImage(star, 120 + downloadDims.width + 50, height - 90, 50, 50);
+    ctx.fillText(obj.stargazers_count, 120 + downloadDims.width + 120, height - 50);
+
+    // License
+    ctx.drawImage(flag, 120 + downloadDims.width + starDims.width + 170, height - 90, 50, 50);
+    ctx.fillText(obj.metadata.license, 120 + downloadDims.width + starDims.width + 240, height - 50);
+
+    // Bars
+    ctx.fillStyle = 'lightgray';
+    ctx.fillRect(120 + downloadDims.width + 25, height - 95, 2, 60);
+    ctx.fillRect(120 + downloadDims.width + starDims.width + 145, height - 95, 2, 60);
+
+    // Logo
+    ctx.drawImage(logo, width - 250, height - 200, 200, 160);
+
+    return c.toBuffer('image/png');
   } catch(err) {
     console.log(err);
     return null;
   }
 }
 
-async function generateImageHTML(obj, kind) {
-  let css = getCss(kind);
-  let html = getHtml(kind);
+function getLines(ctx, text, maxWidth) {
+  var words = text.split(" ");
+  var lines = [];
+  var currentLine = words[0];
 
-  // Now before calling ejs.render because EJS doesn't have access to our function scope,
-  // Meaning we can't call any functions in here, we need to expose them to the ejs instance
-  // by attaching the helper functions to the object.
-
-  let final = ejs.render(html, { stylesheet: css, obj: obj, utils: require("./template-utils.js") });
-  return final;
-}
-
-function getCss(kind) {
-  try {
-    switch(kind) {
-      case "iconic":
-        return fs.readFileSync("./src/image-templates/iconic-mascot/template.css", { encoding: "utf8" });
-      case "default":
-      default:
-        return fs.readFileSync("./src/image-templates/default/template.css", { encoding: "utf8" });
-    }
-  } catch(err) {
-    console.log(err);
-    return "";
+  for (var i = 1; i < words.length; i++) {
+      var word = words[i];
+      var width = ctx.measureText(currentLine + " " + word).width;
+      if (width < maxWidth) {
+          currentLine += " " + word;
+      } else {
+          lines.push(currentLine);
+          currentLine = word;
+      }
   }
-}
-
-function getHtml(kind) {
-  try {
-    switch(kind) {
-      case "iconic":
-        return fs.readFileSync("./src/image-templates/iconic-mascot/template.ejs", { encoding: "utf8" });
-      case "default":
-      default:
-        return fs.readFileSync("./src/image-templates/default/template.ejs", { encoding: "utf8" });
-    }
-  } catch(err) {
-    console.log(err);
-    return "";
-  }
-}
-
-async function getScreenshot(html) {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  await page.setViewport({ width: 1200, height: 600 });
-  await page.setContent(html);
-  await page.evaluateHandle('document.fonts.ready');
-  const file = await page.screenshot({ type: 'png' });
-  return file;
+  lines.push(currentLine);
+  return lines;
 }
 
 module.exports = {
@@ -284,5 +308,4 @@ module.exports = {
   prepareForDetail,
   Timecop,
   generateImage,
-  generateImageHTML
 };

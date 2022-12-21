@@ -60,21 +60,6 @@ async function packageImage(req, res) {
   }
 }
 
-async function devPackageImage(req, res) {
-  if (process.env.PULSAR_STATUS === "dev") {
-    try {
-      let api = await superagent.get(`${apiurl}/api/packages/${decodeURIComponent(req.params.packageName)}`).query(req.query);
-      let page = await utils.generateImageHTML(api.body, "default");
-      res.send(page);
-    } catch(err) {
-      console.log(err);
-      utils.displayError(req, res, err);
-    }
-  } else {
-    res.status(503).json({ message: "This service is only available during Development Runtime" });
-  }
-}
-
 async function featuredPackageListing(req, res, timecop) {
   timecop.start("api-request");
   try {
@@ -398,7 +383,6 @@ module.exports = {
   singlePackageListing,
   featuredPackageListing,
   packageImage,
-  devPackageImage,
   downloadLink,
   loginHandler,
   logoutHandler,
