@@ -56,11 +56,23 @@ header button {
 }
 
 article {
-  @apply mx-auto max-w-[1024px] px-6;
+  @apply mx-auto max-w-[1024px] px-6 flex-1 w-full;
 }
 
 article button {
   @apply p-3 rounded !bg-primary text-white transition-all hover:opacity-90;
+}
+
+footer h2 {
+  @apply text-gray-600 mb-3;
+}
+
+footer i {
+  @apply text-3xl;
+}
+
+footer a {
+  @apply block text-sm my-1 text-primary hover:opacity-80 transition-all;
 }
 
 /**************************/
