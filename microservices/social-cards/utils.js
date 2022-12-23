@@ -26,11 +26,19 @@ async function generateImageHTML(obj, kind) {
   let css = getCss(kind);
   let html = getHtml(kind);
 
+  // Now before calling ejs.render because EJS doesn't have access to our function scope,
+  // Meaning we can't call any functions in here, we need to expose them to the ejs instance
+  // by attaching the helper functions to the object.
+
   let final = ejs.render(html, { stylesheet: css, obj: obj, utils: require("./template-utils.js") });
   return final;
 }
 
 async function generateImage(obj, kind) {
+  // The below functionality enables custom created sharing images.
+  // For reference on implmentation see:
+  //  - https://github.blog/2021-06-22-framework-building-open-graph-images/
+  //  - https://github.com/vercel/og-image
   try {
 
     const html = await generateImageHTML(obj, kind);
