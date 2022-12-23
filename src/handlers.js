@@ -110,31 +110,18 @@ async function homePage(req, res, timecop) {
   if (cached !== null) {
     timecop.end("cache-check");
     // We know our cache is good and lets serve the data
-    res.render("home", { ...cached, timecop: timecop.timetable, page: homePage });
+    res.render("home", { featured: cached, timecop: timecop.timetable, page: homePage });
   } else {
     // the cache is invalid.
     timecop.end("cache-check");
     timecop.start("api-request");
     try {
-      let obj = await Promise.all([
-        superagent.get(`${apiurl}/api/packages/featured`),
-        superagent.get(`${apiurl}/api/themes/featured`)
-      ])
-      .then(obj => {
-        timecop.end("api-request");
-        timecop.start("transcribe-json")
-        return obj;
-      })
-      .then(([featuredPackages, featuredThemes]) => Promise.all([
-        utils.prepareForListing(featuredPackages.body),
-        utils.prepareForListing(featuredThemes.body)
-      ]))
-      .then(([featuredPackages, featuredThemes]) => ({
-        featuredPackages,
-        featuredThemes
-      }));
-      timecop.end("transcribe-json")
-      res.render("home", { ...obj, timecop: timecop.timetable, page: homePage });
+      let api = await superagent.get(`${apiurl}/api/packages/featured`);
+      timecop.end("api-request");
+      timecop.start("transcribe-json");
+      let obj = await utils.prepareForListing(api.body);
+      timecop.end("transcribe-json");
+      res.render("home", { featured: obj, timecop: timecop.timetable, page: homePage });
       // then set featured cache
       cache.setFeatured(obj);
     } catch(err) {
