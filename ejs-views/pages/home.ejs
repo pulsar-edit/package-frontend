@@ -6,7 +6,12 @@
     <i class="fas fa-bullhorn text-primary"></i> 
     Featured Packages
   </h2>
-  <%- include('../partials/package_grid', { packages: featured }); %>
+  <%- include('../partials/package_grid', { packages: featuredPackages }); %>
+  <h2 class="mt-6">
+    <i class="fas fa-bullhorn text-primary"></i> 
+    Featured Themes
+  </h2>
+  <%- include('../partials/package_grid', { packages: featuredThemes }); %>
 </article>
 
 <%- include('../partials/footer'); %>
