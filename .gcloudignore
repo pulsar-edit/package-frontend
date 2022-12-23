@@ -20,3 +20,6 @@ node_modules/
 LICENSE
 README.md
 .cache/puppeteer/
+
+# Now that we use a microservice, we want to exclude the microservice from our main app
+microservices/

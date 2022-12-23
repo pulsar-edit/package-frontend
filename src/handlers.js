@@ -40,38 +40,13 @@ async function singlePackageListing(req, res, timecop) {
       name: obj.name,
       og_url: `https://web.pulsar-edit.dev/packages/${obj.name}`,
       og_description: obj.description,
-      og_image: `https://web.pulsar-edit.dev/image/packages/${obj.name}`,
+      og_image: `https://image.pulsar-edit.dev/packages/${obj.name}`,
       og_image_type: "image/png",
       og_image_width: 1200,
       og_image_height: 600,
     }});
   } catch(err) {
     utils.displayError(req, res, err);
-  }
-}
-
-async function packageImage(req, res) {
-  try {
-    let api = await superagent.get(`${apiurl}/api/packages/${decodeURIComponent(req.params.packageName)}`).query(req.query);
-    let img = await utils.generateImage(api.body);
-    res.status(200).setHeader('Content-Type', 'image/png').end(img);
-  } catch(err) {
-    utils.displayError(req, res, err);
-  }
-}
-
-async function devPackageImage(req, res) {
-  if (process.env.PULSAR_STATUS === "dev") {
-    try {
-      let api = await superagent.get(`${apiurl}/api/packages/${decodeURIComponent(req.params.packageName)}`).query(req.query);
-      let page = await utils.generateImageHTML(api.body, "default");
-      res.send(page);
-    } catch(err) {
-      console.log(err);
-      utils.displayError(req, res, err);
-    }
-  } else {
-    res.status(503).json({ message: "This service is only available during Development Runtime" });
   }
 }
 
@@ -397,8 +372,6 @@ module.exports = {
   fullListingPage,
   singlePackageListing,
   featuredPackageListing,
-  packageImage,
-  devPackageImage,
   downloadLink,
   loginHandler,
   logoutHandler,
