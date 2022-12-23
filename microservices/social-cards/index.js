@@ -15,6 +15,7 @@ app.get("/packages/:packageName", async (req, res) => {
     let api = await superagent.get(`${apiurl}/api/packages/${decodeURIComponent(req.params.packageName)}`).query(req.query);
     let img = await utils.generateImage(api.body, params.kind);
     res.status(200).setHeader('Content-Type', 'image/png').end(img);
+    console.log(`Served Social Image Card: ${params.kind} for ${req.params.packageName}`);
 
   } catch(err) {
     console.log(`Error on /packages/${req.params.packageName}: ${err}`);
@@ -33,6 +34,7 @@ app.get("/dev/packages/:packageName", async (req, res) => {
       let api = await superagent.get(`${apiurl}/api/packages/${decodeURIComponent(req.params.packageName)}`).query(req.query);
       let page = await utils.generateImageHTML(api.body, params.kind);
       res.send(page);
+      console.log(`Served Dev Social Image Card: ${params.kind} for ${req.params.packageName}`);
 
     } catch(err) {
       console.log(err);
