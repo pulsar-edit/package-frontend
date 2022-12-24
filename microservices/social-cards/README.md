@@ -23,6 +23,10 @@ The following image kinds are supported:
 * default : The generic Social Image Card that is automatically used when sharing the image on the web.
 * iconic : The hidden Social Image Card displaying the Pulsar Mascot.
 
+## Running Microservice
+* `npm start`: Can be used to start up the server normally.
+* `npm run start:dev`: Exposes a secret API endpoint.`/dev/image/packages/:packageName` will be available when in dev mode, and gives direct access to the HTML code used to display the Social Cards. Using this can allow easier modification and editing of our Social Cards.
+
 ## Add New Social Image Cards
 
 To add a new Social Image card create a new folder within `./template` containing both `template.css` and `template.ejs`. Using EJS Syntax you can craft the image that will be displayed following the objects that are provided to the template, which will match the return from the backend API for a specific package.

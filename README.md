@@ -77,7 +77,6 @@ This is a special value that will cause the caching service to automatically ign
 
 Using `npm run start:dev` you can run the Package Frontend Server in Development mode. This does two notable things:
   - Disables Remote Cache Features Natively. Setting `GOOGLE_APPLICATION_CREDENTIALS: "no-file"` is not necessary when run in dev mode.
-  - Exposes a secret API endpoint. `/dev/image/packages/:packageName` will be available when in dev mode, and gives direct access to the HTML code used to display the Social Cards. Using this can allow easier modification and editing of our Social Cards.
 
 ### Microservices
 
