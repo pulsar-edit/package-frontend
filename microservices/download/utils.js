@@ -72,7 +72,7 @@ async function findLink(os, type) {
 
     let baseResponse = baseGraph.body;
 
-    let buildID:
+    let buildID;
 
     for (let i = 0; i < baseResponse.data.repository.builds.edges.length; i++) {
       if (baseResponse.data.repository.builds.edges[i].node.status === "COMPLETED") {
@@ -115,7 +115,7 @@ async function findLink(os, type) {
     // The reason this was done, so that if these names change at all or more are added, the bulk
     // of responsibility to update will lie soley here. Rather than let possible external links fail and expire.
     // Such as `linux` changing to `Linux`, would only have to be done here rather than every location the link appears.
-    switch(params.os) {
+    switch(os) {
       case "linux":
         taskid = findID("linux", buildResponse.data.build.tasks);
         break;
@@ -139,7 +139,7 @@ async function findLink(os, type) {
     if (taskid === undefined) {
       return {
         ok: false,
-        content: "Invalid Download Parameters provided"
+        content: "Invalid Download Parameters Provided."
       };
     }
 
@@ -183,7 +183,7 @@ async function findLink(os, type) {
       return undefined;
     };
 
-    switch(params.type) {
+    switch(type) {
       // Linux Binaries
       case "linux_appimage":
         binaryPath = findBinary(".AppImage", "end", taskGraph.body.data.task.artifacts[0].files);
@@ -228,14 +228,14 @@ async function findLink(os, type) {
     if (binaryPath === undefined) {
       return {
         ok: false,
-        content: "Invalid Download Parameters provided"
+        content: "Invalid Download Parameters Provided"
       };
     }
 
-    // Now that we have the binary, it's time to return a redirect
+    // Now that we have the binary, it's time to return a redirect.
     return {
       ok: true,
-      content: `https://api.cirrus-ci.com/v1/artifacts/task/${taskid}/binary/${binaryPath}`
+      content: `https://api.cirrus-ci.com/v1/artifact/task/${taskid}/binary/${binaryPath}`
     };
 
   } catch(err) {

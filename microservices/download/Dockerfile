@@ -15,11 +15,11 @@ WORKDIR /usr/src/app
 # Copy application dependency manifests to the container image.
 COPY package*.json ./
 
-# Install production deps
-RUN npm install
+# Install production dependencies
+RUN npm install --only=production
 
 # Copy local code to the container image.
 COPY . ./
 
 # Run the web service on container startup
-CMD [ "npm", "start" }]
+CMD [ "npm", "start" ]

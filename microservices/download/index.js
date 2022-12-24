@@ -1,6 +1,6 @@
 const express = require("express");
 const utils = require("./utils.js");
-const app = expres();
+const app = express();
 const port = parseInt(process.env.PORT) || 8080;
 
 app.get("/", async (req, res) => {
@@ -9,13 +9,13 @@ app.get("/", async (req, res) => {
     type: utils.query_type(req)
   };
 
-  if (!os || !type) {
+  if (!params.os || !params.type) {
     await utils.displayError(req, res, 503);
     console.log("Download Returned 503 due to missing os or type.");
     return;
   }
 
-  let redirLink = await utils.findLink(os, type);
+  let redirLink = await utils.findLink(params.os, params.type);
 
   if (!redirLink.ok) {
     await utils.displayError(req, res, 505);
