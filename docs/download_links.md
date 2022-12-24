@@ -4,13 +4,13 @@ This repo also serves the vital purpose of handling download redirects.
 
 Currently we build on every push to `master` for `pulsar`. Each new run on Cirrus CI results in a binary application for many different operating systems and their variances.
 
-In order to allow users to install these easily the `https://web.pulsar-edit.dev/download` URL can redirect to any one of our binaries through a simple link and simple query parameters.
+In order to allow users to install these easily the `https://download.pulsar-edit.dev/` URL can redirect to any one of our binaries through a simple link and simple query parameters.
 
 To configure a link to properly point a user in the right direction take a look at the content below:
 
 ---
 
-URL: https://web.pulsar-edit.dev/download
+URL: https://download.pulsar-edit.dev/
 Query Parameters: `os` && `type`
 
 All `os` Options:
@@ -35,7 +35,7 @@ All `type` Options:
 - `linux_rpm`
 - `linux_deb`
 
-Example: https://web.pulsar-edit.dev/download?os=windows&type=windows_portable
+Example: https://download.pulsar-edit.dev?os=windows&type=windows_portable
 
 Full Table:
 

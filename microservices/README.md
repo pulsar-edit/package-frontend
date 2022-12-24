@@ -7,3 +7,5 @@ Any task that is suitably complex or causes issues or unnecessary unneeded cost 
 But it stands to note that an individual microservice should never in of itself be extremely complex or long running. We get the most benefit from microservices by keeping their lifetime as short as possible, and their task as targeted and specific as possible.
 
 * [Social Image Cards](./social-cards/README.md): Generates Social Image Cards for Packages Published to the Pulsar Registry
+
+* [Download Endpoint](./download/README.md): Provides and easy interface to download the most recent Pulsar Alpha Cirrus CI Binaries.
