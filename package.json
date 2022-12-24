@@ -4,7 +4,7 @@
   "description": "Package Frontend for the Pulsar Package Backend.",
   "main": "./src/server.js",
   "scripts": {
-    "postinstall": "node node_modules/puppeteer/install.js && npm run tailwind:build",
+    "postinstall": "npm run tailwind:build",
     "start": "npm run node:prod",
     "start:dev": "concurrently -n tailwind,node -c blue,yellow 'npm:tailwind:watch' 'npm:node:dev'",
     "node:dev": "cross-env PULSAR_STATUS=dev nodemon ./src/server.js",
@@ -12,7 +12,7 @@
     "tailwind:watch": "tailwindcss -i ./src/site.css -o ./public/site.css --watch",
     "tailwind:build": "tailwindcss -i ./src/site.css -o ./public/site.css",
     "test": "jest ./src/tests/",
-    "deploy_script": "echo 'Do not run!' && gcloud app deploy --no-cache"
+    "deploy_script": "echo 'Do not run!' && gcloud app deploy"
   },
   "author": "confused-Techie",
   "license": "MIT",
@@ -24,14 +24,13 @@
     "markdown-it": "^13.0.1",
     "markdown-it-emoji": "^2.0.2",
     "markdown-it-highlightjs": "^4.0.1",
-    "puppeteer": "^19.3.0",
     "superagent": "^8.0.1",
     "tailwindcss": "^3.2.4"
   },
   "devDependencies": {
     "concurrently": "^7.6.0",
-    "nodemon": "^2.0.20",
     "cross-env": "^7.0.3",
-    "jest": "^29.2.2"
+    "jest": "^29.2.2",
+    "nodemon": "^2.0.20"
   }
 }

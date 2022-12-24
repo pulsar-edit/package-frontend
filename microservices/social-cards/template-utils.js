@@ -1,4 +1,16 @@
-const reg = require("./reg.js");
+const reg = {
+  repoLink: {
+    standard: new RegExp(/^https\:\/\/github\.com\/(\S*)\/(\S*)$/),
+    protocol: new RegExp(/^git\@github\.com\:(\S*)\/(\S*)(\.git)?$/)
+  },
+  author: {
+    compact: new RegExp(/^(.*)\s\<(.*)\>\s\((.*)\)$/)
+  },
+  localLinks: {
+    currentDir: new RegExp(/^\.\//),
+    rootDir: new RegExp(/^\//)
+  }
+};
 
 function getOwnerRepo(obj) {
   let repo = (typeof obj.metadata.repository === "string" ? obj.metadata.repository :
