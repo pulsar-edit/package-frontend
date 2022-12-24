@@ -109,11 +109,12 @@ async function searchHandler(req, res, timecop) {
   timecop.start("api-request");
   try {
     let api = await superagent.get(`${apiurl}/api/packages/search`).query(req.query);
+    const pagination = utils.getPagination(req, res);
     timecop.end("api-request");
     timecop.start("transcribe-json");
     let obj = await utils.prepareForListing(api.body);
     timecop.end("transcribe-json");
-    res.render("search", { packages: obj, search: req.query.q, timecop: timecop.timetable, page: {
+    res.render("search", { packages: obj, search: req.query.q, pagination, timecop: timecop.timetable, page: {
       name: `Search ${req.query.q}`,
       og_url: "https://web.pulsar-edit.dev/packages/search",
       og_description: "The Pulsar Package Repository",

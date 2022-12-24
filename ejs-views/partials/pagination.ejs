@@ -1,0 +1,26 @@
+<% if (locals.pagination) { %>
+    <div id="pagination" class="border border-secondary rounded p-3 flex items-center justify-between">
+        <p class="text-gray-600">Showing <%- pagination.from %> to <%- pagination.to %> of <%- pagination.total %> entries</p>
+        <div class="flex items-center gap-6">
+            <a href="#" class="">
+                <i class="fas fa-chevron-left -mr-1"></i>
+                <i class="fas fa-chevron-left"></i>
+            </a>
+            <a href="#" class="">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+
+            <% pagination.options.forEach(option => { %>
+                <a href="#" class="<%= option == pagination.page ? 'active' : '' %>"><%= option %></a>
+            <% }); %> 
+    
+            <a href="#" class="">
+                <i class="fas fa-chevron-right"></i>
+            </a>
+            <a href="#" class="">
+                <i class="fas fa-chevron-right -mr-1"></i>
+                <i class="fas fa-chevron-right"></i>
+            </a>
+        </div>
+    </div>
+<% } %>

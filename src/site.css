@@ -115,3 +115,15 @@ nav.active {
 #readme a {
   @apply inline-block;
 }
+
+/**************************/
+/****** PAGINATION ********/
+/**************************/
+
+#pagination a {
+  @apply text-gray-600 flex items-center justify-center rounded-full font-light w-7 h-7 hover:bg-secondary;
+}
+
+#pagination a.active {
+  @apply bg-primary text-white;
+}

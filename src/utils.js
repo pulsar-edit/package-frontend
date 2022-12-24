@@ -1,5 +1,6 @@
 
 const MarkdownIt = require("markdown-it");
+const url = require('url');
 let md = new MarkdownIt({
   html: true
 }).use(require("markdown-it-highlightjs"), {
@@ -182,6 +183,31 @@ function findRepoField(obj) {
 
 }
 
+function getPagination(req, res) {
+  const { pathname, query } = url.parse(req.url, true);
+  console.log(query);
+  console.log((query.page = 2));
+  const first = () => {
+    query.page = 1;
+    return `${pathname}?${new URLSearchParams(query).toString()}`;
+  }
+  console.log(first());
+  return {
+    from: 41,
+    to: 50,
+    page: 5,
+    pages: 20,
+    total: 200,
+    routes: {
+      first: first(),
+      prev: `${pathname}`,
+      next: `${pathname}`,
+      last: `${pathname}`,
+    },
+    options: [3, 4, 5, 6, 7]
+  }
+}
+
 class Timecop {
   constructor() {
     this.timetable = {};
@@ -206,5 +232,6 @@ module.exports = {
   displayError,
   prepareForListing,
   prepareForDetail,
+  getPagination,
   Timecop,
 };
