@@ -79,14 +79,14 @@ Using `npm run start:dev` you can run the Package Frontend Server in Development
   - Disables Remote Cache Features Natively. Setting `GOOGLE_APPLICATION_CREDENTIALS: "no-file"` is not necessary when run in dev mode.
   - Exposes a secret API endpoint. `/dev/image/packages/:packageName` will be available when in dev mode, and gives direct access to the HTML code used to display the Social Cards. Using this can allow easier modification and editing of our Social Cards.
 
-### Creating a new Social Card
+### Microservices
+
+Some tasks within the frontend are run in their own dedicated microservice. To read more about why some aspects are moved to a microservice and how they behave read [here](./microservices/README.md).
+
+#### Social Image Cards
 
 The Pulsar Package Frontend now supports social cards.
 
-These cards will be suggested when services create a link preview from a link to `https://web.pulsar-edit.dev/packages/packageName`.
+These cards will be suggested when services create a link preview from a link to `https://image.pulsar-edit.dev/packages/packageName`.
 
-These Social Cards are created on demand and us HTML that's then converted into a PNG to be served back to the client. To modify a template edit it's respective files in `./src/images-templates/socialCardName/`.
-
-Keep in mind that these will follow EJS syntax.
-
-But if a user decides to share an image directly, such as to place on their Repository Readme or elsewhere on the web, the following link will work to do so `https://web.pulsar-edit.dev/image/packages/packageName`. But there is interest in supporting query parameters to allow different images to be generated. Currently we support two social cards `iconic` and `default`. Query parameters are not yet implemented to support users choosing these just yet.
+To read more about Social Image Cards and how to contribute to them view their Document and Code [here](./microservices/social-cards/README.md).

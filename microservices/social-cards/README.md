@@ -4,6 +4,8 @@ This Microservice contains the code used for the Social Image Cards.
 
 That is cards that are used when sharing a link to a specific Package on the Pulsar Package Registry.
 
+Social Image Cards are created on demand and use HTML that's then converted to a PNG to be served back to the client.
+
 These images can be displayed by services where this link is shared automatically, or a link can be used directly to the social image cards like below:
 
 ```
@@ -68,7 +70,7 @@ It's also likely helpful to note down some special commands that may be needed i
 
 #### Modify Image Services and/or change networking settings:
 
-> Note ensure to set to the same region as the repo of the artifact registry.
+> MUST USE `us-west1` in order for domain mapping to function.
 
 ```bash
 gcloud run services set-iam-policy social-cards policy.yaml
@@ -76,7 +78,7 @@ gcloud run services set-iam-policy social-cards policy.yaml
 
 #### Update the Image Used for the microservice (Or any other config in `service.yaml`)
 
-> Note ensure to set to the same region as the repo of the artifact registry.
+> MUST USE `us-west1` in order for domain mapping to function.
 
 ```bash
 gcloud run services replace service.yaml
