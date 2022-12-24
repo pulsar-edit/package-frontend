@@ -10,7 +10,10 @@ app.get("/", async (req, res) => {
   };
 
   if (!params.os || !params.type) {
-    await utils.displayError(req, res, 503);
+    await utils.displayError(req, res, {
+      code: 503,
+      msg: "Missing Required Download Parameters"
+    });
     console.log("Download Returned 503 due to missing os or type.");
     return;
   }
@@ -18,17 +21,20 @@ app.get("/", async (req, res) => {
   let redirLink = await utils.findLink(params.os, params.type);
 
   if (!redirLink.ok) {
-    await utils.displayError(req, res, 505);
-    console.log(`Download Returned Error from findLink: ${redirLink.content}`);
+    await utils.displayError(req, res, redirLink);
+    console.log(`Download Returned Error from findLink: ${redirLink.msg}`);
     return;
   }
 
   res.status(302).redirect(redirLink.content);
-  console.log(`Download Returned: ${redirLink.content}`);
+  console.log(`Download Returned: OS: ${params.os} - TYPE: ${params.type} - URL: ${redirLink.content}`);
 });
 
 app.use(async (req, res) => {
-  await utils.displayError(req, res, 404);
+  await utils.displayError(req, res, {
+    code: 404,
+    msg: "Not Found"
+  });
 });
 
 app.listen(port, () => {

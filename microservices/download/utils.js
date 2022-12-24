@@ -26,18 +26,14 @@ function query_type(req) {
   return valid.includes(prov) ? prov : false;
 }
 
-async function displayError(req, res, errStatus) {
-  switch(errStatus) {
-    case 404:
-      res.status(404).json({ message: "Not Found" });
-      break;
-    case 503:
-      res.status(503).json({ message: "Invalid Download Parameters Provided" });
-      break;
-    case 505:
-    default:
-      res.status(505).json({ message: "Server Error" });
-      break;
+async function displayError(req, res, errMsg) {
+  if (errMsg.code && errMsg.msg) {
+    res.status(errMsg.code).json(errMsg.msg);
+    return;
+  } else {
+    // Have a default error handler
+    res.status(505).json({ message: "Server Error" });
+    return;
   }
 }
 
@@ -139,7 +135,8 @@ async function findLink(os, type) {
     if (taskid === undefined) {
       return {
         ok: false,
-        content: "Invalid Download Parameters Provided."
+        code: 503,
+        msg: "Invalid OS Download Parameters Provided."
       };
     }
 
@@ -228,7 +225,8 @@ async function findLink(os, type) {
     if (binaryPath === undefined) {
       return {
         ok: false,
-        content: "Invalid Download Parameters Provided"
+        code: 503,
+        msg: "Invalid TYPE Download Parameters Provided"
       };
     }
 
@@ -242,7 +240,8 @@ async function findLink(os, type) {
     console.log(err);
     return {
       ok: false,
-      content: err
+      code: 505,
+      msg: "Server Error"
     };
   }
 }
