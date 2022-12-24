@@ -1,0 +1,12 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: social-cards
+spec:
+  template:
+    spec:
+      containers:
+        - image: "us-west2-docker.pkg.dev/pulsar-357404/package-frontend/social-cards:1.3"
+          env:
+            - name: APIURL
+              value: "https://api.pulsar-edit.dev"

@@ -28,3 +28,56 @@ To add a new Social Image card create a new folder within `./template` containin
 Additionally when crafting the template there are some functions available to help work with the data returned in `template-utils.js`.
 
 If needed you can use `npm run start:dev` which exposes the endpoint `https://image.pulsar-edit.dev/dev/packages/:packageName` for use, which will return the image as an HTML page to aid in editing your template.
+
+
+---
+
+Publishing:
+
+Since we need to have our image published to the Google Artifact Registry but also wanted to prioritize having the container published to the GitHub Repo publicly, the publish process can be semi complex to achieve both.
+
+First when changes to the social image card microservice has occurred we need to build locally:
+
+```bash
+docker build -t ghcr.io/pulsar-edit/social-cards:1.0 .
+```
+
+Once built we and tested we can go ahead and push this image out to GitHub Packages Registry.
+
+```bash
+docker push ghcr.io/pulsar-edit/social-cards:1.0
+```
+
+Now that the image exists on GitHub we need to actually get it into the Google Artifact Registry to be able to use it during Build and execution of the microservice.
+
+And to do so we should start be retagging it to something compatible with Google.
+
+```bash
+docker tag ghcr.io/pulsar-edit/social-cards:1.0 us-west2-docker.pkg.dev/pulsar-357404/package-frontend/social-cards:1.0
+```
+
+Now we can push our retagging image.
+
+```bash
+docker push us-west2-docker.pkg.dev/pulsar-357404/package-frontend/social-cards:1.0
+```
+
+---
+
+It's also likely helpful to note down some special commands that may be needed in future work here to avoid the documentation deep dives.
+
+#### Modify Image Services and/or change networking settings:
+
+> Note ensure to set to the same region as the repo of the artifact registry.
+
+```bash
+gcloud run services set-iam-policy social-cards policy.yaml
+```
+
+#### Update the Image Used for the microservice (Or any other config in `service.yaml`)
+
+> Note ensure to set to the same region as the repo of the artifact registry.
+
+```bash
+gcloud run services replace service.yaml
+```

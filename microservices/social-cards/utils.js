@@ -86,7 +86,12 @@ function getHtml(kind) {
 }
 
 async function getScreenshot(html) {
-  const browser = await puppeteer.launch();
+  const browser = (process.env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD)
+    ? await puppeteer.launch({ executablePath: 'google-chrome-stable', args: ['--no-sandbox', '--disable-setuid-sandbox'] })
+    : await puppeteer.launch();
+  // ^^ The above adds support to be able to test locally with an installed puppeteer instance,
+  // while still letting our microservice take advantage of the binary installed in
+  // the image.
   const page = await browser.newPage();
   await page.setViewport({ width: 1200, height: 600 });
   await page.setContent(html);

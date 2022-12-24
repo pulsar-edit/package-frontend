@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node ./index.js",
     "start:dev": "cross-env PULSAR_STATUS=dev node ./index.js",
-    "postinstall": "node node_modules/puppeteer/install.js",
-    "deploy_script": "echo 'Do not run!' && gcloud run deploy --no-cache"
+    "postinstall": "node node_modules/puppeteer/install.js"
   },
   "engines": {
     "node": ">=16.16.0"
