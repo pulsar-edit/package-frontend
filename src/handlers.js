@@ -109,7 +109,8 @@ async function searchHandler(req, res, timecop) {
   timecop.start("api-request");
   try {
     let api = await superagent.get(`${apiurl}/api/packages/search`).query(req.query);
-    const pagination = utils.getPagination(req, res);
+    const pagination = utils.getPagination(req, res, api);
+    console.log(pagination);
     timecop.end("api-request");
     timecop.start("transcribe-json");
     let obj = await utils.prepareForListing(api.body);

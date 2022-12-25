@@ -183,26 +183,34 @@ function findRepoField(obj) {
 
 }
 
-function getPagination(req, res) {
+function getPagination(req, res, api) {
   const { pathname, query } = url.parse(req.url, true);
-  console.log(query);
-  console.log((query.page = 2));
-  const first = () => {
-    query.page = 1;
-    return `${pathname}?${new URLSearchParams(query).toString()}`;
-  }
-  console.log(first());
+  //const payloadLength = api.body.length || 0;
+  const payloadLength = 2;
+
+  const page = 20;
+  const pages = 20;
+  const limit = 10;
+  const total = 192;
+
+  // console.log(payloadLength);
+
+  console.log(Array.from({length: 10}, (_, i) => i + 5));
+
+  const from = page === 1 ? 1 : ((page - 1) * limit) + 1;
+  const to = (from + payloadLength) - 1;
+
   return {
-    from: 41,
-    to: 50,
-    page: 5,
-    pages: 20,
-    total: 200,
+    from,
+    to,
+    page,
+    pages,
+    total,
     routes: {
-      first: first(),
-      prev: `${pathname}`,
-      next: `${pathname}`,
-      last: `${pathname}`,
+      first: page > 1 ? `${pathname}?${new URLSearchParams({ ...query, page: 1 }).toString()}` : null,
+      prev: page > 1 ? `${pathname}?${new URLSearchParams({ ...query, page: page - 1 }).toString()}` : null,
+      next: page < pages ? `${pathname}?${new URLSearchParams({ ...query, page: page + 1 }).toString()}` : null,
+      last: page < pages ? `${pathname}?${new URLSearchParams({ ...query, page: pages }).toString()}` : null,
     },
     options: [3, 4, 5, 6, 7]
   }
