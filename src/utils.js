@@ -184,18 +184,20 @@ function findRepoField(obj) {
 }
 
 function getPagination(req, res, api) {
+  // Parameters obtained from request and response info
   const { pathname, query } = url.parse(req.url, true);
   const payloadLength = api.body.length || 0;
-
   const page = parseInt(query.page) || 1;
   const pages = 20;
   const limit = 30;
   const total = 192;
 
+  // Helper functions
   const getNextPos = () => options[options.length - 1] + 1;
   const getPrevPos = () => options[0] - 1;
   const getRouteUrl = (page) => `${pathname}?${new URLSearchParams({ ...query, page }).toString()}`;
 
+  // Calculate pagination option links
   const pageOptions = 5; // This should be an odd number in order to be pretty.
   let options = [page];
   [...Array(pageOptions - 1).keys()].forEach(index => {
@@ -223,9 +225,10 @@ function getPagination(req, res, api) {
     value: getRouteUrl(page)
   }));
 
+  // Calculate to / from numbers
   const from = page === 1 ? 1 : ((page - 1) * limit) + 1;
   const to = (from + payloadLength) - 1;
-
+  
   return {
     from,
     to,
