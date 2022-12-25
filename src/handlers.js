@@ -12,11 +12,12 @@ async function fullListingPage(req, res, timecop) {
   timecop.start("api-request");
   try {
     let api = await superagent.get(`${apiurl}/api/packages`).query(req.query);
+    const pagination = utils.getPagination(req, res, api);
     timecop.end("api-request");
     timecop.start("transcribe-json");
     let obj = await utils.prepareForListing(api.body);
     timecop.end("transcribe-json");
-    res.render("package_list", { packages: obj, timecop: timecop.timetable, page: {
+    res.render("package_list", { packages: obj, pagination, timecop: timecop.timetable, page: {
       name: "All Pulsar Packages",
       og_url: "https://web.pulsar-edit.dev/packages",
       og_description: "The Pulsar Package Repository",
@@ -110,7 +111,6 @@ async function searchHandler(req, res, timecop) {
   try {
     let api = await superagent.get(`${apiurl}/api/packages/search`).query(req.query);
     const pagination = utils.getPagination(req, res, api);
-    console.log(pagination);
     timecop.end("api-request");
     timecop.start("transcribe-json");
     let obj = await utils.prepareForListing(api.body);
