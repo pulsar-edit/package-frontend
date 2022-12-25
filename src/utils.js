@@ -185,17 +185,43 @@ function findRepoField(obj) {
 
 function getPagination(req, res, api) {
   const { pathname, query } = url.parse(req.url, true);
-  //const payloadLength = api.body.length || 0;
-  const payloadLength = 2;
+  const payloadLength = api.body.length || 0;
 
-  const page = 20;
+  const page = parseInt(query.page) || 1;
   const pages = 20;
-  const limit = 10;
+  const limit = 30;
   const total = 192;
 
-  // console.log(payloadLength);
+  const getNextPos = () => options[options.length - 1] + 1;
+  const getPrevPos = () => options[0] - 1;
+  const getRouteUrl = (page) => `${pathname}?${new URLSearchParams({ ...query, page }).toString()}`;
 
-  console.log(Array.from({length: 10}, (_, i) => i + 5));
+  const pageOptions = 5; // This should be an odd number in order to be pretty.
+  let options = [page];
+  [...Array(pageOptions - 1).keys()].forEach(index => {
+    let mid = Math.floor(pageOptions / 2);
+    if (index < mid) {
+      // Try to add next options
+      // Note - These functions are the same, just switching priority
+      if (getNextPos() <= pages) { 
+        options.push(getNextPos()); 
+      } else if (getPrevPos() >= 1) {
+        options.unshift(getPrevPos());
+      }
+    } else {
+      // Try to add prev options
+      // Note - These functions are the same, just switching priority
+      if (getPrevPos() >= 1) {
+        options.unshift(getPrevPos());
+      } else if (getNextPos() <= pages) {
+        options.push(getNextPos()); 
+      }
+    }
+  });
+  options = options.map(page => ({
+    label: page,
+    value: getRouteUrl(page)
+  }));
 
   const from = page === 1 ? 1 : ((page - 1) * limit) + 1;
   const to = (from + payloadLength) - 1;
@@ -206,13 +232,13 @@ function getPagination(req, res, api) {
     page,
     pages,
     total,
+    options,
     routes: {
-      first: page > 1 ? `${pathname}?${new URLSearchParams({ ...query, page: 1 }).toString()}` : null,
-      prev: page > 1 ? `${pathname}?${new URLSearchParams({ ...query, page: page - 1 }).toString()}` : null,
-      next: page < pages ? `${pathname}?${new URLSearchParams({ ...query, page: page + 1 }).toString()}` : null,
-      last: page < pages ? `${pathname}?${new URLSearchParams({ ...query, page: pages }).toString()}` : null,
-    },
-    options: [3, 4, 5, 6, 7]
+      first: page > 1 ? getRouteUrl(1) : null,
+      prev: page > 1 ? getRouteUrl(page - 1) : null,
+      next: page < pages ? getRouteUrl(page + 1) : null,
+      last: page < pages ? getRouteUrl(pages) : null,
+    }
   }
 }
 

@@ -127,3 +127,7 @@ nav.active {
 #pagination a.active {
   @apply bg-primary text-white;
 }
+
+#pagination a.disabled {
+  @apply pointer-events-none text-secondary;
+}
