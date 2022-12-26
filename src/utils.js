@@ -183,7 +183,7 @@ function findRepoField(obj) {
 
 }
 
-function getPagination(req, res, api) {
+function getPagination(req, api) {
   // Parameters obtained from request and response info
   let {link, 'query-total': total, 'query-limit': limit } = api.headers
   if (!link || !total || !limit) { return null }

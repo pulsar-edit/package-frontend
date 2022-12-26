@@ -12,7 +12,7 @@ async function fullListingPage(req, res, timecop) {
   timecop.start("api-request");
   try {
     let api = await superagent.get(`${apiurl}/api/packages`).query(req.query);
-    const pagination = utils.getPagination(req, res, api);
+    const pagination = utils.getPagination(req, api);
     timecop.end("api-request");
     timecop.start("transcribe-json");
     let obj = await utils.prepareForListing(api.body);
@@ -110,7 +110,7 @@ async function searchHandler(req, res, timecop) {
   timecop.start("api-request");
   try {
     let api = await superagent.get(`${apiurl}/api/packages/search`).query(req.query);
-    const pagination = utils.getPagination(req, res, api);
+    const pagination = utils.getPagination(req, api);
     timecop.end("api-request");
     timecop.start("transcribe-json");
     let obj = await utils.prepareForListing(api.body);
