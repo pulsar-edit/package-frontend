@@ -185,12 +185,16 @@ function findRepoField(obj) {
 
 function getPagination(req, res, api) {
   // Parameters obtained from request and response info
+  let {link, 'query-total': total, 'query-limit': limit } = api.headers
+  if (!link || !total || !limit) { return null }
   const { pathname, query } = url.parse(req.url, true);
   const payloadLength = api.body.length || 0;
   const page = parseInt(query.page) || 1;
-  const pages = 20;
-  const limit = 30;
-  const total = 192;
+
+  // Convert headers into usable format
+  total = parseInt(total);
+  limit = parseInt(limit);
+  pages = parseInt(link.split(', ')[1]?.match(/(\d+)/)[0] || '1');
 
   // Helper functions
   const getNextPos = () => options[options.length - 1] + 1;
