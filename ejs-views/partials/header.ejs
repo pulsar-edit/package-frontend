@@ -52,7 +52,7 @@
         <img src="/public/logo-name-navbar-dark.svg" class="h-10" />
       </a>
       <nav class="fixed flex-col text-center p-24 shadow-right md:static md:p-0 md:flex-row md:shadow-none md:h-auto flex z-10 h-screen top-0 -left-96 bg-accent gap-6 transition-all">
-        <i class="nav-toggle md:!hidden fas fa-times absolute top-5 right-5 text-white text-2xl cursor-pointer"></i>
+        <i onclick="toggleNavBtn()" class="md:!hidden fas fa-times absolute top-5 right-5 text-white text-2xl cursor-pointer"></i>
         <a class="<% if (page.og_url === 'https://web.pulsar-edit.dev/') { %> text-primary <% } %>" href="/">Featured</a>
         <a class="<% if (page.og_url === 'https://web.pulsar-edit.dev/packages') { %> text-primary <% } %>" href="/packages">Packages</a>
         <a class="<% if (page.og_url === 'https://web.pulsar-edit.dev/login') { %> text-primary <% } %>" href="/login">Sign In</a>
@@ -61,7 +61,7 @@
           Website
         </a>
       </nav>
-      <i class="nav-toggle md:!hidden fas fa-bars text-white opacity-80 text-2xl hover:opacity-100 cursor-pointer"></i>
+      <i onclick="toggleNavBtn()" class="md:!hidden fas fa-bars text-white opacity-80 text-2xl hover:opacity-100 cursor-pointer"></i>
       <div class="flex-1 text-right">
         <button onclick="changeThemeBtn()">Change Theme <i class="fas fa-caret-down ml-2"></i></button>
         <div class="hidden absolute bg-accent right-3 mt-12 p-3" id="dropdown-list">
