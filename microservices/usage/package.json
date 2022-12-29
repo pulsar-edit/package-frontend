@@ -1,0 +1,26 @@
+{
+  "name": "usage-microservice",
+  "version": "1.0.0",
+  "description": "Microservice to Ingest and Display Usage Across Pulsar Resources",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "start:dev": "cross-env PULSAR_STATUS=dev node ./src/server.js",
+    "migrations": "pg-migrations apply --directory ./migrations"
+  },
+  "engines": {
+    "node": ">=16.16.0"
+  },
+  "author": "confused-Techie",
+  "license": "MIT",
+  "pg": {
+    "test": {
+      "migrationsScript": [
+        "npm",
+        "run",
+        "migrations"
+      ],
+      "image": "postgres:14.5-alpine"
+    }
+  }
+}
