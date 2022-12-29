@@ -56,7 +56,6 @@ function copyToClipboard(triggerElement) {
 window.onclick = function (event) {
   const dropdownList = document.getElementById("dropdown-list");
   if (!event.target.matches("button") && dropdownList.classList.contains('show')) {
-    console.log('removing');
     dropdownList.classList.remove('show');
   }
 };
