@@ -64,7 +64,7 @@ article button {
 }
 
 footer h2 {
-  @apply text-gray-600 mb-3;
+  @apply opacity-70 mb-3;
 }
 
 footer i {
@@ -121,7 +121,7 @@ nav.active {
 /**************************/
 
 #pagination a {
-  @apply text-gray-600 flex items-center justify-center rounded-full font-light w-7 h-7 hover:bg-secondary;
+  @apply opacity-70 flex items-center justify-center rounded-full font-light w-7 h-7 hover:bg-secondary;
 }
 
 #pagination a.active {
