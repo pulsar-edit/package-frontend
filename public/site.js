@@ -12,6 +12,10 @@ function changeTheme(theme) {
       document.body.setAttribute("theme", "dracula");
       localStorage.setItem("theme", "dracula");
       break;
+    case "one-dark":
+      document.body.setAttribute("theme", "one-dark");
+      localStorage.setItem("theme", "one-dark");
+      break;
     case "original-theme":
     default:
       document.body.setAttribute("theme", "original-theme");
