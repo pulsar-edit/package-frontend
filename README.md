@@ -2,9 +2,11 @@
 
 Serves as a visual Web Browser for the [`package-backend`](https://github.com/pulsar-edit/package-backend).
 
-Currently this matches very closely with the design of the original package viewer from upstream Atom.
-
-Although does fully support multiple themes being added on later with a theme switcher.
+While the site is still in it's early stages it has an original design and supports several themes already:
+  * Atom.io Theme - Theme Based off the Original Atom Package Browser
+  * GitHub Dark - A theme Based off GitHub Dark Theme
+  * Dracula - <@kyjus25 Please feel free to write an accurate description>
+  * One-Dark - A Theme Modeled after the built in Pulsar UI Theme One-Dark
 
 The Web Browser for Packages is available on [`pulsar-edit.dev`](https://web.pulsar-edit.dev/).
 
@@ -77,6 +79,25 @@ This is a special value that will cause the caching service to automatically ign
 
 Using `npm run start:dev` you can run the Package Frontend Server in Development mode. This does two notable things:
   - Disables Remote Cache Features Natively. Setting `GOOGLE_APPLICATION_CREDENTIALS: "no-file"` is not necessary when run in dev mode.
+
+### Creating a New Theme
+
+Creating a new theme should be rather simple.
+
+First create the theme itself, by laying out the theme variables in `./src/site.css` the top of this file should have every other supported theme listed along with the variables that can and need to be modified for your theme.
+
+Once the theme is created, ensure to add it as an option to set in `./public/site.js` within the function `changeTheme` add a new check in the switch statement. Setting the body to have your theme as an attribute value, and saving the new theme option into the users local storage.
+
+Lastly we need to ensure users are able to choose this theme when they'd like to. Within `./ejs-views/partials/header.ejs` add your new theme as a button towards the bottom of the page, along with all other buttons. Ensure your theme name is passed to the `changeTheme` function.
+
+Now with your theme created double check that the same name is used *exactly* in each location.
+  - The EJS Template
+  - The Client Side JavaScript
+  - The Client Side CSS
+
+Now it's good form to submit your PR pre-fixed with `[THEME]` so we know what exactly to check for.
+
+Thanks for contributing!
 
 ### Microservices
 
