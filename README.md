@@ -5,7 +5,7 @@ Serves as a visual Web Browser for the [`package-backend`](https://github.com/pu
 While the site is still in it's early stages it has an original design and supports several themes already:
   * Atom.io Theme - Theme Based off the Original Atom Package Browser
   * GitHub Dark - A theme Based off GitHub Dark Theme
-  * Dracula - <@kyjus25 Please feel free to write an accurate description>
+  * Dracula - Theme based off the versatile [Dracula](https://draculatheme.com/) theme🧛
   * One-Dark - A Theme Modeled after the built in Pulsar UI Theme One-Dark
 
 The Web Browser for Packages is available on [`pulsar-edit.dev`](https://web.pulsar-edit.dev/).
