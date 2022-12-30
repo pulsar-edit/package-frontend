@@ -26,6 +26,14 @@ body[theme="dracula"] {
   --text: #f8f8f2;
 }
 
+body[theme="one-dark"] {
+  --canvas: #282c34;
+  --primary: #568af2;
+  --accent: #21252b;
+  --secondary: #181a1f;
+  --text: #abb2bf;
+}
+
 /**************************/
 /******** GLOBALS *********/
 /**************************/
