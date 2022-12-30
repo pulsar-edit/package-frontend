@@ -9,6 +9,11 @@ let md = new MarkdownIt({
   inline: true
 }).use(require("markdown-it-emoji"), {
 
+}).use(require("markdown-it-github-headings"), {
+
+}).use(require("markdown-it-task-checkbox"), {
+  disabled: true,
+  divWrap: false
 });
 
 const reg = require("./reg.js");
@@ -209,8 +214,8 @@ function getPagination(req, api) {
     if (index < mid) {
       // Try to add next options
       // Note - These functions are the same, just switching priority
-      if (getNextPos() <= pages) { 
-        options.push(getNextPos()); 
+      if (getNextPos() <= pages) {
+        options.push(getNextPos());
       } else if (getPrevPos() >= 1) {
         options.unshift(getPrevPos());
       }
@@ -220,7 +225,7 @@ function getPagination(req, api) {
       if (getPrevPos() >= 1) {
         options.unshift(getPrevPos());
       } else if (getNextPos() <= pages) {
-        options.push(getNextPos()); 
+        options.push(getNextPos());
       }
     }
   });
@@ -232,7 +237,7 @@ function getPagination(req, api) {
   // Calculate to / from numbers
   const from = page === 1 ? 1 : ((page - 1) * limit) + 1;
   const to = (from + payloadLength) - 1;
-  
+
   return {
     from,
     to,
