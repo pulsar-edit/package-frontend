@@ -67,10 +67,6 @@ app.get("/logout", async (req, res) => {
   await handlers.logoutHandler(req, res, timecop);
 });
 
-app.get("/download", async (req, res) => {
-  await handlers.downloadLink(req, res);
-});
-
 app.use(async (req, res) => {
   // 404 here, keep at last position
   await utils.displayError(req, res, 404);

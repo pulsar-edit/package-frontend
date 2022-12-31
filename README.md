@@ -110,3 +110,9 @@ The Pulsar Package Frontend now supports social cards.
 These cards will be suggested when services create a link preview from a link to `https://image.pulsar-edit.dev/packages/packageName`.
 
 To read more about Social Image Cards and how to contribute to them view their Document and Code [here](./microservices/social-cards/README.md).
+
+#### Download Endpoint
+
+The Pulsar Package Frontend hosts our Download Endpoint, and endpoint allowing easy and quick download of our most recent successfully Alpha Cirrus CI Binaries.
+
+This service is run as a microservice under the project, and it's source is available [here](./microservices/download/README.md).
