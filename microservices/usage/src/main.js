@@ -1,6 +1,11 @@
 const express = require("express");
 const app = express();
+const database = require("./database.js");
 
+let valid_services = [];
+let valid_resources = [];
+
+console.log(`Are we able to set process variables at runtime: ${process.env.TEST}`);
 // Enabled to allow proper IP logging in Google App Engine
 app.set("trust proxy", true);
 
@@ -24,7 +29,19 @@ app.post("/api", async (req, res) => {
   };
   // The Service is the service that is reporting a new addition to the values.
   // The Resource is the resource value that should be incremented.
-  
+
+  // Lets first ensure the service is of a valid value.
+  if (!valid_services.includes(params.service)) {
+    // Return error
+  }
+
+  // Then check that our resource is valid as well.
+  if (!valid_resources.includes(params.resource)) {
+    // Return error
+  }
+
+  // Now lets add the data to the DB
+
 });
 
 // 404 Handler, leave at last position

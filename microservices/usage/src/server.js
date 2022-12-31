@@ -1,6 +1,8 @@
 
 // This File will contian setup of both production server and dev server.
 
+const env = require("../env.json");
+
 let dbSetup, dbTeardown;
 // We define ^^^ just in case we are in a dev instance.
 
@@ -22,6 +24,16 @@ async function setup() {
     process.env.DB_PORT = db_url_parsed[3];
 
     process.env.PORT = 8080;
+  } else {
+    // Now when not in Dev Mode, we need to configure our environment variables from the env JSON file.
+    process.env.DB_HOST = env.DB_HOST;
+    process.env.DB_USER = env.DB_USER;
+    process.env.DB_DB = env.DB_DB;
+    process.env.DB_PASS = env.DB_PASS;
+    process.env.DB_PORT = env.DB_PORT;
+    process.env.DB_SSL_CERT = env.DB_SSL_CERT;
+    process.env.PORT = env.PORT;
+    process.env.TEST = env.TEST;
   }
 
   // Importing after Dev handling to ensure any env vars are set properly before
@@ -34,7 +46,7 @@ async function setup() {
     console.log(`Pulsar Usage Server Listening on Port ${port}`);
   });
 
-  const exterminate - async function (callee) {
+  const exterminate = async function (callee) {
     console.log(`${callee} signal received: closing HTTP server`);
     await database.shutdownSQL();
     if (dbTeardown) {
