@@ -1,4 +1,44 @@
-const superagent = require("superagent");
+const https = require("node:https")
+
+function doRequest(queryString) {
+  const dataToSend = JSON.stringify({ query: queryString })
+
+  const options = {
+    hostname: 'api.cirrus-ci.com',
+    path: '/graphql',
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Content-Length': dataToSend.length
+    }
+  }
+
+  return new Promise((resolve, reject) => {
+    let data = '';
+
+    const req = https.request(options, (res) => {
+      res.setEncoding('utf8');
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+      res.on('end', () => {
+        // No more data in response.
+        resolve(JSON.parse(data))
+      });
+    });
+
+    req.on('error', (e) => {
+      console.error(`problem with request: ${e.message}`);
+      throw e
+      reject(e)
+    });
+
+    // Write data to request body
+    req.write(dataToSend);
+    req.end();
+  });
+}
 
 function query_os(req) {
   let prov = req.query.os ?? "";
@@ -61,18 +101,13 @@ async function findLink(os, type) {
       }
     `;
 
-    let baseGraph = await superagent.post("https://api.cirrus-ci.com/graphql")
-                          .set("Content-Type", "application/json")
-                          .set("Accept", "application/json")
-                          .send({ query: baseQuery });
-
-    let baseResponse = baseGraph.body;
+    let baseGraph = await doRequest(baseQuery);
 
     let buildID;
 
-    for (let i = 0; i < baseResponse.data.repository.builds.edges.length; i++) {
-      if (baseResponse.data.repository.builds.edges[i].node.status === "COMPLETED") {
-        buildID = baseResponse.data.repository.builds.edges[i].node.id;
+    for (let i = 0; i < baseGraph.data.repository.builds.edges.length; i++) {
+      if (baseGraph.data.repository.builds.edges[i].node.status === "COMPLETED") {
+        buildID = baseGraph.data.repository.builds.edges[i].node.id;
         break;
       }
     }
@@ -89,12 +124,7 @@ async function findLink(os, type) {
       }
     `;
 
-    let buildGraph = await superagent.post("https://api.cirrus-ci.com/graphql")
-                            .set("Content-Type", "application/json")
-                            .set("Accept", "application/json")
-                            .send({ query: buildQuery });
-
-    let buildResponse = buildGraph.body;
+    let buildGraph = await doRequest(buildQuery);
 
     let taskid = undefined;
 
@@ -107,25 +137,25 @@ async function findLink(os, type) {
       return undefined;
     };
 
-    // While it seems to make total sense to just run `findID(params.os, buildResponse.data.build.tasks)`
+    // While it seems to make total sense to just run `findID(params.os, buildGraph.data.build.tasks)`
     // The reason this was done, so that if these names change at all or more are added, the bulk
     // of responsibility to update will lie soley here. Rather than let possible external links fail and expire.
     // Such as `linux` changing to `Linux`, would only have to be done here rather than every location the link appears.
     switch(os) {
       case "linux":
-        taskid = findID("linux", buildResponse.data.build.tasks);
+        taskid = findID("linux", buildGraph.data.build.tasks);
         break;
       case "arm_linux":
-        taskid = findID("arm_linux", buildResponse.data.build.tasks);
+        taskid = findID("arm_linux", buildGraph.data.build.tasks);
         break;
       case "silicon_mac":
-        taskid = findID("silicon_mac", buildResponse.data.build.tasks);
+        taskid = findID("silicon_mac", buildGraph.data.build.tasks);
         break;
       case "intel_mac":
-        taskid = findID("intel_mac", buildResponse.data.build.tasks);
+        taskid = findID("intel_mac", buildGraph.data.build.tasks);
         break;
       case "windows":
-        taskid = findID("windows", buildResponse.data.build.tasks);
+        taskid = findID("windows", buildGraph.data.build.tasks);
         break;
       default:
         taskid = undefined;
@@ -158,10 +188,7 @@ async function findLink(os, type) {
       }
     `;
 
-    let taskGraph = await superagent.post("https://api.cirrus-ci.com/graphql")
-                          .set("Content-Type", "application/json")
-                          .set("Accept", "application/json")
-                          .send({ query: taskQuery });
+    let taskGraph = await doRequest(taskQuery);
 
     let binaryPath = undefined;
 
@@ -183,39 +210,39 @@ async function findLink(os, type) {
     switch(type) {
       // Linux Binaries
       case "linux_appimage":
-        binaryPath = findBinary(".AppImage", "end", taskGraph.body.data.task.artifacts[0].files);
+        binaryPath = findBinary(".AppImage", "end", taskGraph.data.task.artifacts[0].files);
         break;
       case "linux_tar":
-        binaryPath = findBinary(".tar.gz", "end", taskGraph.body.data.task.artifacts[0].files);
+        binaryPath = findBinary(".tar.gz", "end", taskGraph.data.task.artifacts[0].files);
         break;
       case "linux_rpm":
-        binaryPath = findBinary(".rpm", "end", taskGraph.body.data.task.artifacts[0].files);
+        binaryPath = findBinary(".rpm", "end", taskGraph.data.task.artifacts[0].files);
         break;
       case "linux_deb":
-        binaryPath = findBinary(".deb", "end", taskGraph.body.data.task.artifacts[0].files);
+        binaryPath = findBinary(".deb", "end", taskGraph.data.task.artifacts[0].files);
         break;
       // Windows Binaries
       case "windows_setup":
-        binaryPath = findBinary("binaries/Pulsar Setup", "start", taskGraph.body.data.task.artifacts[0].files);
+        binaryPath = findBinary("binaries/Pulsar Setup", "start", taskGraph.data.task.artifacts[0].files);
         break;
       case "windows_portable":
-        binaryPath = findBinary(".exe", "end", taskGraph.body.data.task.artifacts[0].files);
+        binaryPath = findBinary(".exe", "end", taskGraph.data.task.artifacts[0].files);
         break;
       case "windows_blockmap":
-        binaryPath = findBinary(".exe.blockmap", "end", taskGraph.body.data.task.artifacts[0].files);
+        binaryPath = findBinary(".exe.blockmap", "end", taskGraph.data.task.artifacts[0].files);
         break;
       // MacOS Builds
       case "mac_zip":
-        binaryPath = findBinary(".zip", "end", taskGraph.body.data.task.artifacts[0].files);
+        binaryPath = findBinary(".zip", "end", taskGraph.data.task.artifacts[0].files);
         break;
       case "mac_zip_blockmap":
-        binaryPath = findBinary(".zip.blockmap", "end", taskGraph.body.data.task.artifacts[0].files);
+        binaryPath = findBinary(".zip.blockmap", "end", taskGraph.data.task.artifacts[0].files);
         break;
       case "mac_dmg":
-        binaryPath = findBinary(".dmg", "end", taskGraph.body.data.task.artifacts[0].files);
+        binaryPath = findBinary(".dmg", "end", taskGraph.data.task.artifacts[0].files);
         break;
       case "mac_dmg_blockmap":
-        binaryPath = findBinary(".dmb.blockmap", "end", taskGraph.body.data.task.artifacts[0].files);
+        binaryPath = findBinary(".dmb.blockmap", "end", taskGraph.data.task.artifacts[0].files);
         break;
       default:
         binaryPath = undefined;
