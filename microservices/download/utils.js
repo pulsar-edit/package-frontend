@@ -1,7 +1,7 @@
-const https = require("node:https")
+const https = require("node:https");
 
 function doRequest(queryString) {
-  const dataToSend = JSON.stringify({ query: queryString })
+  const dataToSend = JSON.stringify({ query: queryString });
 
   const options = {
     hostname: 'api.cirrus-ci.com',
@@ -12,7 +12,7 @@ function doRequest(queryString) {
       'Content-Type': 'application/json',
       'Content-Length': dataToSend.length
     }
-  }
+  };
 
   return new Promise((resolve, reject) => {
     let data = '';
@@ -24,21 +24,21 @@ function doRequest(queryString) {
       });
       res.on('end', () => {
         // No more data in response.
-        resolve(JSON.parse(data))
+        resolve(JSON.parse(data));
       });
     });
 
     req.on('error', (e) => {
       console.error(`problem with request: ${e.message}`);
-      throw e
-      reject(e)
+      throw e;
+      reject(e);
     });
 
     // Write data to request body
     req.write(dataToSend);
     req.end();
   });
-}
+};
 
 function query_os(req) {
   let prov = req.query.os ?? "";
