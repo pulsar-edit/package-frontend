@@ -29,8 +29,6 @@ function doRequest(queryString) {
     });
 
     req.on('error', (e) => {
-      console.error(`problem with request: ${e.message}`);
-      throw e;
       reject(e);
     });
 
