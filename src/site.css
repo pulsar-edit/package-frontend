@@ -113,11 +113,7 @@ nav.active {
 #readme h4 svg,
 #readme h5 svg,
 #readme h6 svg {
-  @apply inline-block mr-2;
-}
-
-#readme svg {
-  @apply text-text fill-text;
+  @apply inline-block mr-2 text-text fill-primary;
 }
 
 #readme .hljs {
