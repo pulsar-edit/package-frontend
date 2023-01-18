@@ -12,6 +12,22 @@ module.exports = {
       },
       boxShadow: {
         'right': '2px 0px 10px black'
+      },
+      typography: {
+        DEFAULT: {
+          css: {
+            color: 'var(--text)',
+            a: { color: 'var(--text)' },
+            strong: { color: 'var(--text)' },
+            th: { color: 'var(--text)' },
+            h1: { color: 'var(--text)' },
+            h2: { color: 'var(--text)' },
+            h3: { color: 'var(--text)' },
+            h4: { color: 'var(--text)' },
+            h5: { color: 'var(--text)' },
+            h6: { color: 'var(--text)' },
+          }
+        }
       }
     },
   },

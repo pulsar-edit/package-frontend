@@ -116,6 +116,14 @@ nav.active {
   @apply inline-block mr-2;
 }
 
+#readme svg {
+  @apply text-text fill-text;
+}
+
+#readme .hljs {
+  @apply text-text bg-secondary;
+}
+
 #readme > p > a {
   @apply inline-block;
 }
@@ -123,6 +131,11 @@ nav.active {
 #readme p > a > img,
 #readme table img {
   @apply !my-0;
+}
+
+#readme table th,
+#readme table td {
+  @apply border border-secondary p-3;
 }
 
 #readme hr {
