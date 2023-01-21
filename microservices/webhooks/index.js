@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const app = express();
 const superagent = require("superagent");
 const port = parseInt(process.env.PORT) || 8080;
-const tokens = process.env.WEBHOOKS_MICROSERVICE_TOKENS || [ "123456" ];
+const token = process.env.WEBHOOKS_MICROSERVICE_TOKEN || "123456";
 const discordSponsorWebhook = process.env.DISCORD_SPONSOR_WEBHOOK || "";
 
 const jsonParser = bodyParser.json();
@@ -19,7 +19,7 @@ app.post("/github_sponsors", jsonParser, async (req, res) => {
   // Then for simplicity we will have a list of valid tokens imported as environment
   // variables that we can then check against.
 
-  if (!tokens.includes(params.token)) {
+  if (params.token !== token) {
     console.log("Returning Not Authorized");
     // The request doesn't contain one of our tokens
     res.status(401).json({ message: "Not Authorized" });

@@ -16,9 +16,7 @@ Then from there we can import the secrets into our application the same way you 
 
 Due to the fast creation of this Microservice, and it's simplicity, the authentication model is best described as more than basic.
 
-Essentially we import a secret from Google Clouds Secret Manager that contains an array of keys. Then simply when we receive a request we check if our secret array of keys contains the key being passed to us.
-
-This ideally lets us use one Key per service rather simply. But this model is likely to change in the future.
+Essentially we import a secret from Google Clouds Secret Manager that contains our token. We then simply check if our received token matches what's available from our secret.
 
 ## Running Microservice
 

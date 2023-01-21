@@ -4,19 +4,17 @@ metadata:
   name: webhooks
 spec:
   template:
-      run.googleapis.com/secrets:WEBHOOKS_MICROSERVICE_TOKENS:projects/1071992777302/secrets/WEBHOOKS_MICROSERVICE_TOKENS
-      run.googleapis.com/secrets:DISCORD_SPONSOR_WEBHOOK:projects/1071992777302/secrets/DISCORD_SPONSOR_WEBHOOK
     spec:
       containers:
-        - image: "us-west2-docker.pkg.dev/pulsar-357404/package-frontend/webhooks:1.0.0"
-          env:
-          - name: WEBHOOKS_MICROSERVICE_TOKENS
-            valueFrom:
-              secretKeyRef:
-                key: latest
-                name: WEBHOOKS_MICROSERVICE_TOKENS
-          - name: DISCORD_SPONSOR_WEBHOOK
-            valueFrom:
-              secretKeyRef:
-                key: latest
-                name: DISCORD_SPONSOR_WEBHOOK
+      - image: "us-west2-docker.pkg.dev/pulsar-357404/package-frontend/webhooks:1.0.0"
+        env:
+        - name: WEBHOOKS_MICROSERVICE_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: latest
+              name: WEBHOOKS_MICROSERVICE_TOKEN
+        - name: DISCORD_SPONSOR_WEBHOOK
+          valueFrom:
+            secretKeyRef:
+              key: latest
+              name: DISCORD_SPONSOR_WEBHOOK
