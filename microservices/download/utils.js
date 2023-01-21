@@ -6,9 +6,9 @@ function query_os(req) {
 
   let full = raw.split("&");
 
-  for (let i = 0; i < full.length; i++) {
-    if (full[i].startsWith("os=")) {
-      prov = full[i].split("=")[1];
+  for (const param of full) {
+    if (param.startsWith("os=")) {
+      prov = param.split("=")[1];
       break;
     }
   }
@@ -28,9 +28,9 @@ function query_type(req) {
 
   let full = raw.split("&");
 
-  for (let i = 0; i < full.length; i++) {
-    if (full[i].startsWith("type=")) {
-      prov = full[i].split("=")[1];
+  for (const param of full) {
+    if (param.startsWith("type=")) {
+      prov = param.split("=")[1];
       break;
     }
   }
@@ -60,13 +60,13 @@ async function displayError(req, res, errMsg) {
   if (errMsg.code && errMsg.msg) {
 
     res.writeHead(errMsg.code, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ message: errMsg.msg }));
+    res.write(JSON.stringify({ message: errMsg.msg }));
     res.end();
 
   } else {
     // Default Error Handler
     res.writeHead(500, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ message: "Server Error" }));
+    res.write(JSON.stringify({ message: "Server Error" }));
     res.end();
   }
 }
