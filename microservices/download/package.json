@@ -12,6 +12,5 @@
   "author": "confused-Techie",
   "license": "MIT",
   "dependencies": {
-    "superagent": "^8.0.1"
   }
 }
