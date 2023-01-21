@@ -39,14 +39,44 @@ function doRequest(queryString) {
 };
 
 function query_os(req) {
-  let prov = req.query.os ?? "";
+  let raw = req; // The URL string containing any number of query params.
+  let prov = undefined;
+
+  let full = raw.split("&");
+
+  for (const param of full) {
+    if (param.startsWith("os=")) {
+      prov = param.split("=")[1];
+      break;
+    }
+  }
+
+  if (prov === undefined) {
+    return false;
+  }
+
   let valid = [ "linux", "arm_linux", "silicon_mac", "intel_mac", "windows" ];
 
   return valid.includes(prov) ? prov : false;
 }
 
 function query_type(req) {
-  let prov = req.query.type ?? "";
+  let raw = req;
+  let prov = undefined;
+
+  let full = raw.split("&");
+
+  for (const param of full) {
+    if (param.startsWith("type=")) {
+      prov = param.split("=")[1];
+      break;
+    }
+  }
+
+  if (prov === undefined) {
+    return false;
+  }
+
   let valid = [
     "linux_appimage",
     "linux_tar",
@@ -66,12 +96,16 @@ function query_type(req) {
 
 async function displayError(req, res, errMsg) {
   if (errMsg.code && errMsg.msg) {
-    res.status(errMsg.code).json(errMsg.msg);
-    return;
+
+    res.writeHead(errMsg.code, { "Content-Type": "application/json" });
+    res.write(JSON.stringify({ message: errMsg.msg }));
+    res.end();
+
   } else {
-    // Have a default error handler
-    res.status(505).json({ message: "Server Error" });
-    return;
+    // Default Error Handler
+    res.writeHead(500, { "Content-Type": "application/json" });
+    res.write(JSON.stringify({ message: "Server Error" }));
+    res.end();
   }
 }
 
