@@ -3,16 +3,32 @@ const bodyParser = require("body-parser");
 const app = express();
 const superagent = require("superagent");
 const port = parseInt(process.env.PORT) || 8080;
-const token = process.env.WEBHOOKS_MICROSERVICE_TOKEN || "123456";
-const discordSponsorWebhook = process.env.DISCORD_SPONSOR_WEBHOOK || "";
+const token = process.env.WEBHOOKS_MICROSERVICE_TOKEN;
+const discordSponsorWebhook = process.env.DISCORD_SPONSOR_WEBHOOK;
 
 const jsonParser = bodyParser.json();
+
+// Environment Variables Check
+
+if (typeof token === "undefined" || typeof discordSponsorWebhook === "undefined") {
+  if (process.env.PULSAR_STATUS === "dev") {
+    // We are in dev mode, assign dev values.
+    token = "1234566";
+    discordSponsorWebhook = "";
+
+  } else {
+    // We are not in dev mode. Our secrets are gone and the application will fail to work.
+    console.log("Missing Required Environment Variables! Something has gone wrong!");
+
+    process.exit(1);
+  }
+}
 
 app.post("/github_sponsors", jsonParser, async (req, res) => {
   let params = {
     token: req.query.token ?? ""
   };
-  console.log("Valid Request to /github_sponsors");
+
   // The token above is used to ensure only authenticated services can send a request.
   // The token used here will be set when creating the WebHook on GitHub as a parameter
   // in the URL, rather than actual authentication.
@@ -32,7 +48,7 @@ app.post("/github_sponsors", jsonParser, async (req, res) => {
       content: `New GitHub Sponsor Contribution: ${req.body.sender.login} gave ${req.body.sponsorship.tier.name} to Pulsar-Edit!`,
     };
 
-    console.log("Serving our custom response");
+    console.log(`Serving Custom response for ${req.body.sender.login} Sponsorship`);
 
     const webhook = await superagent.post(discordSponsorWebhook).send(webhookObj);
     // It didn't error we can assume it succeeded.
