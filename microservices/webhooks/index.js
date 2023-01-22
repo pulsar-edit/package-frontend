@@ -44,7 +44,7 @@ app.post("/github_sponsors", jsonParser, async (req, res) => {
 });
 
 app.use(async (req, res) => {
-  await utils.displayError(req, res, 404);
+  res.status(404).json({ message: "Seems this page doesn't exist" });
 });
 
 app.listen(port, () => {
