@@ -26,19 +26,21 @@ app.post("/github_sponsors", jsonParser, async (req, res) => {
     return;
   }
 
-  // We are authorized, lets parse our data.
-  let webhookObj = {
-    content: `New GitHub Sponsor Contribution: ${req.body.sender.login} gave ${req.body.tier.name} to Pulsar-Edit!`,
-  };
-
   try {
+    // We are authorized, lets parse our data.
+    let webhookObj = {
+      content: `New GitHub Sponsor Contribution: ${req.body.sender.login} gave ${req.body.sponsorship.tier.name} to Pulsar-Edit!`,
+    };
+
     console.log("Serving our custom response");
-    const res = await superagent.post(discordSponsorWebhook).send(webhookObj);
+
+    const webhook = await superagent.post(discordSponsorWebhook).send(webhookObj);
     // It didn't error we can assume it succeeded.
     res.status(200).end();
 
   } catch(err) {
     console.log("Caught an error serving our custom response");
+    console.log(err);
     res.status(500).json({ message: "Error Occured sending message" });
   }
 });
