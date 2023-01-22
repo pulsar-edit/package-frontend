@@ -5,8 +5,9 @@ metadata:
 spec:
   template:
     spec:
+      serviceAccountName: webhooks-frontend@pulsar-357404.iam.gserviceaccount.com
       containers:
-      - image: "us-west2-docker.pkg.dev/pulsar-357404/package-frontend/webhooks:1.0.0"
+      - image: "us-west2-docker.pkg.dev/pulsar-357404/package-frontend/webhooks:1.0.2"
         env:
         - name: WEBHOOKS_MICROSERVICE_TOKEN
           valueFrom:

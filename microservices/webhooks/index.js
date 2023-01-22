@@ -28,7 +28,7 @@ app.post("/github_sponsors", jsonParser, async (req, res) => {
 
   // We are authorized, lets parse our data.
   let webhookObj = {
-    content: `New GitHub Sponsor Contribution: ${req.body.sender} gave ${req.body.sponsorship.monthly_price_in_dollars} to Pulsar-Edit!`,
+    content: `New GitHub Sponsor Contribution: ${req.body.sender.login} gave ${req.body.tier.name} to Pulsar-Edit!`,
   };
 
   try {
