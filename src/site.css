@@ -64,7 +64,7 @@ header button {
 }
 
 article {
-  @apply mx-auto max-w-[1024px] px-6 flex-1 w-full;
+  @apply mx-auto max-w-[1024px] px-3 flex-1 w-full;
 }
 
 article button {
@@ -107,29 +107,31 @@ nav.active {
 /***** PACKAGE README *****/
 /**************************/
 
-#readme h1,
-#readme h2,
-#readme h3,
-#readme h4,
-#readme h5,
-#readme h6 {
-  @apply mt-12 mb-2;
+#readme h1 svg,
+#readme h2 svg,
+#readme h3 svg,
+#readme h4 svg,
+#readme h5 svg,
+#readme h6 svg {
+  @apply inline-block mr-2 text-text fill-primary;
 }
 
-#readme p > img {
-  @apply mt-2;
+#readme .hljs {
+  @apply text-text bg-secondary;
 }
 
-#readme a {
+#readme > p > a {
   @apply inline-block;
 }
 
-#readme ul {
-  display: block;
-  list-style-type: disc;
-  margin-block-start: 1em;
-  margin-block-end: 1em;
-  padding-inline-start: 40px;
+#readme p > a > img,
+#readme table img {
+  @apply !my-0;
+}
+
+#readme table th,
+#readme table td {
+  @apply border border-secondary p-3;
 }
 
 #readme hr {
