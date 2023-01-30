@@ -1,6 +1,6 @@
 {
   "name": "webooks-microservice",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Microservice to handle custom webhooks for Pulsar-Edit",
   "main": "index.js",
   "scripts": {
