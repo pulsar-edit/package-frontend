@@ -1,0 +1,23 @@
+{
+  "name": "webooks-microservice",
+  "version": "1.0.7",
+  "description": "Microservice to handle custom webhooks for Pulsar-Edit",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./index.js",
+    "start:dev": "cross-env PULSAR_STATUS=dev node ./index.js"
+  },
+  "engines": {
+    "node": ">=16.16.0"
+  },
+  "author": "confused-Techie",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "express": "^4.18.2",
+    "superagent": "^8.0.8"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  }
+}
