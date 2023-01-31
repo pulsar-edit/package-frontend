@@ -37,7 +37,11 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
     <meta name="color-scheme" content="dark light">
-    <link rel="stylesheet" href="/public/site.css" />
+    <% if (dev) { %>
+      <link rel="stylesheet" href="/public/site.css" />
+    <% } else { %>
+      <link rel="stylesheet" href="/public/site.min.css" />
+    <% } %>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
   </head>
@@ -69,7 +73,7 @@
             <button onclick="changeTheme('one-dark')">One Dark</button>
           </div>
         </div>
-        
+
       </nav>
       <i onclick="toggleNavBtn()" class="md:!hidden fas fa-bars text-white opacity-80 text-2xl hover:opacity-100 cursor-pointer"></i>
     </header>

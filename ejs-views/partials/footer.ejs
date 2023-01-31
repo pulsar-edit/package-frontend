@@ -31,5 +31,9 @@
     <p class="text-sm opacity-70">Pulsar-Edit © <%- new Date().getFullYear() %></p>
 </footer>
 </body>
-<script src="/public/site.js"></script>
+<% if (dev) { %>
+  <script src="/public/site.js"></script>
+<% } else { %>
+  <script src="/public/site.min.js"></script>
+<% } %>
 </html>
