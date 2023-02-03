@@ -96,7 +96,7 @@ The Download Link allows automated linking to our most recent Cirrus CI or 'alph
 
 To learn more about the Download Link Microservice take a look at its [Readme](./microservices/download/README.md).
 
-Additionally for easy access on how to use the download link take a look at the [Download Link Table](/docs/download_links.md).
+Additionally for easy access on how to use the download link, take a look at the [Download Link Table](/docs/download_links.md).
 
 ### Webhooks
 
