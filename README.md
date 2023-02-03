@@ -8,7 +8,7 @@ Serves as a visual Web Browser for the [`package-backend`](https://github.com/pu
 
 The Pulsar Package Registry Frontend allows users to browse the available community packages from Pulsar from any device on the web by simply navigating to [`https://web.pulsar-edit.dev`](https://web.pulsar-edit.dev/).
 
-The aim of the frontend is to feel just as hackable as Pulsar does, all while promoting usage of Pulsar and it's features, while trying to put a more modern spin on how this information is displayed than the `atom.io/packages` page previously did.
+The aim of the frontend is to feel just as hackable as Pulsar does, all while promoting usage of Pulsar and its features, while trying to put a more modern spin on how this information is displayed than the `atom.io/packages` page previously did.
 
 ### Themes
 
