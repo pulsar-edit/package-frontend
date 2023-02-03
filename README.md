@@ -71,7 +71,7 @@ The output will look similar to the following:
 }
 ```
 
-Of the above output, the only field that you should worry about is `duration`, as this tells you in milliseconds how long whatever action is related took. Of the actions that might be shown below is an explanation of what they mean:
+Of the above output, the only field that you should worry about is `duration`, as this tells you in milliseconds how long the related action took. Of the actions that might be shown below is an explanation of what they mean:
   * `api-request`: An API Request was needed to be made to the backend server, and this shows the duration that the request took.
   * `transcribe-json`: JSON Data received from an API request needs to be modified to be displayed by the website. This shows the duration the modification took.
   * `cache-check`: Local or Remote or Both types of caching are implemented on this endpoint. This shows the duration it took to check with said caches for the relevant data.
