@@ -108,7 +108,7 @@ For more information, take a look at the [Webhooks Microservice Readme](./micros
 
 ## Developing the Frontend
 
-The Frontend alone is a rather simple NodeJS package, and is made to runs smoothly locally for development or testing.
+The Frontend alone is a rather simple NodeJS package, and is made to run smoothly for local development or testing.
 
 After cloning the repository locally, ensure to run `npm install` to get the necessary dependencies.
 
