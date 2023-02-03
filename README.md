@@ -114,7 +114,7 @@ After cloning the repository locally, ensure to run `npm install` to get the nec
 
 Copy or rename `app.example.yaml` to `app.yaml` to ensure the Package Registry Frontend is able to find its configuration file and values. If you'd like, when working with a local app config file, you can change the `app.yaml` to point to a locally hosted version of the Pulsar Package Backend, or continue to point to our official instance.
 
-Within the config file exists the key `GOOGLE_APPLICATION_CREDENTIALS` this key is used to point to a KeyFile containing Google Application Credentials to interact with the Remote cache. If you don't have access to this file you can set this key to `"no-file"` like so:
+Within the config file exists the key `GOOGLE_APPLICATION_CREDENTIALS`. This key is used to point to a KeyFile containing Google Application Credentials to interact with the Remote cache. If you don't have access to this file you can set this key to `"no-file"` like so:
 
 ```yaml
 GOOGLE_APPLICATION_CREDENTIALS: "no-file"
