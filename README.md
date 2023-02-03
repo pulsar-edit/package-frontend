@@ -92,7 +92,7 @@ To learn more about Social Image Cards, how they behave, and how to contribute t
 
 ### Download Link
 
-The Download Link allows easy linking to our most recent Cirrus CI or 'alpha' builds of Pulsar. This lets the worry of finding the relevant link be left to this microservice rather than on contributors.
+The Download Link allows automated linking to our most recent Cirrus CI or 'alpha' builds of Pulsar. This lets the microservice worry about finding the relevant link rather than contributors having to do it by hand.
 
 To learn more about the Download Link Microservice take a look at it's [Readme](./microservices/download/README.md).
 
