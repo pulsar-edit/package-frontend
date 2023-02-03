@@ -48,7 +48,7 @@ If you'd like to read about some of the challenges of normalizing the data acros
 
 When browsing the Package Frontend, if you find that the page load is taking a long time and you would like to investigate the cause, there's a built in utility to assist with this. While it's unable to show every aspect of the page load it can still be a useful tool to point fault to, and determine where we need to improve.
 
-To use this utility once the offending page has loaded open your browsers DevTools and within the provided console type:
+To use this utility once the offending page has loaded, open your browser's DevTools and within the provided console type:
 
 ```javascript
 loadStats();
