@@ -1,6 +1,6 @@
 # Package Frontend
 
-The purpose of this repo is two-fold. Firstly this contains the code for the visual Web Browser for the Pulsar Package Registry Backend, as well as contains the source code for many of the Microservices that are in use either to assist the Package Frontend, or otherwise assist the Pulsar Organization as a whole.
+The purpose of this repo is two-fold. Firstly this contains the code for the visual Web Browser for the Pulsar Package Registry Backend, as well as the source code for many of the Microservices that are in use either to assist the Package Frontend, or the Pulsar Organization as a whole.
 
 ## Pulsar Package Frontend
 
