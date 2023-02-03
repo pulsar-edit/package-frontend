@@ -124,4 +124,4 @@ This is a special value that will cause the caching service to automatically ign
 
 ### Running in Dev Mode
 
-Optionally, when developing for the frontend you can use `npm run start:dev` to run the Pulsar Package Frontend Registry Server in Development more. This will go ahead and disable any Remote Cache checks. If you run the server in development mode there is no need to set `GOOGLE_APPLICATION_CREDENTIALS` to `"no-file"`.
+Optionally, when developing for the frontend you can use `npm run start:dev` to run the Pulsar Package Frontend Registry Server in Development mode which will disable any Remote Cache checks. If you run the server in development mode there is no need to set `GOOGLE_APPLICATION_CREDENTIALS` to `"no-file"`.
