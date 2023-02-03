@@ -20,7 +20,7 @@ The Pulsar Package Frontend provides several themes to find the style that suite
 
 If there isn't a theme yet that fits you, creating a new theme is welcome, encouraged, and easy.
 
-First create the theme itself, by laying out the theme variables in `./src/site.css` the top of this file should have every other supported theme listed along with the variables that can and need to be modified for your theme.
+First create the theme itself, by laying out the theme variables in `./src/site.css`. The top of this file should have every other supported theme listed along with the variables that can and will need to be modified for your theme.
 
 Once the theme is created, ensure to add it as an option in `./public/site.js` within the function `changeTheme` add a new check in the switch statement. Setting the body to have your theme as an attribute value, and saving the new theme option into the users local storage.
 
