@@ -104,7 +104,7 @@ The Webhooks Microservice exists as a translation tool from GitHub Sponsors Webh
 
 This allows the Pulsar Discord to get GitHub Sponsors notifications directly, and lets use thank those who donate right away.
 
-For more information take a look at the [Webhooks Microservice Readme](./microservices/webhooks/README.md).
+For more information, take a look at the [Webhooks Microservice Readme](./microservices/webhooks/README.md).
 
 ## Developing the Frontend
 
