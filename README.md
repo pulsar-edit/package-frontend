@@ -102,7 +102,7 @@ Additionally for easy access on how to use the download link, take a look at the
 
 The Webhooks Microservice exists as a translation tool from the GitHub Sponsors Webhooks to our Discord server since this type of webhook is not natively supported by Discord.
 
-This allows the Pulsar Discord to get GitHub Sponsors notifications directly, and lets use thank those who donate right away.
+This allows the Pulsar Discord to get GitHub Sponsors notifications directly, and lets us thank those who donate right away.
 
 For more information, take a look at the [Webhooks Microservice Readme](./microservices/webhooks/README.md).
 
