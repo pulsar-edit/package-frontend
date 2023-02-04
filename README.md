@@ -86,7 +86,7 @@ Some tasks within the frontend are run in their own dedicated microservice. To r
 
 ### Social Image Cards
 
-Social Image Cards allow the creation of dynamic Package Cards to be displayed, either when linked to directly, or when a link to a packages page on the frontend has been shared to services that display the image websites prompt to.
+Social Image Cards allow the creation of dynamic Package Cards to be displayed, either when linked to directly, or when a link to a packages page on the frontend has been shared to services that displays [Open Graph Protocol](https://ogp.me/) Compliant Rich Metadata.
 
 To learn more about Social Image Cards, how they behave, and how to contribute take a look at the [Social Image Cards Readme](./microservices/social-cards/README.md).
 
