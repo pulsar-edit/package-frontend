@@ -4,6 +4,8 @@ const server_version = require("../package.json").version;
 const { apiurl } = require("./config.js").getConfig();
 const cache = require("./cache.js");
 
+const DEV =  process.env.PULSAR_STATUS === "dev" ? true : false;
+
 async function statusPage(req, res) {
   res.render('status', { message: `Server is up and running ${server_version}` });
 }
@@ -17,7 +19,7 @@ async function fullListingPage(req, res, timecop) {
     timecop.start("transcribe-json");
     let obj = await utils.prepareForListing(api.body);
     timecop.end("transcribe-json");
-    res.render("package_list", { packages: obj, pagination, timecop: timecop.timetable, page: {
+    res.render("package_list", { dev: DEV, packages: obj, pagination, timecop: timecop.timetable, page: {
       name: "All Pulsar Packages",
       og_url: "https://web.pulsar-edit.dev/packages",
       og_description: "The Pulsar Package Repository",
@@ -37,7 +39,7 @@ async function singlePackageListing(req, res, timecop) {
     timecop.start("transcribe-json");
     let obj = await utils.prepareForDetail(api.body);
     timecop.end("transcribe-json");
-    res.render("package_detail", { pack: obj, timecop: timecop.timetable, page: {
+    res.render("package_detail", { dev: DEV, pack: obj, timecop: timecop.timetable, page: {
       name: obj.name,
       og_url: `https://web.pulsar-edit.dev/packages/${obj.name}`,
       og_description: obj.description,
@@ -59,7 +61,7 @@ async function featuredPackageListing(req, res, timecop) {
     timecop.start("transcribe-json");
     let obj = await utils.prepareForListing(api.body);
     timecop.end("transcribe-json");
-    res.render("package_list", { packages: obj, timecop: timecop.timetable, page: {
+    res.render("package_list", { dev: DEV, packages: obj, timecop: timecop.timetable, page: {
       name: "Featured Packages",
       og_url: "https://web.pulsar-edit.dev/packages/featured",
       og_description: "The Pulsar Package Repository",
@@ -86,7 +88,7 @@ async function homePage(req, res, timecop) {
   if (cached !== null) {
     timecop.end("cache-check");
     // We know our cache is good and lets serve the data
-    res.render("home", { featured: cached, timecop: timecop.timetable, page: homePage });
+    res.render("home", { dev: DEV, featured: cached, timecop: timecop.timetable, page: homePage });
   } else {
     // the cache is invalid.
     timecop.end("cache-check");
@@ -97,7 +99,7 @@ async function homePage(req, res, timecop) {
       timecop.start("transcribe-json");
       let obj = await utils.prepareForListing(api.body);
       timecop.end("transcribe-json");
-      res.render("home", { featured: obj, timecop: timecop.timetable, page: homePage });
+      res.render("home", { dev: DEV, featured: obj, timecop: timecop.timetable, page: homePage });
       // then set featured cache
       cache.setFeatured(obj);
     } catch(err) {
@@ -115,7 +117,7 @@ async function searchHandler(req, res, timecop) {
     timecop.start("transcribe-json");
     let obj = await utils.prepareForListing(api.body);
     timecop.end("transcribe-json");
-    res.render("search", { packages: obj, search: req.query.q, pagination, timecop: timecop.timetable, page: {
+    res.render("search", { dev: DEV, packages: obj, search: req.query.q, pagination, timecop: timecop.timetable, page: {
       name: `Search ${req.query.q}`,
       og_url: "https://web.pulsar-edit.dev/packages/search",
       og_description: "The Pulsar Package Repository",
@@ -130,7 +132,7 @@ async function searchHandler(req, res, timecop) {
 
 async function loginHandler(req, res, timecop) {
   // This is a very simple return with no api, so we will just render
-  res.render("login", { timecop: timecop.timetable, page: {
+  res.render("login", { dev: DEV, timecop: timecop.timetable, page: {
     name: "Pulsar Sign In/Up",
     og_url: "https://web.pulsar-edit.dev/login",
     og_description: "The Pulsar User Sign In Page",
@@ -141,7 +143,7 @@ async function loginHandler(req, res, timecop) {
 
 async function logoutHandler(req, res, timecop) {
   // This is a very simple return with no api, so we will just render
-  res.render("logout", { timecop: timecop.timetable, page: {
+  res.render("logout", { dev: DEV, timecop: timecop.timetable, page: {
     name: "Pulsar Logout",
     og_url: "https://web.pulsar-edit.dev/logout",
     og_description: "The Pulsar Log Out Page",
@@ -154,7 +156,7 @@ async function userPageHandler(req, res, timecop) {
   // This is the signed in user page.
   // Since we will let the JavaScript on the page handle any API call needed here lets just
   // render a page and not do anything
-  res.render("user_page", { timecop: timecop.timetable, page: {
+  res.render("user_page", { dev: DEV, timecop: timecop.timetable, page: {
     name: "Pulsar User Account",
     og_url: "https://web.pulsar-edit.dev/users",
     og_description: "The Pulsar User Account Page",

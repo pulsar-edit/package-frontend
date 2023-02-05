@@ -4,3 +4,5 @@ pulsar-357404-fac9ad2b8ad5.json
 views-pug/
 .cache/
 public/site.css
+public/site.min.css
+public/site.min.js
