@@ -1,13 +1,13 @@
 apiVersion: serving.knative.dev/v1
 kind: Service
-metedata:
+metadata:
   name: auth-state-cleanup
 spec:
   template:
     spec:
-      serviceAccoutName: frontend-asc-bot@pulsar-357404.iam.gserviceaccount.com
+      serviceAccountName: frontend-asc-bot@pulsar-357404.iam.gserviceaccount.com
       containers:
-      - image: "us-west2-docker-pkg.dev/pulsar-357404/package-frontend/auth-state-cleanup:1.0.0"
+      - image: "us-west2-docker.pkg.dev/pulsar-357404/package-frontend/auth-state-cleanup:1.0.1"
         env:
         - name: ASC_MICROSERVICE_DB_HOST
           valueFrom:

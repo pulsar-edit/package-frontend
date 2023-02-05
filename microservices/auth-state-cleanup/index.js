@@ -9,7 +9,7 @@ const db_db = process.env.DB_DB;
 const db_port = process.env.DB_PORT;
 const db_ssl_cert = process.env.DB_SSL_CERT;
 
-const sql;
+let sql;
 
 const server = http.createServer(async (req, res) => {
   const path = req.url.split("?"); // strip any query params
