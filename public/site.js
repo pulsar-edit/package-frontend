@@ -24,6 +24,10 @@ function changeTheme(theme) {
   }
 }
 
+function shareDropDown() {
+  document.getElementById("share-dropdown-list").classList.toggle("show");
+}
+
 function toggleNavBtn() {
   document.querySelector('nav').classList.toggle('active');
 }
@@ -57,10 +61,35 @@ function copyToClipboard(triggerElement) {
   }
 }
 
+// Agnostic Copy to Clipboard for all Share Btns
+function copyToClipboardAgnostic(value, target) {
+  if (value && target) {
+    navigator.clipboard.writeText(value);
+
+    const element = document.getElementById(target);
+
+    // Store original value before manipulating
+    const label = element.innerText;
+
+    element.innerText = "Copied!";
+
+    // Reset to original button text after 3s
+    setTimeout(() => {
+      element.innerText = label;
+    }, 3000);
+  }
+}
+
 window.onclick = function (event) {
   const dropdownList = document.getElementById("dropdown-list");
   if (!event.target.matches("button") && dropdownList.classList.contains('show')) {
     dropdownList.classList.remove('show');
+  }
+  const shareDropDownList = document.getElementById("share-dropdown-list");
+  if (shareDropDownList) {
+    if (!event.target.matches("button") && shareDropDownList.classList.contains('show')) {
+      shareDropDownList.classList.remove('show');
+    }
   }
 };
 

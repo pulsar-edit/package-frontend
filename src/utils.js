@@ -132,6 +132,15 @@ function prepareForDetail(obj) {
     pack.stars = Number(pack.stars).toLocaleString();
     pack.downloads = Number(pack.downloads).toLocaleString();
 
+    // Add Sharing data to it for easy access to the package_listing
+    pack.share = {
+      pageLink: `https://web.pulsar-edit.dev/packages/${pack.name}`,
+      mdLink: {
+        default: `[![${pack.name}](https://image.pulsar-edit.dev/packages/${pack.name})](https://web.pulsar-edit.dev/packages/${pack.name})`,
+        iconic: `[![${pack.name}](https://image.pulsar-edit.dev/packages/${pack.name}?image_kind=iconic)](https://web.pulsar-edit.dev/packages/${pack.name})`
+      }
+    };
+
     resolve(pack);
   });
 }

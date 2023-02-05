@@ -104,6 +104,18 @@ nav.active {
 }
 
 /**************************/
+/****** SHARE SELECT ******/
+/**************************/
+
+#share-dropdown-list.show {
+  @apply !block;
+}
+
+#share-dropdown-list:before {
+  @apply absolute -top-4 right-80 content-[''] w-0 h-0 border-8 border-transparent border-b-accent;
+}
+
+/**************************/
 /***** PACKAGE README *****/
 /**************************/
 
