@@ -5,22 +5,43 @@ function changeThemeBtn() {
 function changeTheme(theme) {
   switch (theme) {
     case "github-dark":
+      changeSyntax("github-dark-syntax");
       document.body.setAttribute("theme", "github-dark");
       localStorage.setItem("theme", "github-dark");
       break;
     case "dracula":
+      changeSyntax("base16-dracula-syntax");
       document.body.setAttribute("theme", "dracula");
       localStorage.setItem("theme", "dracula");
       break;
     case "one-dark":
+      changeSyntax("atom-one-dark-syntax");
       document.body.setAttribute("theme", "one-dark");
       localStorage.setItem("theme", "one-dark");
       break;
     case "original-theme":
     default:
+      changeSyntax("atom-one-light-syntax");
       document.body.setAttribute("theme", "original-theme");
       localStorage.setItem("theme", "original-theme");
       break;
+  }
+}
+
+function changeSyntax(syntax) {
+  const syntaxes = [
+    "github-dark-syntax",
+    "atom-one-dark-syntax",
+    "atom-one-light-syntax",
+    "base16-dracula-syntax"
+  ];
+
+  for (let i = 0; i < syntaxes.length; i++) {
+    if (syntax === syntaxes[i]) {
+      document.getElementById(syntax).removeAttribute("disabled");
+    } else {
+      document.getElementById(syntaxes[i]).setAttribute("disabled", "");
+    }
   }
 }
 
