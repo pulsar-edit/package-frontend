@@ -22,7 +22,7 @@ If there isn't a theme yet that fits you, creating a new theme is welcome, encou
 
 First create the theme itself, by laying out the theme variables in `./src/site.css`. The top of this file should have every other supported theme listed along with the variables that can and will need to be modified for your theme.
 
-After creating the colours of your theme you'll need to find what syntax theme matches your new theme the best. The Pulsar Package Frontend uses [`Highlight.js`](https://highlightjs.org/) to handle highlighting code blocks that will appear within packages ReadMes, so you can browse all their available themes on their [website](https://highlightjs.org/static/demo/). Once you've found the one you like, make sure to jot down it's CND URL.
+After creating the colors of your theme you'll need to find what syntax theme matches your new theme the best. The Pulsar Package Frontend uses [`Highlight.js`](https://highlightjs.org/) to handle highlighting code blocks that will appear within package READMEs, so you can browse all their available themes on their [website](https://highlightjs.org/static/demo/). Once you've found the one you like, make sure to jot down its CND URL.
 
 Once the theme is created, ensure to add it as an option in `./public/site.js` within the function `changeTheme` and add a new check in the switch statement. Setting the body to have your theme as an attribute value, and saving the new theme option into the users local storage. Additionally in your new section of the switch statement ensure to add `changeSyntax("Your new Syntax Theme Name");`. This ensures the syntax is changed at the same time as your theme. Then within the function `changeSyntax()` add your themes name to the `syntaxes` array.
 
