@@ -1,13 +1,14 @@
 const http = require("http");
+const postgres = require("postgres");
 const port = parseInt(process.env.PORT) || 8080;
 
 // DB variables
-const db_host = process.env.DB_HOST;
-const db_user = process.env.DB_USER;
-const db_pass = process.env.DB_PASS;
-const db_db = process.env.DB_DB;
-const db_port = process.env.DB_PORT;
-const db_ssl_cert = process.env.DB_SSL_CERT;
+const db_host = process.env.ASC_MICROSERVICE_DB_HOST;
+const db_user = process.env.ASC_MICROSERVICE_DB_USER;
+const db_pass = process.env.ASC_MICROSERVICE_DB_PASS;
+const db_db = process.env.ASC_MICROSERVICE_DB_DB;
+const db_port = process.env.ASC_MICROSERVICE_DB_PORT;
+const db_ssl_cert = process.env.ASC_MICROSERVICE_DB_SSL_CERT;
 
 let sql;
 
@@ -16,7 +17,7 @@ const server = http.createServer(async (req, res) => {
 
   if (path[0] === "/" && req.method === "POST") {
 
-    console.log(`Auth-State-Cleanup Job Triggered: ${req.url} - ${req.getHeader("User-Agent")}`);
+    console.log(`Auth-State-Cleanup Job Triggered: ${req.url} - ${req.headers["user-agent"]}`);
 
     let job = await runJob();
 
@@ -51,13 +52,13 @@ function setupSQL() {
   return process.env.PULSAR_STATUS === "dev"
     ? postgres({
       host: db_host,
-      username: db_username,
+      username: db_user,
       database: db_db,
       port: db_port
     })
     : postgres({
       host: db_host,
-      username: db_username,
+      username: db_user,
       password: db_pass,
       database: db_db,
       port: db_port,

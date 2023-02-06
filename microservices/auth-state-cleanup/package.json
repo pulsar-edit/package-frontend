@@ -1,6 +1,6 @@
 {
   "name": "auth-state-cleanup",
-  "version": "1.0.1",
+  "version": "1.0.5",
   "description": "Microservice to Cleanup our Database AuthState Table",
   "main": "index.js",
   "scripts": {
