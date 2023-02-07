@@ -57,7 +57,23 @@ function changeSyntax(syntax) {
 }
 
 function shareDropDown() {
-  document.getElementById("share-dropdown-list").classList.toggle("show");
+  const list = document.getElementById("share-dropdown-list");
+  const willBeShown = !list.classList.contains("show");
+  list.classList.toggle("show");
+
+  if (willBeShown) {
+    // Position the share menu horizontally so that the arrow is directly below
+    // the middle of the share button.
+    let btn = document.querySelector("button.share-button");
+    if (!btn) { return; }
+    // Take the difference between the right edge of the body and the right
+    // edge of the share button; then adjust for the widths of the share button
+    // and the share menu.
+    let bodyRect = document.body.getBoundingClientRect();
+    let btnRect = btn.getBoundingClientRect();
+    let menuRect = list.getBoundingClientRect();
+    list.style.right = `${bodyRect.width - btnRect.right - (menuRect.width / 2) + (btnRect.width / 2)}px`;
+  }
 }
 
 function toggleNavBtn() {
@@ -82,7 +98,6 @@ function copyToClipboard(triggerElement) {
     if (triggerElement) {
       // Store original value before manipulating
       const label = triggerElement.innerText;
-
       triggerElement.innerText = "Copied!";
 
       // Reset to original button text after 3s
@@ -97,14 +112,11 @@ function copyToClipboard(triggerElement) {
 function copyToClipboardAgnostic(value, target) {
   if (value && target) {
     navigator.clipboard.writeText(value);
-
-    const element = document.getElementById(target);
+    const element = document.querySelector(`#${target} > span`);
 
     // Store original value before manipulating
     const label = element.innerText;
-
     element.innerText = "Copied!";
-
     // Reset to original button text after 3s
     setTimeout(() => {
       element.innerText = label;
@@ -112,20 +124,26 @@ function copyToClipboardAgnostic(value, target) {
   }
 }
 
-window.onclick = function (event) {
-  const dropdownList = document.getElementById("dropdown-list");
-  if (!event.target.matches("button") && dropdownList.classList.contains('show')) {
-    dropdownList.classList.remove('show');
+// Close the share menu if the user clicks outside of the share button or the
+// share menu.
+addEventListener('click', (e) => {
+  const o = document.getElementById('share-dropdown-list');
+  if (o && !e.target.closest('button.share-button, #share-dropdown-list')) {
+    o.classList.remove('show');
   }
-  const shareDropDownList = document.getElementById("share-dropdown-list");
-  if (shareDropDownList) {
-    if (!event.target.matches("button") && shareDropDownList.classList.contains('show')) {
-      shareDropDownList.classList.remove('show');
-    }
-  }
-};
+});
 
-window.onload = function (event) {
+// Close the change-theme menu if the click is outside of the change-theme
+// button. (We want the menu to close automatically when the user selects an
+// option.)
+addEventListener('click', (e) => {
+  const t = document.getElementById('dropdown-list');
+  if (!e.target.closest('button.change-theme')) {
+    t.classList.remove('show');
+  }
+});
+
+function setup (event) {
   if (localStorage.getItem("theme")) {
     // If a theme has been set or saved.
     changeTheme(localStorage.getItem("theme"));
@@ -140,9 +158,26 @@ window.onload = function (event) {
     userAccountActions();
   }
 
+  const shareButton = document.querySelector('button.share-button');
+  if (shareButton) {
+    shareButton.addEventListener("click", shareDropDown);
+  }
+
+  const changeThemeButton = document.querySelector('button.change-theme');
+  if (changeThemeButton) {
+    changeThemeButton.addEventListener("click", changeThemeBtn);
+  }
+
   const copyToClipboardButton = document.querySelector(
     ".copy-to-clipboard-button-js"
   );
+
+  const dropdownList = document.getElementById("dropdown-list");
+  dropdownList.addEventListener("click", (event) => {
+    let button = event.target.closest("button[data-theme-name]");
+    if (!button) { return; }
+    changeTheme(button.getAttribute('data-theme-name'));
+  });
 
   if (copyToClipboardButton) {
     copyToClipboardButton.addEventListener("click", (event) => {
@@ -154,6 +189,8 @@ window.onload = function (event) {
     });
   }
 };
+
+document.addEventListener('DOMContentLoaded', setup);
 
 function userAccountActions() {
   // First lets see if they have a token in their request
