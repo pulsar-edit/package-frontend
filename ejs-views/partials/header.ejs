@@ -67,12 +67,12 @@
           Website
         </a>
         <div class="relative flex-1 text-right">
-          <button onclick="changeThemeBtn()">Change Theme <i class="fas fa-caret-down ml-2"></i></button>
+          <button class="change-theme">Change Theme <i class="fas fa-caret-down ml-2"></i></button>
           <div class="hidden absolute bg-accent text-left md:text-right md:mt-8 p-3 min-w-[200px] md:right-0" id="dropdown-list">
-            <button onclick="changeTheme('original-theme')">Atom.io (Default)</button><br>
-            <button onclick="changeTheme('github-dark')">GitHub Dark</button><br>
-            <button onclick="changeTheme('dracula')">Dracula</button><br>
-            <button onclick="changeTheme('one-dark')">One Dark</button>
+            <button data-theme-name="original-theme">Atom.io (Default)</button>
+            <button data-theme-name="github-dark">GitHub Dark</button>
+            <button data-theme-name="dracula">Dracula</button>
+            <button data-theme-name="one-dark">One Dark</button>
           </div>
         </div>
 
