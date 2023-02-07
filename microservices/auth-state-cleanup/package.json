@@ -1,0 +1,17 @@
+{
+  "name": "auth-state-cleanup",
+  "version": "1.0.5",
+  "description": "Microservice to Cleanup our Database AuthState Table",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./index.js"
+  },
+  "engines": {
+    "node": ">=16.16.0"
+  },
+  "author": "confused-Techie",
+  "license": "MIT",
+  "dependencies": {
+    "postgres": "^3.3.3"
+  }
+}

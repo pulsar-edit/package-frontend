@@ -106,6 +106,14 @@ This allows the Pulsar Discord to get GitHub Sponsors notifications directly, an
 
 For more information, take a look at the [Webhooks Microservice Readme](./microservices/webhooks/README.md).
 
+### Auth State Cleanup
+
+The Auth State Cleanup Microservice is a scheduled task that helps to cleanup the public Database in use for Pulsar.
+
+Automatically deleted expired Secret Auth Codes that are generated for security during the GitHub OAuth Signup process for new users.
+
+For more information, take a look at the [Auth State Cleanup Readme](./microservices/auth-state-cleanup/README.md).
+
 ## Developing the Frontend
 
 The Frontend alone is a rather simple NodeJS package, and is made to run smoothly for local development or testing.
