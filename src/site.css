@@ -128,10 +128,6 @@ nav.active {
   @apply inline-block mr-2 text-text fill-primary;
 }
 
-#readme .hljs {
-  @apply text-text bg-secondary;
-}
-
 #readme > p > a {
   @apply inline-block;
 }

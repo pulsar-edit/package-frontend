@@ -5,22 +5,54 @@ function changeThemeBtn() {
 function changeTheme(theme) {
   switch (theme) {
     case "github-dark":
+      changeSyntax("github-dark-syntax");
       document.body.setAttribute("theme", "github-dark");
       localStorage.setItem("theme", "github-dark");
       break;
     case "dracula":
+      changeSyntax("base16-dracula-syntax");
       document.body.setAttribute("theme", "dracula");
       localStorage.setItem("theme", "dracula");
       break;
     case "one-dark":
+      changeSyntax("atom-one-dark-syntax");
       document.body.setAttribute("theme", "one-dark");
       localStorage.setItem("theme", "one-dark");
       break;
     case "original-theme":
     default:
+      changeSyntax("atom-one-light-syntax");
       document.body.setAttribute("theme", "original-theme");
       localStorage.setItem("theme", "original-theme");
       break;
+  }
+}
+
+function changeSyntax(syntax) {
+
+  const syntaxList = {
+    "github-dark-syntax": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/github-dark.min.css",
+    "atom-one-dark-syntax": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/atom-one-dark.min.css",
+    "atom-one-light-syntax": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/atom-one-light.min.css",
+    "base16-dracula-syntax": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/base16/dracula.min.css"
+  };
+
+  // Remove the previous syntax theme
+  const oldSyntax = document.getElementById("syntax-theme");
+  if (oldSyntax) {
+    // In case the default was only previously set which has no syntax theme.
+    oldSyntax.remove();
+  }
+
+  // Create the new syntax theme
+  if (syntaxList[syntax]) {
+    const syntaxLink = document.createElement("link");
+    syntaxLink.setAttribute("rel", "stylesheet");
+    syntaxLink.setAttribute("class", "codestyle");
+    syntaxLink.setAttribute("id", "syntax-theme");
+    syntaxLink.setAttribute("href", syntaxList[syntax]);
+
+    document.head.appendChild(syntaxLink);
   }
 }
 
