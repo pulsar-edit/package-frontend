@@ -29,19 +29,30 @@ function changeTheme(theme) {
 }
 
 function changeSyntax(syntax) {
-  const syntaxes = [
-    "github-dark-syntax",
-    "atom-one-dark-syntax",
-    "atom-one-light-syntax",
-    "base16-dracula-syntax"
-  ];
 
-  for (let i = 0; i < syntaxes.length; i++) {
-    if (syntax === syntaxes[i]) {
-      document.getElementById(syntax).removeAttribute("disabled");
-    } else {
-      document.getElementById(syntaxes[i]).setAttribute("disabled", "");
-    }
+  const syntaxList = {
+    "github-dark-syntax": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/github-dark.min.css",
+    "atom-one-dark-syntax": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/atom-one-dark.min.css",
+    "atom-one-light-syntax": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/atom-one-light.min.css",
+    "base16-dracula-syntax": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/base16/dracula.min.css"
+  };
+
+  // Remove the previous syntax theme
+  const oldSyntax = document.getElementById("syntax-theme");
+  if (oldSyntax) {
+    // In case the default was only previously set which has no syntax theme.
+    oldSyntax.remove();
+  }
+
+  // Create the new syntax theme
+  if (syntaxList[syntax]) {
+    const syntaxLink = document.createElement("link");
+    syntaxLink.setAttribute("rel", "stylesheet");
+    syntaxLink.setAttribute("class", "codestyle");
+    syntaxLink.setAttribute("id", "syntax-theme");
+    syntaxLink.setAttribute("href", syntaxList[syntax]);
+
+    document.head.appendChild(syntaxLink);
   }
 }
 

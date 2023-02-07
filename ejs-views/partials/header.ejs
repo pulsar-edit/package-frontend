@@ -44,10 +44,8 @@
     <% } %>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
-    <link id="atom-one-dark-syntax" class="codestyle" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/atom-one-dark.min.css" disabled>
-    <link id="atom-one-light-syntax" class="codestyle" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/atom-one-light.min.css" disabled>
-    <link id="github-dark-syntax" class="codestyle" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/github-dark.min.css" disabled>
-    <link id="base16-dracula-syntax" class="codestyle" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/base16/dracula.min.css" disabled>
+    <!-- Set our Default Syntax Theme during page load so first time visitors don't have to wait for JS to execute -->
+    <link rel="stylesheet" class="codestyle" id="syntax-theme" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/atom-one-light.min.css">
   </head>
   <body class="bg-canvas flex flex-col min-h-screen text-text">
     <% if (timecop) { %>
