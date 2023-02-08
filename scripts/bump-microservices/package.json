@@ -1,0 +1,15 @@
+{
+  "name": "bump-microservices",
+  "version": "1.0.0",
+  "description": "Used simply to bump microservice versions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "confused-Techie",
+  "license": "MIT",
+  "dependencies": {
+    "js-yaml": "^4.1.0",
+    "shelljs": "^0.8.5"
+  }
+}
