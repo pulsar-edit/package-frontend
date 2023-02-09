@@ -120,6 +120,10 @@ nav.active {
   @apply absolute -top-4 content-[''] w-0 h-0 border-8 border-transparent border-b-accent;
 }
 
+#share-dropdown-list input {
+  background-color: var(--canvas);
+}
+
 /**************************/
 /***** PACKAGE README *****/
 /**************************/
