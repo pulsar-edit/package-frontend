@@ -115,14 +115,7 @@ async function findLink(os, type) {
       query getRepositoryBuildStatuses {
         repository(id: 6483909499158528) {
           builds(branch: "master", last: 10) {
-            pageInfo {
-              hasNextPage
-              hasPreviousPage
-              startCursor
-              endCursor
-            }
             edges {
-              cursor
               node {
                 id
                 status
@@ -147,7 +140,6 @@ async function findLink(os, type) {
     let buildQuery = `
       query GetTasksFromBuild {
         build(id: "${buildID}") {
-          status
           tasks {
             name
             id
@@ -206,15 +198,9 @@ async function findLink(os, type) {
     let taskQuery = `
       query GetTaskDetails {
         task(id: ${taskid}) {
-          name
-          status
           artifacts {
-            name
-            type
-            format
             files {
               path
-              size
             }
           }
         }
