@@ -111,18 +111,11 @@ async function displayError(req, res, errMsg) {
 
 async function findLink(os, type) {
   try {
-    let baseQuery = `
+    let repositoryQuery = `
       query getRepositoryBuildStatuses {
         repository(id: 6483909499158528) {
           builds(branch: "master", last: 10) {
-            pageInfo {
-              hasNextPage
-              hasPreviousPage
-              startCursor
-              endCursor
-            }
             edges {
-              cursor
               node {
                 id
                 status
@@ -133,13 +126,13 @@ async function findLink(os, type) {
       }
     `;
 
-    let baseGraph = await doRequest(baseQuery);
+    let repositoryGraph = await doRequest(repositoryQuery);
 
     let buildID;
 
-    for (let i = 0; i < baseGraph.data.repository.builds.edges.length; i++) {
-      if (baseGraph.data.repository.builds.edges[i].node.status === "COMPLETED") {
-        buildID = baseGraph.data.repository.builds.edges[i].node.id;
+    for (const edge of repositoryGraph.data.repository.builds.edges) {
+      if (edge.node.status === "COMPLETED") {
+        buildID = edge.node.id;
         break;
       }
     }
@@ -147,10 +140,10 @@ async function findLink(os, type) {
     let buildQuery = `
       query GetTasksFromBuild {
         build(id: "${buildID}") {
-          status
           tasks {
             name
             id
+            status
           }
         }
       }
@@ -160,10 +153,10 @@ async function findLink(os, type) {
 
     let taskid = undefined;
 
-    const findID = function (name, builds) {
-      for (let i = 0; i < builds.length; i++) {
-        if (builds[i].name == name) {
-          return builds[i].id;
+    const findID = function (name, tasks) {
+      for (const task of tasks) {
+        if (task.name === name && task.status === "COMPLETED") {
+          return task.id;
         }
       }
       return undefined;
@@ -205,15 +198,9 @@ async function findLink(os, type) {
     let taskQuery = `
       query GetTaskDetails {
         task(id: ${taskid}) {
-          name
-          status
           artifacts {
-            name
-            type
-            format
             files {
               path
-              size
             }
           }
         }
@@ -225,14 +212,14 @@ async function findLink(os, type) {
     let binaryPath = undefined;
 
     const findBinary = function (ext, loc, binaries) {
-      for (let i = 0; i < binaries.length; i++) {
+      for (const binary of binaries) {
         if (loc === "start") {
-          if (binaries[i].path.startsWith(ext)) {
-            return binaries[i].path;
+          if (binary.path.startsWith(ext)) {
+            return binary.path;
           }
         } else if (loc === "end") {
-          if (binaries[i].path.endsWith(ext)) {
-            return binaries[i].path;
+          if (binary.path.endsWith(ext)) {
+            return binary.path;
           }
         }
       }
