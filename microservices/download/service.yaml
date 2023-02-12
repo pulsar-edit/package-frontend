@@ -6,4 +6,4 @@ spec:
   template:
     spec:
       containers:
-        - image: "us-west2-docker.pkg.dev/pulsar-357404/package-frontend/download:1.0.2"
+        - image: "us-west2-docker.pkg.dev/pulsar-357404/package-frontend/download:1.0.3"
