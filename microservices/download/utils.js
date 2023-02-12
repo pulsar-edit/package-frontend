@@ -111,7 +111,7 @@ async function displayError(req, res, errMsg) {
 
 async function findLink(os, type) {
   try {
-    let baseQuery = `
+    let repositoryQuery = `
       query getRepositoryBuildStatuses {
         repository(id: 6483909499158528) {
           builds(branch: "master", last: 10) {
@@ -126,13 +126,13 @@ async function findLink(os, type) {
       }
     `;
 
-    let baseGraph = await doRequest(baseQuery);
+    let repositoryGraph = await doRequest(repositoryQuery);
 
     let buildID;
 
-    for (let i = 0; i < baseGraph.data.repository.builds.edges.length; i++) {
-      if (baseGraph.data.repository.builds.edges[i].node.status === "COMPLETED") {
-        buildID = baseGraph.data.repository.builds.edges[i].node.id;
+    for (let i = 0; i < repositoryGraph.data.repository.builds.edges.length; i++) {
+      if (repositoryGraph.data.repository.builds.edges[i].node.status === "COMPLETED") {
+        buildID = repositoryGraph.data.repository.builds.edges[i].node.id;
         break;
       }
     }
