@@ -151,6 +151,7 @@ async function findLink(os, type) {
           tasks {
             name
             id
+            status
           }
         }
       }
@@ -162,7 +163,7 @@ async function findLink(os, type) {
 
     const findID = function (name, builds) {
       for (let i = 0; i < builds.length; i++) {
-        if (builds[i].name == name) {
+        if (builds[i].name === name && builds[i].status === "COMPLETED") {
           return builds[i].id;
         }
       }
