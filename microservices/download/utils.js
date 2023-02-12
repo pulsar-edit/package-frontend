@@ -130,9 +130,9 @@ async function findLink(os, type) {
 
     let buildID;
 
-    for (let i = 0; i < repositoryGraph.data.repository.builds.edges.length; i++) {
-      if (repositoryGraph.data.repository.builds.edges[i].node.status === "COMPLETED") {
-        buildID = repositoryGraph.data.repository.builds.edges[i].node.id;
+    for (const edge of repositoryGraph.data.repository.builds.edges) {
+      if (edge.node.status === "COMPLETED") {
+        buildID = edge.node.id;
         break;
       }
     }
@@ -153,10 +153,10 @@ async function findLink(os, type) {
 
     let taskid = undefined;
 
-    const findID = function (name, builds) {
-      for (let i = 0; i < builds.length; i++) {
-        if (builds[i].name === name && builds[i].status === "COMPLETED") {
-          return builds[i].id;
+    const findID = function (name, tasks) {
+      for (const task of tasks) {
+        if (task.name === name && task.status === "COMPLETED") {
+          return task.id;
         }
       }
       return undefined;
@@ -212,14 +212,14 @@ async function findLink(os, type) {
     let binaryPath = undefined;
 
     const findBinary = function (ext, loc, binaries) {
-      for (let i = 0; i < binaries.length; i++) {
+      for (const binary of binaries) {
         if (loc === "start") {
-          if (binaries[i].path.startsWith(ext)) {
-            return binaries[i].path;
+          if (binary.path.startsWith(ext)) {
+            return binary.path;
           }
         } else if (loc === "end") {
-          if (binaries[i].path.endsWith(ext)) {
-            return binaries[i].path;
+          if (binary.path.endsWith(ext)) {
+            return binary.path;
           }
         }
       }
