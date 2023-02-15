@@ -45,18 +45,16 @@ function prepareForListing(obj) {
         // Lets first check that we can safely grab all the data we need
         // https://github.com/pulsar-edit/package-frontend/issues/74
         const valid = (obj[i]?.name ?? false) &&
-                      (obj[i]?.metadata?.keywords ?? false) &&
                       (obj[i]?.downloads ?? false) &&
                       (obj[i]?.stargazers_count ?? false) &&
-                      (obj[i]?.metadata?.description ?? false) &&
-                      (obj[i]?.metadata?.author ?? false);
+                      (typeof obj[i]?.metadata === "object");
         if (!valid) {
           // One of our strict checks has failed, so we know the object is invalid
           // Instead of appending placeholder data like below for a single
           // check failing, we will add in data asking for users to alert us of
           // this broken package, so that it can be repaired
           let brokenPack = {
-            name: pack?.name || "Malformed Package", // We still want to report a name for users to submit
+            name: obj[i]?.name || "Malformed Package", // We still want to report a name for users to submit
             description: `Whoops! Seems this package has severly malformed data. Please submit an issue to https://github.com/pulsar-edit/package-backend/issue with the package's name. Thank you!`,
             keywords: [ "malformed" ],
             author: "malformed",
