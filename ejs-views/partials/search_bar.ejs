@@ -1,10 +1,68 @@
 <div class="text-center">
   <h1>Packages make Pulsar do amazing things.</h1>
-  <form class="my-12" action="/packages/search">
+  <form class="search" method="get" action="/packages/search">
     <input type="search" value="<% if (locals.search) { %><%- search %><% } %>" name="q" placeholder="Search Packages..." />
     <button type="submit">
       <i class="fas fa-magnifying-glass"></i>
       Search
     </button>
+
+    <h3 class="option-title">Method to sort the search results.</h3>
+    <ul class="radio-option-container">
+      <li class="radio-option-listing">
+        <div class="radio-option-inner">
+          <input id="horizontal-list-radio-sort-relevance" type="radio" name="sort" value="relevance"
+            <% if (locals.sortQuery === "relevance" || locals.sortQuery === "" || typeof locals.sortQuery === "undefined") { %><%= 'checked' %><% } %> class="radio-option-input" />
+          <label for="horizontal-list-radio-sort-relevance" class="radio-option-label">Relevance</label>
+        </div>
+      </li>
+      <li class="radio-option-listing">
+        <div class="radio-option-inner">
+          <input id="horizontal-list-radio-sort-downloads" type="radio" name="sort" value="downloads"
+            <% if (locals.sortQuery === "downloads") { %><%= 'checked' %><% } %> class="radio-option-input" />
+          <label for="horizontal-list-radio-sort-downloads" class="radio-option-label">Downloads</label>
+        </div>
+      </li>
+      <li class="radio-option-listing">
+        <div class="radio-option-inner">
+          <input id="horizontal-list-radio-sort-created_at" type="radio" name="sort" value="created_at"
+            <% if (locals.sortQuery === "created_at") { %><%= 'checked' %><% } %> class="radio-option-input" />
+          <label for="horizontal-list-radio-sort-created_at" class="radio-option-label">Created At</label>
+        </div>
+      </li>
+      <li class="radio-option-listing">
+        <div class="radio-option-inner">
+          <input id="horizontal-list-radio-sort-updated_at" type="radio" name="sort" value="updated_at"
+            <% if (locals.sortQuery === "updated_at") { %><%= 'checked' %><% } %> class="radio-option-input" />
+          <label for="horizontal-list-radio-sort-updated_at" class="radio-option-label">Updated At</label>
+        </div>
+      </li>
+      <li class="radio-option-listing">
+        <div class="radio-option-inner">
+          <input id="horizontal-list-radio-sort-stars" type="radio" name="sort" value="stars"
+            <% if (locals.sortQuery === "stars") { %><%= 'checked' %><% } %> class="radio-option-input" />
+          <label for="horizontal-list-radio-sort-stars" class="radio-option-label">Stars</label>
+        </div>
+      </li>
+    </ul>
+
+    <h3 class="option-title">Direction to list search results.</h3>
+    <ul class="radio-option-container">
+      <li class="radio-option-listing">
+        <div class="radio-option-inner">
+          <input id="horizontal-list-radio-direction-desc" type="radio" name="direction" value="desc"
+            <% if (locals.directionQuery === "desc" || locals.directionQuery === "" || typeof locals.directionQuery === "undefined") { %><%= 'checked' %><% } %> class="radio-option-input" />
+          <label for="horizontal-list-radio-direction-desc" class="radio-option-label">Descending</label>
+        </div>
+      </li>
+      <li class="radio-option-listing">
+        <div class="radio-option-inner">
+          <input id="horizontal-list-radio-direction-asc" type="radio" name="direction" value="asc"
+            <% if (locals.directionQuery === "asc") { %><%= 'checked' %><% } %> class="radio-option-input" />
+          <label for="horizontal-list-radio-direction-asc" class="radio-option-label">Ascending</label>
+        </div>
+      </li>
+    </ul>
+
   </form>
 </div>
