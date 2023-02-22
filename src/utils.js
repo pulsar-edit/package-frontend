@@ -6,7 +6,7 @@ let md = new MarkdownIt({
 }).use(require("markdown-it-highlightjs"), {
   auto: true,
   code: true,
-  inline: true
+  inline: false
 }).use(require("markdown-it-emoji"), {
 
 }).use(require("markdown-it-github-headings"), {
