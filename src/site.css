@@ -159,6 +159,12 @@ nav.active {
   background-color: var(--secondary);
 }
 
+#readme code:not(.hljs) {
+  background-color: var(--secondary);
+  border-radius: 3px;
+  padding: 2px 5px;
+}
+
 /**************************/
 /****** PAGINATION ********/
 /**************************/
