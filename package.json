@@ -16,6 +16,9 @@
     "mini:css": "minify ./public/site.css > ./public/site.min.css",
     "deploy_script": "echo 'Do not run!' && gcloud app deploy"
   },
+  "engines": {
+    "node": ">=16 <=18"
+  },
   "author": "confused-Techie",
   "license": "MIT",
   "dependencies": {
