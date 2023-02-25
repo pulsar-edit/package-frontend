@@ -160,9 +160,10 @@ nav.active {
 }
 
 #readme code:not(.hljs) {
+  padding: 0.2em 0.4em;
+  border-radius: 6px;
   background-color: var(--secondary);
-  border-radius: 3px;
-  padding: 2px 5px;
+  color: var(--text);
 }
 
 /**************************/
