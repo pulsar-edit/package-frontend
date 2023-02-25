@@ -16,8 +16,23 @@ module.exports = {
       typography: {
         DEFAULT: {
           css: {
+            'code::before': {
+              content: 'none'
+            },
+            'code::after': {
+              content: 'none'
+            },
             color: 'var(--text)',
             a: { color: 'var(--text)' },
+            code: {
+              color: 'var(--text)',
+              'font-weight': '500'
+            },
+            pre: {
+              'background-color': 'transparent',
+              'padding': '0',
+              'border': '2px solid var(--secondary)'
+            },
             strong: { color: 'var(--text)' },
             th: { color: 'var(--text)' },
             h1: { color: 'var(--text)' },

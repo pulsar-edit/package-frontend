@@ -4,7 +4,7 @@ const url = require('url');
 let md = new MarkdownIt({
   html: true
 }).use(require("markdown-it-highlightjs"), {
-  auto: true,
+  auto: false,
   code: true,
   inline: false
 }).use(require("markdown-it-emoji"), {

@@ -159,7 +159,7 @@ nav.active {
   background-color: var(--secondary);
 }
 
-#readme :not(pre) code {
+#readme code:not(.hljs) {
   padding: 0.2em 0.4em;
   border-radius: 6px;
   background-color: var(--secondary);
