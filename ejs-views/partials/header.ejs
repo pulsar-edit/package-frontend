@@ -46,6 +46,45 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
     <!-- Set our Default Syntax Theme during page load so first time visitors don't have to wait for JS to execute -->
     <link rel="stylesheet" class="codestyle" id="syntax-theme" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/atom-one-light.min.css">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "url": "https://web.pulsar-edit.dev/",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://web.pulsar-edit.dev/packages/search?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "url": "https://pulsar-edit.dev/",
+        "logo": "https://web.pulsar-edit.dev/public/pulsar_name.svg"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Pulsar",
+        "operatingSystem": [ "Windows", "OSX", "macOS", "Linux" ],
+        "applicationCategory": "DeveloperApplication",
+        "offers": {
+          "@type": "Offer",
+          "price": "0"
+        },
+        "downloadUrl": "https://pulsar-edit.dev/download.html",
+        "about": "A Community-led Hyper-Hackable Text Editor",
+        "description": "A Community-led Hyper-Hackable Text Editor",
+        "author": "Pulsar-Edit",
+        "inLanguage": "en-US",
+        "isBasedOn": "Atom",
+        "isBasedOnUrl": "https://github.com/atom"
+      }
+    </script>
   </head>
   <body class="bg-canvas flex flex-col min-h-screen text-text">
     <% if (timecop) { %>
