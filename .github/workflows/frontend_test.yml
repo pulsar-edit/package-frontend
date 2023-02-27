@@ -1,0 +1,35 @@
+# This GitHub Action is intended to run the tests present for the Package Frontend
+name: Package Frontend Tests Script
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'src/**'
+      - 'static/**'
+      - 'package.json'
+      - 'tailwind.config.js'
+      - 'public/**'
+      - 'ejs-views/**'
+
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
+
+    steps:
+    - name: Checkout the latest code
+      uses: actions/checkout@v3
+
+    - name: Setup NodeJS - ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Run Tests
+      run: npm run test
