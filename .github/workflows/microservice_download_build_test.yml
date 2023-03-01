@@ -1,0 +1,21 @@
+# This GitHub Action is intended to simply test that the
+# Microservice Download is able to build with Docker properly.
+name: Microservice Download Docker Build
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'microservices/download/**'
+  workflow_dispatch:
+
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout the latest code
+      uses: actions/checkout@v3
+
+    - name: Build Docker Image
+      run: docker build .
