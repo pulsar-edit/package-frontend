@@ -19,6 +19,11 @@ function changeTheme(theme) {
       document.body.setAttribute("theme", "one-dark");
       localStorage.setItem("theme", "one-dark");
       break;
+    case "one-light":
+      changeSyntax("atom-one-light-syntax");
+      document.body.setAttribute("theme", "one-light");
+      localStorage.setItem("theme", "one-light");
+      break;
     case "original-theme":
     default:
       changeSyntax("atom-one-light-syntax");

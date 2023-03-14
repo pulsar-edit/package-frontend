@@ -34,6 +34,14 @@ body[theme="one-dark"] {
   --text: #abb2bf;
 }
 
+body[theme="one-light"] {
+  --canvas: #e8eaed; /* Pulsar's @base-background-color */
+  --primary: #5a8ae9; /* Pulsar's @button-background-color-selected */
+  --accent: #d7dae0; /* Pulsar's @app-background-color */
+  --secondary: #c5cad3; /* Pulsar's @base-border-color */
+  --text: #2c313a; /* Pulsar's @text-color */
+}
+
 /**************************/
 /******** GLOBALS *********/
 /**************************/
@@ -60,7 +68,8 @@ input {
 
 header a,
 header button {
-  @apply text-white/80 hover:text-primary transition-all;
+  color: var(--text);
+  @apply hover:text-primary transition-all;
 }
 
 article {
