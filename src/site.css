@@ -3,11 +3,12 @@
 @tailwind utilities;
 
 :root {
-  --canvas: #fff;
-  --primary: #3b9b6d;
-  --accent: #584b4f;
-  --secondary: rgba(0, 0, 0, 0.1);
-  --text: #000;
+  --canvas: #fff; /* Colours the background of the whole page */
+  --primary: #3b9b6d; /* Colours certain buttons, or highlights */
+  --accent: #584b4f; /* Colours banners or borders */
+  --secondary: rgba(0, 0, 0, 0.1); /* Colours borders and modals */
+  --text: #000; /* Colours most text */
+  --header-text: #fff; /* Colours header text. Will fall back to `--text` if empty */
 }
 
 body[theme="github-dark"] {
@@ -16,6 +17,7 @@ body[theme="github-dark"] {
   --accent: #161b22;
   --secondary: rgba(255, 255, 255, 0.1);
   --text: #c9d1d9;
+  --header-text: var(--text);
 }
 
 body[theme="dracula"] {
@@ -24,6 +26,7 @@ body[theme="dracula"] {
   --accent: #44475a	;
   --secondary: rgba(255, 255, 255, 0.1);
   --text: #f8f8f2;
+  --header-text: var(--text);
 }
 
 body[theme="one-dark"] {
@@ -32,6 +35,7 @@ body[theme="one-dark"] {
   --accent: #21252b;
   --secondary: #181a1f;
   --text: #abb2bf;
+  --header-text: var(--text);
 }
 
 body[theme="one-light"] {
@@ -40,6 +44,7 @@ body[theme="one-light"] {
   --accent: #d7dae0; /* Pulsar's @app-background-color */
   --secondary: #c5cad3; /* Pulsar's @base-border-color */
   --text: #2c313a; /* Pulsar's @text-color */
+  --header-text: #121417; /* Pulsar's @text-color-highlight */
 }
 
 /**************************/
@@ -68,7 +73,7 @@ input {
 
 header a,
 header button {
-  color: var(--text);
+  color: var(--header-text, var(--text));
   @apply hover:text-primary transition-all;
 }
 
