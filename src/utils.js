@@ -55,7 +55,7 @@ function prepareForListing(obj) {
           // this broken package, so that it can be repaired
           let brokenPack = {
             name: obj[i]?.name || "Malformed Package", // We still want to report a name for users to submit
-            description: `Whoops! Seems this package has severly malformed data. Please submit an issue to https://github.com/pulsar-edit/package-backend/issue with the package's name. Thank you!`,
+            description: `Whoops! Seems this package has severely malformed data. Please submit an issue to https://github.com/pulsar-edit/package-backend/issues with the package's name. Thank you!`,
             keywords: [ "malformed" ],
             author: "malformed",
             downloads: 0,
