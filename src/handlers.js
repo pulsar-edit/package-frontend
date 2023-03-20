@@ -33,6 +33,11 @@ async function fullListingPage(req, res, timecop) {
 
 async function singlePackageListing(req, res, timecop) {
   timecop.start("api-request");
+
+  // See if there are any query parameters we want to pass to our OG images.
+  let og_image_kind = req.query.image_kind ?? "default";
+  let og_image_theme = req.query.theme ?? "light";
+
   try {
     let api = await superagent.get(`${apiurl}/api/packages/${decodeURIComponent(req.params.packageName)}`).query(req.query);
     timecop.end("api-request");
@@ -43,7 +48,7 @@ async function singlePackageListing(req, res, timecop) {
       name: obj.name,
       og_url: `https://web.pulsar-edit.dev/packages/${obj.name}`,
       og_description: obj.description,
-      og_image: `https://image.pulsar-edit.dev/packages/${obj.name}`,
+      og_image: `https://image.pulsar-edit.dev/packages/${obj.name}?image_kind=${og_image_kind}&theme=${og_image_theme}`,
       og_image_type: "image/png",
       og_image_width: 1200,
       og_image_height: 600,
