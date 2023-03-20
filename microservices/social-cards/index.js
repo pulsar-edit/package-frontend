@@ -7,13 +7,14 @@ const apiurl = process.env.APIURL || "https://api.pulsar-edit.dev";
 
 app.get("/packages/:packageName", async (req, res) => {
   let params = {
-    kind: utils.query(req)
+    kind: utils.queryKind(req),
+    theme: utils.queryTheme(req)
   };
 
   try {
 
     let api = await superagent.get(`${apiurl}/api/packages/${decodeURIComponent(req.params.packageName)}`).query(req.query);
-    let img = await utils.generateImage(api.body, params.kind);
+    let img = await utils.generateImage(api.body, params.kind, params.theme);
     res.status(200).setHeader('Content-Type', 'image/png').end(img);
     console.log(`Served Social Image Card: ${params.kind} for ${req.params.packageName}`);
 
@@ -25,7 +26,8 @@ app.get("/packages/:packageName", async (req, res) => {
 
 app.get("/dev/packages/:packageName", async (req, res) => {
   let params = {
-    kind: utils.query(req)
+    kind: utils.queryKind(req),
+    theme: utils.queryTheme(req),
   };
 
   if (process.env.PULSAR_STATUS === "dev") {

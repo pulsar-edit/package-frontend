@@ -23,9 +23,21 @@ The following image kinds are supported:
 * default : The generic Social Image Card that is automatically used when sharing the image on the web.
 * iconic : The hidden Social Image Card displaying the Pulsar Mascot.
 
+Also while not yet exposed via the share menu for the Social Image Cards, it is possible to apply themes to the images that will be returned.
+
+Via the `theme=` query parameter on the URL you are able to apply the following themes:
+
+* `light`: The default light theme, that was previously used
+* `github-dark`: A GitHub based Dark Theme, modeled after the same theme available on the Frontend Pulsar Package Website.
+* `dracula`: A Dracula Theme, again modeled after the same theme available on the Frontend Pulsar Package Website.
+
+```
+https://image.pulsar-edit.dev/packages/:packageName?theme=THEME
+```
+
 ## Running Microservice
 * `npm start`: Can be used to start up the server normally.
-* `npm run start:dev`: Exposes a secret API endpoint.`/dev/image/packages/:packageName` will be available when in dev mode, and gives direct access to the HTML code used to display the Social Cards. Using this can allow easier modification and editing of our Social Cards.
+* `npm run start:dev`: Exposes a secret API endpoint.`/dev/packages/:packageName` will be available when in dev mode, and gives direct access to the HTML code used to display the Social Cards. Using this can allow easier modification and editing of our Social Cards. A warning, themes are not yet supported on the special development endpoint.
 
 ## Add New Social Image Cards
 

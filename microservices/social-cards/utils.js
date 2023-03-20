@@ -14,10 +14,18 @@ async function displayError(req, res, errStatus) {
   }
 }
 
-function query(req) {
+function queryKind(req) {
   const def = "default";
   const valid = [ "default", "iconic" ];
   const prov = req.query.image_kind ?? def;
+
+  return valid.includes(prov) ? prov : def;
+}
+
+function queryTheme(req) {
+  const def = "light";
+  const valid = [ "light", "github-dark", "dracula" ];
+  const prov = req.query.theme ?? def;
 
   return valid.includes(prov) ? prov : def;
 }
@@ -34,7 +42,7 @@ async function generateImageHTML(obj, kind) {
   return final;
 }
 
-async function generateImage(obj, kind) {
+async function generateImage(obj, kind, theme) {
   // The below functionality enables custom created sharing images.
   // For reference on implmentation see:
   //  - https://github.blog/2021-06-22-framework-building-open-graph-images/
@@ -42,7 +50,7 @@ async function generateImage(obj, kind) {
   try {
 
     const html = await generateImageHTML(obj, kind);
-    const file = await getScreenshot(html);
+    const file = await getScreenshot(html, theme);
     return file;
 
   } catch(err) {
@@ -85,7 +93,7 @@ function getHtml(kind) {
   }
 }
 
-async function getScreenshot(html) {
+async function getScreenshot(html, theme) {
   const browser = (process.env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD)
     ? await puppeteer.launch({ executablePath: 'google-chrome-stable', args: ['--no-sandbox', '--disable-setuid-sandbox'] })
     : await puppeteer.launch();
@@ -96,6 +104,9 @@ async function getScreenshot(html) {
   await page.setViewport({ width: 1200, height: 600 });
   await page.setContent(html);
   await page.evaluateHandle("document.fonts.ready");
+  await page.evaluate((t) => {
+    document.body.setAttribute("theme", t);
+  }, theme); // https://stackoverflow.com/a/69038149/12707685
   const file = await page.screenshot({ type: "png" });
   await browser.close();
   return file;
@@ -103,7 +114,8 @@ async function getScreenshot(html) {
 
 module.exports = {
   displayError,
-  query,
+  queryKind,
+  queryTheme,
   generateImageHTML,
   generateImage,
   getCss,
