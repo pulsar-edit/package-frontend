@@ -33,6 +33,7 @@ body[theme="github-dark"] {
 
   --badge-default-text: var(--text);
   --badge-default-bg: var(--canvas);
+  /* TODO: Add other badge styling specific to this theme */
 }
 
 body[theme="dracula"] {
@@ -45,6 +46,7 @@ body[theme="dracula"] {
 
   --badge-default-text: var(--text);
   --badge-default-bg: var(--canvas);
+  /* TODO: Add other badge styling specific to this theme */
 }
 
 body[theme="one-dark"] {
@@ -57,6 +59,7 @@ body[theme="one-dark"] {
 
   --badge-default-text: var(--text);
   --badge-default-bg: var(--canvas);
+  /* TODO: Add other badge styling specific to this theme */
 }
 
 body[theme="one-light"] {
@@ -69,6 +72,7 @@ body[theme="one-light"] {
 
   --badge-default-text: var(--text);
   --badge-default-bg: var(--canvas);
+  /* TODO: Add other badge styling specific to this theme */
 }
 
 /**************************/
