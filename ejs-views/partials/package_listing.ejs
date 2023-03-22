@@ -16,8 +16,7 @@
           <%=badge.title%>
         <% } %>
       </span>
-    <% } %>
-    <% if (badge.type === "success") { %>
+    <% } else if (badge.type === "success") { %>
       <span class="badge badge-success">
         <i class="fas fa-circle-check"></i>
         <% if (typeof badge.text === "string") { %>
@@ -26,10 +25,17 @@
           <%=badge.title%>
         <% } %>
       </span>
-    <% } %>
-    <% if (badge.type === "info") { %>
+    <% } else if (badge.type === "info") { %>
       <span class="badge badge-info">
         <i class="fas fa-circle-info"></i>
+        <% if (typeof badge.text === "string") { %>
+          <%=badge.title%>: <span class="badge-expandable">...</span><span class="badge-text"> <%=badge.text%></span>
+        <% } else { %>
+          <%=badge.title%>
+        <% } %>
+      </span>
+    <% } else { %>
+      <span class="badge">
         <% if (typeof badge.text === "string") { %>
           <%=badge.title%>: <span class="badge-expandable">...</span><span class="badge-text"> <%=badge.text%></span>
         <% } else { %>
