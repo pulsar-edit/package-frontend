@@ -80,6 +80,8 @@ function prepareForListing(obj) {
         pack.stars = Number(pack.stars).toLocaleString();
         pack.downloads = Number(pack.downloads).toLocaleString();
 
+        pack.badges = obj[i].badges ?? [];
+
         packList.push(pack);
       } catch(err) {
         console.log(err);
@@ -164,6 +166,8 @@ function prepareForDetail(obj) {
         iconic: `[![${pack.name}](https://image.pulsar-edit.dev/packages/${pack.name}?image_kind=iconic)](https://web.pulsar-edit.dev/packages/${pack.name})`
       }
     };
+
+    pack.badges = obj.badges ?? [];
 
     resolve(pack);
   });

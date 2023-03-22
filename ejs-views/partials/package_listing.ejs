@@ -1,5 +1,49 @@
 <div class="w-full border border-secondary rounded p-3">
   <a href="/packages/<%=pack.name%>" class="text-3xl text-primary"><%=pack.name%></a>
+
+  <% for (const badge of pack.badges) { %>
+
+    <% if (typeof badge.link === "string") { %>
+      <a href="<%=badge.link%>">
+    <% } %>
+
+    <% if (badge.type === "warn") { %>
+      <span class="badge badge-warn">
+        <i class="fas fa-triangle-exclamation"></i>
+        <% if (typeof badge.text === "string") { %>
+          <%=badge.title%>: <span class="badge-expandable">...</span><span class="badge-text"> <%=badge.text%></span>
+        <% } else { %>
+          <%=badge.title%>
+        <% } %>
+      </span>
+    <% } %>
+    <% if (badge.type === "success") { %>
+      <span class="badge badge-success">
+        <i class="fas fa-circle-check"></i>
+        <% if (typeof badge.text === "string") { %>
+          <%=badge.title%>: <span class="badge-expandable">...</span><span class="badge-text"> <%=badge.text%></span>
+        <% } else { %>
+          <%=badge.title%>
+        <% } %>
+      </span>
+    <% } %>
+    <% if (badge.type === "info") { %>
+      <span class="badge badge-info">
+        <i class="fas fa-circle-info"></i>
+        <% if (typeof badge.text === "string") { %>
+          <%=badge.title%>: <span class="badge-expandable">...</span><span class="badge-text"> <%=badge.text%></span>
+        <% } else { %>
+          <%=badge.title%>
+        <% } %>
+      </span>
+    <% } %>
+
+    <% if (typeof badge.link === "string") { %>
+      </a>
+    <% } %>
+
+  <% } %>
+
   <p class="text-sm opacity-70 min-h-[80px] py-3"><%=pack.description%></p>
   <div class="md:flex sm:flex-col md:flex-row gap-3">
     <div class="md:flex items-center justify-between bg-secondary p-3 rounded flex-1">
