@@ -9,6 +9,18 @@
   --secondary: rgba(0, 0, 0, 0.1); /* Colours borders and modals */
   --text: #000; /* Colours most text */
   --header-text: #fff; /* Colours header text. Will fall back to `--text` if empty */
+
+  --badge-default-text: var(--text);
+  --badge-default-bg: var(--canvas);
+
+  --badge-warn-text: var(--text);
+  --badge-warn-bg: #dc3545;
+
+  --badge-info-text: var(--text);
+  --badge-info-bg: #17a2b8;
+
+  --badge-success-text: var(--text);
+  --badge-success-bg: #28a745;
 }
 
 body[theme="github-dark"] {
@@ -18,6 +30,10 @@ body[theme="github-dark"] {
   --secondary: rgba(255, 255, 255, 0.1);
   --text: #c9d1d9;
   --header-text: var(--text);
+
+  --badge-default-text: var(--text);
+  --badge-default-bg: var(--canvas);
+  /* TODO: Add other badge styling specific to this theme */
 }
 
 body[theme="dracula"] {
@@ -27,6 +43,10 @@ body[theme="dracula"] {
   --secondary: rgba(255, 255, 255, 0.1);
   --text: #f8f8f2;
   --header-text: var(--text);
+
+  --badge-default-text: var(--text);
+  --badge-default-bg: var(--canvas);
+  /* TODO: Add other badge styling specific to this theme */
 }
 
 body[theme="one-dark"] {
@@ -36,6 +56,10 @@ body[theme="one-dark"] {
   --secondary: #181a1f;
   --text: #abb2bf;
   --header-text: var(--text);
+
+  --badge-default-text: var(--text);
+  --badge-default-bg: var(--canvas);
+  /* TODO: Add other badge styling specific to this theme */
 }
 
 body[theme="one-light"] {
@@ -45,6 +69,10 @@ body[theme="one-light"] {
   --secondary: #c5cad3; /* Pulsar's @base-border-color */
   --text: #2c313a; /* Pulsar's @text-color */
   --header-text: #121417; /* Pulsar's @text-color-highlight */
+
+  --badge-default-text: var(--text);
+  --badge-default-bg: var(--canvas);
+  /* TODO: Add other badge styling specific to this theme */
 }
 
 /**************************/
@@ -95,6 +123,48 @@ footer i {
 
 footer a {
   @apply block text-sm my-1 text-primary hover:opacity-80 transition-all;
+}
+
+/**************************/
+/******** BADGES **********/
+/**************************/
+
+.badge {
+  @apply text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full;
+  color: var(--badge-default-text);
+  background-color: var(--badge-default-bg);
+  vertical-align: text-top;
+}
+
+.badge.badge-warn {
+  color: var(--badge-warn-text);
+  background-color: var(--badge-warn-bg);
+}
+
+.badge.badge-info {
+  color: var(--badge-info-text);
+  background-color: var(--badge-info-bg);
+}
+
+.badge.badge-success {
+  color: var(--badge-success-text);
+  background-color: var(--badge-success-bg);
+}
+
+.badge:hover .badge-text {
+  display: contents;
+}
+
+.badge:hover .badge-expandable {
+  display: none;
+}
+
+.badge-expandable {
+  display: contents;
+}
+
+.badge-text {
+  display: none;
 }
 
 /**************************/
