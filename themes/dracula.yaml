@@ -1,0 +1,17 @@
+# Dracula Theme
+
+friendlyName: "Dracula"
+name: dracula
+syntax:
+  name: base16-dracula-syntax
+  url: "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/base16/dracula.min.css"
+theme:
+  canvas: "#282a36"
+  primary: "#bd93f9"
+  accent: "#44475a"
+  secondary: "rgba(255, 255, 255, 0.1)"
+  text: "#f8f8f2"
+  header-text: "var(--text)"
+
+  badge-default-text: "var(--text)"
+  badge-default-bg: "var(--canvas)"

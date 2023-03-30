@@ -14,6 +14,7 @@
     "test": "jest ./src/tests/",
     "mini:js": "minify ./public/site.js > ./public/site.min.js",
     "mini:css": "minify ./public/site.css > ./public/site.min.css",
+    "build:themes": "node ./scripts/build-themes/main.js",
     "deploy_script": "echo 'Do not run!' && gcloud app deploy"
   },
   "engines": {

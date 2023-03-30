@@ -1,0 +1,17 @@
+# One Dark
+
+friendlyName: "One Dark"
+name: one-dark
+syntax:
+  name: atom-one-dark-syntax
+  url: "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/atom-one-dark.min.css"
+theme:
+  canvas: "#282c34"
+  primary: "#568af2"
+  accent: "#21252b"
+  secondary: "#181a1f"
+  text: "#abb2bf"
+  header-text: "var(--text)"
+
+  badge-default-text: "var(--text)"
+  badge-default-bg: "var(--canvas)"

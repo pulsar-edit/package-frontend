@@ -1,0 +1,14 @@
+{
+  "themes": {
+    "github-dark": {
+      "syntax": "github-dark-syntax",
+      "url": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/github-dark.min.css",
+      "name": "github-dark"
+    },
+    "dracula": {
+      "syntax": "base16-dracula-syntax",
+      "url": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/base16/dracula.min.css",
+      "name": "dracula"
+    }
+  }
+}

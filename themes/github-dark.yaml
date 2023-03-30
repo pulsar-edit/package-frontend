@@ -1,0 +1,17 @@
+# GitHub Dark Theme
+
+friendlyName: "GitHub Dark"
+name: github-dark
+syntax:
+  name: github-dark-syntax
+  url: "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/github-dark.min.css"
+theme:
+  canvas: "#0d1117"
+  primary: "#58a6ff"
+  accent: "#161b22"
+  secondary: "rgba(255, 255, 255, 0.1)"
+  text: "#c9d1d9"
+  header-text: "var(--text)"
+
+  badge-default-text: "var(--text)"
+  badge-default-bg: "var(--canvas)"

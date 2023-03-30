@@ -1,0 +1,17 @@
+# One Light
+
+friendlyName: "One Light"
+name: one-light
+syntax:
+  name: atom-one-light-syntax
+  url: "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/atom-one-light.min.css"
+theme:
+  canvas: "#e8eaed"
+  primary: "#5a8ae9"
+  accent: "#d7dae0"
+  secondary: "#c5cad3"
+  text: "#2c313a"
+  header-text: "#121417"
+
+  badge-default-text: "var(--text)"
+  badge-default-bg: "var(--canvas)"
