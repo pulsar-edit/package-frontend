@@ -1,64 +1,109 @@
+:root {
+  --title-text-color: black;
+  --canvas: white;
+  --link-text-color: blue;
+  --version-text-color: grey;
+  --description-text-color: black;
+  --icon-separator-color: lightGrey;
+  --icon-color: grey;
+}
+
+body[theme="light"] { /* Default */
+  --title-text-color: black;
+  --canvas: white;
+  --link-text-color: blue;
+  --version-text-color: grey;
+  --description-text-color: black;
+  --icon-separator-color: lightGrey;
+  --icon-color: grey;
+}
+
+body[theme="github-dark"] {
+  --title-text-color: #f0f6fc;
+  --canvas: #0d1117;
+  --link-text-color: #58a6ff;
+  --version-text-color: #8b949e;
+  --description-text-color: #c9d1d9;
+  --icon-separator-color: #161b22;
+  --icon-color: #f0f6fc;
+}
+
+body[theme="dracula"] {
+  --title-text-color: #f8f8f2;
+  --canvas: #282a36;
+  --link-text-color: #bd93f9;
+  --version-text-color: #44475a;
+  --description-text-color: #f8f8f2;
+  --icon-separator-color: rgba(255, 255, 255, 0.1);
+  --icon-color: #44475a;
+}
+
 .container {
-padding: 20px 30px 30px 30px;
-margin: 20px;
-height: 80%;
-align-content: center;
+  padding: 20px 30px 30px 30px;
+  margin: 20px;
+  height: 80%;
+  align-content: center;
+  background-color: var(--canvas);
 }
 
 .heading {
-font-weight: 600;
-font-size: 90px;
-display: flex;
+  font-weight: 600;
+  font-size: 90px;
+  display: flex;
 }
 
 .title {
-color: black;
-font-family: 'Jura', sans-serif;
-padding-bottom: 30px;
-white-space:nowrap;
-overflow: hidden;
-text-overflow: ellipsis;
+  color: var(--title-text-color);
+  font-family: 'Jura', sans-serif;
+  padding-bottom: 30px;
+  white-space:nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .subtitle {
-font-weight: 400;
-font-size: 35px;
-display: flex;
-padding-bottom: 5px;
+  font-weight: 400;
+  font-size: 35px;
+  display: flex;
+  padding-bottom: 5px;
+}
+
+.subtitle svg {
+  fill: var(--icon-color);
 }
 
 .link {
-color: blue;
-text-decoration: underline;
-padding: 0px 10px 0px 20px;
-font-family: 'Jura', sans-serif;
+  color: var(--link-text-color);
+  text-decoration: underline;
+  padding: 0px 10px 0px 20px;
+  font-family: 'Jura', sans-serif;
 }
 
 .version {
-padding-left: 5px;
-color: grey;
-font-family: 'Jura', sans-serif;
+  padding-left: 5px;
+  color: var(--version-text-color);
+  font-family: 'Jura', sans-serif;
 }
 
 .description {
-padding-top: 15px;
-color: black;
-font-size: 40px;
-font-family: 'Jura', sans-serif;
-width: 920px;
-height: 250px;
-overflow: hidden;
+  padding-top: 15px;
+  color: var(--description-text-color);
+  font-size: 40px;
+  font-family: 'Jura', sans-serif;
+  width: 920px;
+  height: 250px;
+  overflow: hidden;
 }
 
 .bottom-icons {
-display: inline-block;
-padding: 50px 0px 15px 5px;
-text-align: justify;
-font-size: 40px;
-font-family: 'Jura', sans-serif;
-position: absolute;
-bottom: 20px;
-left: 30px;
+  display: inline-block;
+  padding: 50px 0px 15px 5px;
+  text-align: justify;
+  font-size: 40px;
+  font-family: 'Jura', sans-serif;
+  position: absolute;
+  bottom: 20px;
+  left: 30px;
 }
 
 .bottom-icons > div > svg {
@@ -66,35 +111,23 @@ left: 30px;
 }
 
 .downloads {
-padding: 0px 16px 0px 16px;;
-display: inline-block;
-}
-
-.downloads .desc {
-display: block;
-color: grey;
+  padding: 0px 16px 0px 16px;;
+  display: inline-block;
+  color: var(--icon-color);
 }
 
 .stars {
-padding: 0px 16px 0px 16px;
-display: inline-block;
-border-left: 2px solid lightGrey;
-}
-
-.stars .desc {
-display: block;
-color: grey;
+  padding: 0px 16px 0px 16px;
+  display: inline-block;
+  border-left: 2px solid var(--icon-separator-color);
+  color: var(--icon-color);
 }
 
 .license {
-padding: 0px 120px 0px 16px;
-display: inline-block;
-border-left: 2px solid lightGrey;
-}
-
-.license .desc {
-display: block;
-color: grey;
+  padding: 0px 120px 0px 16px;
+  display: inline-block;
+  border-left: 2px solid var(--icon-separator-color);
+  color: var(--icon-color);
 }
 
 .pulsar-logo {

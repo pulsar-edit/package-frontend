@@ -37,9 +37,9 @@ body[theme="github-dark"] {
 }
 
 body[theme="dracula"] {
-  --canvas: #282a36	;
-  --primary: #bd93f9	;
-  --accent: #44475a	;
+  --canvas: #282a36;
+  --primary: #bd93f9;
+  --accent: #44475a;
   --secondary: rgba(255, 255, 255, 0.1);
   --text: #f8f8f2;
   --header-text: var(--text);

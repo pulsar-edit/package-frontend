@@ -75,31 +75,16 @@ padding: 0px 16px 0px 16px;;
 display: inline-block;
 }
 
-.downloads .desc {
-display: block;
-color: grey;
-}
-
 .stars {
 padding: 0px 16px 0px 16px;
 display: inline-block;
 border-left: 2px solid lightGrey;
 }
 
-.stars .desc {
-display: block;
-color: grey;
-}
-
 .license {
 padding: 0px 120px 0px 16px;
 display: inline-block;
 border-left: 2px solid lightGrey;
-}
-
-.license .desc {
-display: block;
-color: grey;
 }
 
 .pulsar-logo {
