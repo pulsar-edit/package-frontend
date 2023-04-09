@@ -6,7 +6,7 @@ spec:
   template:
     spec:
       containers:
-        - image: "us-west2-docker.pkg.dev/pulsar-357404/package-frontend/social-cards:1.3"
+        - image: "us-west2-docker.pkg.dev/pulsar-357404/package-frontend/social-cards:1.3.1"
           env:
             - name: APIURL
               value: "https://api.pulsar-edit.dev"
