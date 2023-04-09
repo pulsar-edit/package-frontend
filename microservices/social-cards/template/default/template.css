@@ -116,11 +116,6 @@ body[theme="dracula"] {
   color: var(--icon-color);
 }
 
-.downloads .desc {
-  display: block;
-  color: var(--icon-color);
-}
-
 .stars {
   padding: 0px 16px 0px 16px;
   display: inline-block;
@@ -128,20 +123,10 @@ body[theme="dracula"] {
   color: var(--icon-color);
 }
 
-/*.stars .desc {
-  display: block;
-  color: var(--icon-color);
-}*/
-
 .license {
   padding: 0px 120px 0px 16px;
   display: inline-block;
   border-left: 2px solid var(--icon-separator-color);
-  color: var(--icon-color);
-}
-
-.license .desc {
-  display: block;
   color: var(--icon-color);
 }
 
