@@ -245,7 +245,7 @@ async function findLink(os, type) {
         binaryPath = findBinary("binaries/Pulsar Setup", "start", taskGraph.data.task.artifacts[0].files);
         break;
       case "windows_portable":
-        binaryPath = findBinary(".exe", "end", taskGraph.data.task.artifacts[0].files);
+        binaryPath = findBinary(".zip", "end", taskGraph.data.task.artifacts[0].files);
         break;
       case "windows_blockmap":
         binaryPath = findBinary(".exe.blockmap", "end", taskGraph.data.task.artifacts[0].files);
