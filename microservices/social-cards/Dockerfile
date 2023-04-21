@@ -3,9 +3,11 @@ FROM node:18-slim
 
 # Below we use Dockerfile Labels w/ Pre-defined annotation keys to properly
 # link arbitrary container images to the proper Pulsar Repo.
-LABEL org.opencontainers.image.source="https://github.com/pulsar-edit/package-frontend"
+LABEL org.opencontainers.image.source="https://github.com/pulsar-edit/package-frontend/tree/main/microservices/social-cards"
 LABEL org.opencontainers.artifact.description="Social Image Card Microservice for Pulsar Package Frontend"
 LABEL description="Social Image Card Microservice for Pulsar Package Frontend"
+LABEL org.opencontainers.image.description="Social Image Card Microservice for Pulsar Package Frontend"
+LABEL org.opencontainers.image.documentation="https://github.com/pulsar-edit/package-frontend/blob/main/microservices/social-cards/README.md"
 LABEL org.opencontainers.image.authors="confused-Techie"
 LABEL org.opencontainers.image.license="MIT"
 
