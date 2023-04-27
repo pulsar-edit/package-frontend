@@ -13,6 +13,9 @@ const matches = {
   localLinks: {
     currentDir: new RegExp(/^\.\//),
     rootDir: new RegExp(/^\//)
+  },
+  atomLinks: {
+    package: new RegExp(/^https:\/\/atom\.io\/packages\/(.*)$/)
   }
 };
 

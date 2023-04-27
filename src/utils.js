@@ -149,6 +149,48 @@ function prepareForDetail(obj) {
       // pass token to default renderer.
       return defaultImageRender(tokens, idx, options, env, self);
     }
+
+    // Lets ensure to fix any links pointing to Atom, and links that expect to only live on GitHub
+    md.core.ruler.after("inline", "fix-atom-links", (state) => {
+      state.tokens.forEach((blockToken) => {
+        if (blockToken.type === "inline" && blockToken.children) {
+          blockToken.children.forEach((token) => {
+            if (token.type === "link_open") {
+              token.attrs.forEach((attr) => {
+                if (attr[0] === "href") {
+                  let link = attr[1];
+                  if (reg.atomLinks.package.test(link)) {
+                    // Fix any links that attempt to point to packages on `https://atom.io/packages/...`
+                    attr[1] = `https://web.pulsar-edit.dev/packages/${link.match(reg.atomLinks.package)[1]}`;
+
+                  } else if (reg.localLinks.currentDir.test(link)) {
+                    // Since we are here lets check for any other links to github
+                    // Fix links that use `./` expecting to use the current dir of the github repo
+                    let cleanRepo = pack.repoLink.replace(".git", "");
+                    let tmpLink = link.replace(reg.localLinks.currentDir, "");
+                    attr[1] = `${cleanRepo}/raw/HEAD/${tmpLink}`;
+
+                  } else if (reg.localLinks.rootDir.test(link)) {
+                    // Fix links that use `/` expecting to use the root dir of github repo
+                    let cleanRepo = pack.repoLink.replace(".git", "");
+                    let tmpLink = link.replace(reg.localLinks.rootDir, "");
+                    attr[1] = `${cleanRepo}/raw/HEAD/${tmpLink}`;
+
+                  } else if (!link.startsWith("http")) {
+                    // attempt to fix any links not starting with http to point to github
+                    let cleanRepo = pack.repoLink.replace(".git", "");
+                    let tmpLink = link.replace(".git", "");
+                    attr[1] = `${cleanRepo}/raw/HEAD/${tmpLink}`;
+
+                  }
+                }
+              });
+            }
+          });
+        }
+      });
+    });
+
     // Since filters are rendered at compile time they won't work the way I'd hoped to display
     // Markdown on the page, by using the `markdown-it` filter.
     // So the best method will likely be to instead provide the `readme` key as straight HTML.
