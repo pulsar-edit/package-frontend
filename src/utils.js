@@ -178,15 +178,14 @@ function findAuthorField(obj) {
   if (typeof obj.metadata.author === "string") {
 
     // We know this is not an object, but we must ensure this isn't a compressed author object.
-    if (reg.author.compact.test(obj.metadata.author)) {
+    if (reg.author.optional_compact.test(obj.metadata.author)) {
       // It matches, so we know we have to parse it
-      let constru = obj.metadata.author.match(reg.author.compact);
+      let constru = obj.metadata.author.match(reg.author.optional_compact);
       author = constru[1];
     } else {
       // It doesn't match, and we will assume it's a basic author field.
       author = obj.metadata.author;
     }
-    author = obj.metadata.author;
   } else if (typeof obj.metadata.author === "object" && obj.metadata.author.hasOwnProperty("name")) {
     author = obj.metadata.author.name;
   } else {

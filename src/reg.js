@@ -6,7 +6,8 @@ const matches = {
     protocol: new RegExp(/^git\@github\.com\:(\S*)\/(\S*)(\.git)?$/)
   },
   author: {
-    compact: new RegExp(/^(.*)\s\<(.*)\>\s\((.*)\)$/)
+    compact: new RegExp(/^(.*)\s\<(.*)\>\s\((.*)\)$/),
+    optional_compact: new RegExp(/^(?:([^<(]*)\s){0,1}(?:\<([^>(]*)\>\s){0,1}(?:\(([^)]*)\)){0,1}$/)
   },
   localLinks: {
     currentDir: new RegExp(/^\.\//),
