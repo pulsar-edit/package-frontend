@@ -7,7 +7,8 @@ const matches = {
   },
   author: {
     compact: new RegExp(/^(.*)\s\<(.*)\>\s\((.*)\)$/),
-    optional_compact: new RegExp(/^(?:([^<(]*)\s){0,1}(?:\<([^>(]*)\>\s){0,1}(?:\(([^)]*)\)){0,1}$/)
+    // Keep in mind `optional_compact` the name group[1] needs to be trimmed as it's whitespace inclusive
+    optional_compact: new RegExp(/^(?:([^<(]*)){0,1}(?:\s*\<([^>(]*)\>){0,1}(?:\s*\(([^)]*)\)){0,1}$/)
   },
   localLinks: {
     currentDir: new RegExp(/^\.\//),

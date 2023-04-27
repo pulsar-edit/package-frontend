@@ -28,6 +28,16 @@ let suites = {
       "<dev@lhbasics.com>",
       "(https://pulsar-edit.dev)"
     ]
+  },
+  authorOptionalCompact: {
+    valid: [
+      "confused-Techie (https://pulsar-edit.dev)",
+      "confused-Techie <dev@lhbasics.dev>",
+      "<dev@lhbasics.dev> (https://pulsar-edit.dev)"
+    ],
+    invalid: [
+      "confused-Techie (https://pulsar-edit.dev) <dev@lhbasics.dev>"
+    ]
   }
 }
 
@@ -133,5 +143,41 @@ describe("Compact Author Field", () => {
     expect(res[1]).toBe("confused-Techie");
     expect(res[2]).toBe("dev@lhbasics.com");
     expect(res[3]).toBe("https://pulsar-edit.dev");
+  })
+});
+
+describe("Optional Compact Author Field", () => {
+  describe("Returns true `.test()` of Valid Data", () => {
+    for (let i = 0; i < suites.authorOptionalCompact.valid.length; i++) {
+      test(`${suites.authorOptionalCompact.valid[i]} - reg.author.optional_compact.test()`, () => {
+        expect(reg.author.optional_compact.test(
+          suites.authorOptionalCompact.valid[i]
+        )).toBeTruthy();
+      });
+    }
+  });
+
+  describe("Returns false `.test()` of Invalid Data", () => {
+    for (let i = 0; i < suites.authorOptionalCompact.invalid.length; i++) {
+      test(`${suites.authorOptionalCompact.invalid[i]} - reg.author.optional_compact.test()`, () => {
+        expect(reg.author.optional_compact.test(
+          suites.authorOptionalCompact.invalid[i]
+        )).toBeFalsy();
+      });
+    }
+  });
+
+  test("Returns Expected Data from Matches", () => {
+    let res1 = suites.authorOptionalCompact.valid[0].match(reg.author.optional_compact);
+    expect(res1[1].trim()).toBe("confused-Techie");
+    expect(res1[3]).toBe("https://pulsar-edit.dev");
+
+    let res2 = suites.authorOptionalCompact.valid[1].match(reg.author.optional_compact);
+    expect(res2[1].trim()).toBe("confused-Techie");
+    expect(res2[2]).toBe("dev@lhbasics.dev");
+
+    let res3 = suites.authorOptionalCompact.valid[2].match(reg.author.optional_compact);
+    expect(res3[2]).toBe("dev@lhbasics.dev");
+    expect(res3[3]).toBe("https://pulsar-edit.dev");
   })
 });
