@@ -3,7 +3,9 @@
 const matches = {
   repoLink: {
     standard: new RegExp(/^https\:\/\/github\.com\/(\S*)\/(\S*)$/),
-    protocol: new RegExp(/^git\@github\.com\:(\S*)\/(\S*)(\.git)?$/)
+    protocol: new RegExp(/^git\@github\.com\:(\S*)\/(\S*)(\.git)?$/),
+    githubAssumedShorthand: new RegExp(/^[a-zA-Z0-9-_\.]+\/[a-zA-Z0-9-_\.]+$/),
+    githubShorthand: new RegExp(/^github:([a-zA-Z0-9-_\.]+\/[a-zA-Z0-9-_\.]+)$/)
   },
   author: {
     compact: new RegExp(/^(.*)\s\<(.*)\>\s\((.*)\)$/),

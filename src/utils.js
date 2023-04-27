@@ -259,6 +259,10 @@ function findRepoField(obj) {
     // Git Protocol Defined. Create normalized link.
     let constru = repo.match(reg.repoLink.protocol);
     return `https://github.com/${constru[1]}/${constru[2].replace(".git","")}`;
+  } else if (reg.repoLink.githubAssumedShorthand.test(repo)) {
+    return `https://github.com/${repo.match(reg.repoLink.githubAssumedShorthand)[0]}`;
+  } else if (reg.repoLink.githubShorthand.test(repo)) {
+    return `https://github.com/${repo.match(reg.repoLink.githubShorthand)[1]}`;
   } else {
     // We couldn't determine what to do here. Just return.
     return repo;
