@@ -149,6 +149,51 @@ function prepareForDetail(obj) {
       // pass token to default renderer.
       return defaultImageRender(tokens, idx, options, env, self);
     }
+
+    // Lets ensure to fix any links pointing to Atom, and links that expect to only live on GitHub
+    md.core.ruler.after("inline", "fix-atom-links", (state) => {
+      state.tokens.forEach((blockToken) => {
+        if (blockToken.type === "inline" && blockToken.children) {
+          blockToken.children.forEach((token) => {
+            if (token.type === "link_open") {
+              token.attrs.forEach((attr) => {
+                if (attr[0] === "href") {
+                  let link = attr[1];
+                  if (reg.atomLinks.package.test(link)) {
+                    // Fix any links that attempt to point to packages on `https://atom.io/packages/...`
+                    attr[1] = `https://web.pulsar-edit.dev/packages/${link.match(reg.atomLinks.package)[1]}`;
+
+                  } else if (reg.localLinks.currentDir.test(link)) {
+                    // Since we are here lets check for any other links to github
+                    // Fix links that use `./` expecting to use the current dir of the github repo
+                    let cleanRepo = pack.repoLink.replace(".git", "");
+                    let tmpLink = link.replace(reg.localLinks.currentDir, "");
+                    attr[1] = `${cleanRepo}/raw/HEAD/${tmpLink}`;
+
+                  } else if (reg.localLinks.rootDir.test(link)) {
+                    // Fix links that use `/` expecting to use the root dir of github repo
+                    let cleanRepo = pack.repoLink.replace(".git", "");
+                    let tmpLink = link.replace(reg.localLinks.rootDir, "");
+                    attr[1] = `${cleanRepo}/raw/HEAD/${tmpLink}`;
+
+                  } else if (!link.startsWith("http")) {
+                    // attempt to fix any links not starting with http to point to github
+                    let cleanRepo = pack.repoLink.replace(".git", "");
+                    let tmpLink = link.replace(".git", "");
+                    attr[1] = `${cleanRepo}/raw/HEAD/${tmpLink}`;
+
+                  } else if (reg.atomLinks.flightManual.test(link)) {
+                    // Resolve any links to the flight manual to web archive
+                    attr[1] = link.replace(reg.atomLinks.flightManual, "https://web.archive.org/web/20221215003438/https://flight-manual.atom.io/");
+                  }
+                }
+              });
+            }
+          });
+        }
+      });
+    });
+
     // Since filters are rendered at compile time they won't work the way I'd hoped to display
     // Markdown on the page, by using the `markdown-it` filter.
     // So the best method will likely be to instead provide the `readme` key as straight HTML.
@@ -178,15 +223,14 @@ function findAuthorField(obj) {
   if (typeof obj.metadata.author === "string") {
 
     // We know this is not an object, but we must ensure this isn't a compressed author object.
-    if (reg.author.compact.test(obj.metadata.author)) {
+    if (reg.author.optional_compact.test(obj.metadata.author)) {
       // It matches, so we know we have to parse it
-      let constru = obj.metadata.author.match(reg.author.compact);
-      author = constru[1];
+      let constru = obj.metadata.author.match(reg.author.optional_compact);
+      author = constru[1].trim();
     } else {
       // It doesn't match, and we will assume it's a basic author field.
       author = obj.metadata.author;
     }
-    author = obj.metadata.author;
   } else if (typeof obj.metadata.author === "object" && obj.metadata.author.hasOwnProperty("name")) {
     author = obj.metadata.author.name;
   } else {
@@ -218,6 +262,10 @@ function findRepoField(obj) {
     // Git Protocol Defined. Create normalized link.
     let constru = repo.match(reg.repoLink.protocol);
     return `https://github.com/${constru[1]}/${constru[2].replace(".git","")}`;
+  } else if (reg.repoLink.githubAssumedShorthand.test(repo)) {
+    return `https://github.com/${repo.match(reg.repoLink.githubAssumedShorthand)[0]}`;
+  } else if (reg.repoLink.githubShorthand.test(repo)) {
+    return `https://github.com/${repo.match(reg.repoLink.githubShorthand)[1]}`;
   } else {
     // We couldn't determine what to do here. Just return.
     return repo;
