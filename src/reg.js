@@ -17,7 +17,8 @@ const matches = {
     rootDir: new RegExp(/^\//)
   },
   atomLinks: {
-    package: new RegExp(/^https:\/\/atom\.io\/packages\/(.*)$/)
+    package: new RegExp(/^https:\/\/atom\.io\/packages\/(.*)$/),
+    flightManual: new RegExp(/^https:\/\/flight-manual\.atom\.io\//)
   }
 };
 

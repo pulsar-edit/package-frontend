@@ -182,6 +182,9 @@ function prepareForDetail(obj) {
                     let tmpLink = link.replace(".git", "");
                     attr[1] = `${cleanRepo}/raw/HEAD/${tmpLink}`;
 
+                  } else if (reg.atomLinks.flightManual.test(link)) {
+                    // Resolve any links to the flight manual to web archive
+                    attr[1] = link.replace(reg.atomLinks.flightManual, "https://web.archive.org/web/20221215003438/https://flight-manual.atom.io/");
                   }
                 }
               });
