@@ -226,7 +226,7 @@ function findAuthorField(obj) {
     if (reg.author.optional_compact.test(obj.metadata.author)) {
       // It matches, so we know we have to parse it
       let constru = obj.metadata.author.match(reg.author.optional_compact);
-      author = constru[1].trim();
+      author = constru[1]?.trim();
     } else {
       // It doesn't match, and we will assume it's a basic author field.
       author = obj.metadata.author;
