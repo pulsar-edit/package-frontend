@@ -41,6 +41,7 @@ module.exports = {
             h4: { color: 'var(--text)' },
             h5: { color: 'var(--text)' },
             h6: { color: 'var(--text)' },
+            img: { display: 'inline'},
           }
         }
       }
