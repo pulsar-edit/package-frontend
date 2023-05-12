@@ -1,4 +1,4 @@
-<% if (locals.pagination) { %>
+<% if (locals.pagination && locals.pagination.length > 1) { %>
     <div id="pagination" class="sm:flex-row flex-col flex items-center justify-between gap-3 border border-secondary rounded p-3">
         <p class="opacity-70">Showing <%- pagination.from %> to <%- pagination.to %> of <%- pagination.total %> entries</p>
         <div class="flex items-center gap-1 sm:gap-3 lg:gap-6">
@@ -25,4 +25,8 @@
             </a>
         </div>
     </div>
+<% } else { %>
+  <div class="text-center">
+    <h4>No packages found matching these parameters.</h4>
+  </div>
 <% } %>
