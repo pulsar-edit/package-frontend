@@ -135,6 +135,7 @@ footer a {
   background-color: var(--badge-default-bg);
   vertical-align: text-top;
   white-space: nowrap;
+  display: inline-block;
 }
 
 .badge.badge-warn {
