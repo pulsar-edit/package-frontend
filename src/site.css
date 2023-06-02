@@ -96,6 +96,10 @@ h3 {
 }
 
 input {
+  @apply border border-secondary bg-transparent rounded max-w-3xl p-3
+}
+
+input.wide {
   @apply border border-secondary bg-transparent rounded w-2/3 max-w-3xl p-3
 }
 
