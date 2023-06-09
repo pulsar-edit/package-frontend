@@ -82,6 +82,16 @@ function prepareForListing(obj) {
 
         pack.badges = obj[i].badges ?? [];
 
+        // Apply any bundled package logic
+        if (isBundledPackage(pack.name)) {
+          pack.isBundled = true;
+          pack.badges.push({
+            type: "info",
+            title: "Bundled",
+            link: "https://github.com/pulsar-edit/package-backend/blob/main/docs/reference/badge_spec.md#bundled"
+          });
+        }
+
         packList.push(pack);
       } catch(err) {
         console.log(err);
@@ -214,6 +224,16 @@ function prepareForDetail(obj) {
 
     pack.badges = obj.badges ?? [];
 
+    // Apply any bundled package logic
+    if (isBundledPackage(pack.name)) {
+      pack.isBundled = true;
+      pack.badges.push({
+        type: "info",
+        title: "Bundled",
+        link: "https://github.com/pulsar-edit/package-backend/blob/main/docs/reference/badge_spec.md#bundled"
+      });
+    }
+
     resolve(pack);
   });
 }
@@ -336,6 +356,40 @@ function getPagination(req, api) {
       next: page < pages ? getRouteUrl(page + 1) : null,
       last: page < pages ? getRouteUrl(pages) : null,
     }
+  }
+}
+
+function isBundledPackage(name) {
+  // Takes the name of a package and returns true if that package is bundled
+  // within the Pulsar editor
+  const bundledPackages = [
+    "about", "archive-view", "atom-dark-syntax", "atom-dark-ui", "atom-light-syntax",
+    "atom-light-ui", "autocomplete-atom-api", "autocomplete-css", "autocomplete-html",
+    "autocomplete-plus", "autocomplete-snippets", "autoflow", "autosave", "background-tips",
+    "base16-tomorrow-dark-theme", "base16-tomorrow-light-theme", "bookmarks",
+    "bracket-matcher", "command-palette", "dalek", "deprecation-cop", "dev-live-reload",
+    "encoding-selector", "exception-reporting", "find-and-replace", "fuzzy-finder",
+    "git-diff", "go-to-line", "grammar-selector", "image-view", "incompatible-packages",
+    "keybinding-resolver", "language-c", "language-clojure", "language-coffee-script",
+    "language-csharp", "language-css", "language-gfm", "language-git", "language-go",
+    "language-html", "language-hyperlink", "language-java", "language-javascript",
+    "language-json", "language-less", "language-make", "language-mustache",
+    "language-objective-c", "language-perl", "language-php", "language-property-list",
+    "language-python", "language-ruby-on-rails", "language-ruby", "language-rust-bundled",
+    "language-sass", "language-shellscript", "language-source", "language-sql",
+    "language-text", "language-todo", "language-toml", "language-typescript",
+    "language-xml", "language-yaml", "line-ending-selector", "link", "markdown-preview",
+    "notifications", "one-dark-syntax", "one-dark-ui", "one-light-syntax", "one-light-ui",
+    "open-on-github", "package-generator", "settings-view", "solarized-dark-syntax",
+    "solarized-light-syntax", "status-bar", "styleguide", "tabs", "timecop", "tree-view",
+    "update-package-dependencies", "welcome", "whitespace", "wrap-guide",
+    "snippets", "symbols-view", "github", "spell-check"
+  ];
+
+  if (bundledPackages.includes(name)) {
+    return true;
+  } else {
+    return false;
   }
 }
 
