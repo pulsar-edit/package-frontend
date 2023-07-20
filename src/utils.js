@@ -1,6 +1,7 @@
 
 const MarkdownIt = require("markdown-it");
 const url = require('url');
+const ghurl = require("parse-github-url");
 let md = new MarkdownIt({
   html: true
 }).use(require("markdown-it-highlightjs"), {
@@ -253,21 +254,34 @@ function findRepoField(obj) {
                 (typeof obj.metadata.repository === "object" ? obj.metadata.repository.url : "" ));
   /**
     * For Information: ./docs/repository-urls.md
+    * Now we are using `https://github.com/jonschlinkert/parse-github-url`
+    * So there's no need to manually maintain this full code, but instead of complete deletion
+    * it will be mothballed by being commented out until a later time.
   */
 
-  if (reg.repoLink.standard.test(repo)) {
-    // Standard repo definition, it's a valid link. Return
-    return repo;
-  } else if (reg.repoLink.protocol.test(repo)) {
-    // Git Protocol Defined. Create normalized link.
-    let constru = repo.match(reg.repoLink.protocol);
-    return `https://github.com/${constru[1]}/${constru[2].replace(".git","")}`;
-  } else if (reg.repoLink.githubAssumedShorthand.test(repo)) {
-    return `https://github.com/${repo.match(reg.repoLink.githubAssumedShorthand)[0]}`;
-  } else if (reg.repoLink.githubShorthand.test(repo)) {
-    return `https://github.com/${repo.match(reg.repoLink.githubShorthand)[1]}`;
+
+  // if (reg.repoLink.standard.test(repo)) {
+  //   // Standard repo definition, it's a valid link. Return
+  //   return repo;
+  // } else if (reg.repoLink.protocol.test(repo)) {
+  //   // Git Protocol Defined. Create normalized link.
+  //   let constru = repo.match(reg.repoLink.protocol);
+  //   return `https://github.com/${constru[1]}/${constru[2].replace(".git","")}`;
+  // } else if (reg.repoLink.githubAssumedShorthand.test(repo)) {
+  //   return `https://github.com/${repo.match(reg.repoLink.githubAssumedShorthand)[0]}`;
+  // } else if (reg.repoLink.githubShorthand.test(repo)) {
+  //   return `https://github.com/${repo.match(reg.repoLink.githubShorthand)[1]}`;
+  // } else {
+  //   // We couldn't determine what to do here. Just return.
+  //   return repo;
+  // }
+
+  let repoObj = ghurl(repo);
+
+  if (repoObj.hasOwnProperty("repo")) {
+    return `https://github.com/${repoObj.repo}`;
   } else {
-    // We couldn't determine what to do here. Just return.
+    // Unable to parse URL, return as is
     return repo;
   }
 

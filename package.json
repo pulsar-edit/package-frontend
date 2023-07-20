@@ -33,6 +33,7 @@
     "markdown-it-highlightjs": "^4.0.1",
     "markdown-it-task-checkbox": "^1.0.6",
     "minify": "^9.2.0",
+    "parse-github-url": "^1.0.2",
     "superagent": "^8.0.1",
     "tailwindcss": "^3.2.4"
   },
