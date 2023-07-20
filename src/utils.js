@@ -163,7 +163,6 @@ function prepareForDetail(obj) {
               token.attrs.forEach((attr) => {
                 if (attr[0] === "href") {
                   let link = attr[1];
-                  console.log(link);
                   if (reg.atomLinks.package.test(link)) {
                     // Fix any links that attempt to point to packages on `https://atom.io/packages/...`
                     attr[1] = `https://web.pulsar-edit.dev/packages/${link.match(reg.atomLinks.package)[1]}`;
