@@ -144,6 +144,10 @@ function prepareForDetail(obj) {
         let cleanRepo = pack.repoLink.replace(".git", "");
         let rawLink = token.attrGet('src');
         token.attrSet('src', `${cleanRepo}/raw/HEAD/${rawLink}`);
+      } else if ([".gif", ".png", ".jpg", ".jpeg", ".webp"].find(ext => token.attrGet("src").endsWith(ext)) && token.attrGet("src").startsWith("https://github.com") && token.attrGet("src").includes("blob")) {
+        // Should match on any image being distributed from GitHub that's using `blob` instead of `raw` causing images to not load correctly
+        let rawLink = token.attrGet("src");
+        token.attrSet("src", rawLink.replace("blob", "raw"));
       }
 
       // pass token to default renderer.
@@ -159,6 +163,7 @@ function prepareForDetail(obj) {
               token.attrs.forEach((attr) => {
                 if (attr[0] === "href") {
                   let link = attr[1];
+                  console.log(link);
                   if (reg.atomLinks.package.test(link)) {
                     // Fix any links that attempt to point to packages on `https://atom.io/packages/...`
                     attr[1] = `https://web.pulsar-edit.dev/packages/${link.match(reg.atomLinks.package)[1]}`;
