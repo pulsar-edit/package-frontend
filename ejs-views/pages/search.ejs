@@ -4,7 +4,7 @@
   <%- include('../partials/search_bar'); %>
   <%- include('../partials/pagination'); %>
   <%- include('../partials/package_grid', { packages }); %>
-  <% if (locals.pagination && locals.pagination.length > 1) { %>
+  <% if (pagination && pagination.total > 1) { %>
     <% // We only want to show pagination twice, if pagination is present %>
     <%- include('../partials/pagination'); %>
   <% } %>
