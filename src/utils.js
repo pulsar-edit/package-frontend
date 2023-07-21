@@ -154,6 +154,10 @@ function prepareForDetail(obj) {
         let cleanRepo = pack.repoLink.replace(".git", "");
         let rawLink = token.attrGet('src');
         token.attrSet('src', `${cleanRepo}/raw/HEAD/${rawLink}`);
+      } else if ([".gif", ".png", ".jpg", ".jpeg", ".webp"].find(ext => token.attrGet("src").endsWith(ext)) && token.attrGet("src").startsWith("https://github.com") && token.attrGet("src").includes("blob")) {
+        // Should match on any image being distributed from GitHub that's using `blob` instead of `raw` causing images to not load correctly
+        let rawLink = token.attrGet("src");
+        token.attrSet("src", rawLink.replace("blob", "raw"));
       }
 
       // pass token to default renderer.
