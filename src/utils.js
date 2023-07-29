@@ -56,8 +56,9 @@ function prepareForListing(obj) {
           // this broken package, so that it can be repaired
           let brokenPack = {
             name: obj[i]?.name || "Malformed Package", // We still want to report a name for users to submit
-            description: `Whoops! Seems this package has severely malformed data. Please submit an issue to https://github.com/pulsar-edit/package-backend/issues with the package's name. Thank you!`,
+            description: "Whoops! Seems this package has severely malformed data. Please submit an issue to https://github.com/pulsar-edit/package-backend/issues with the package's name. Thank you!",
             keywords: [ "malformed" ],
+            badges: [],
             author: "malformed",
             downloads: 0,
             stars: 0,
@@ -98,7 +99,20 @@ function prepareForListing(obj) {
         console.log(err);
         console.log("Error Caused by:");
         console.log(obj[i]);
-        reject(err);
+
+        // But we should no longer reject and cause the page to crash. Instead provide malformed error.
+        let brokenPack = {
+          name: obj[i]?.name || "Malformed Package",
+          description: "Whoops! Seems this package has malformed data that caused the package parser to crash! Please submit an issue to https://github.com/pulsar-edit/package-backend/issues with the package's name. Thank you!",
+          keywords: [ "malformed" ],
+          badges: [],
+          author: "malformed",
+          downloads: 0,
+          stars: 0,
+          install: ""
+        };
+
+        packList.push(brokenPack);
       }
     }
 
@@ -274,8 +288,20 @@ function findAuthorField(obj) {
 }
 
 function findRepoField(obj) {
-  let repo = (typeof obj.metadata.repository === "string" ? obj.metadata.repository :
-                (typeof obj.metadata.repository === "object" ? obj.metadata.repository.url : "" ));
+  let repo;
+
+  if (typeof obj.metadata.repository === "string") {
+    repo = obj.metadata.repository;
+  } else if (typeof obj.metadata.repository === "object" && typeof obj.metadata.repository?.url === "string") {
+    repo = obj.metadata.repository.url;
+  } else if (typeof obj.repository === "string") {
+    repo = obj.repository;
+  } else if (typeof obj.repository === "object" && typeof obj.repository?.url === "string") {
+    repo = obj.repository.url;
+  } else {
+    // We return early here to avoid passing an empty string to `parse-github-url` which would throw an exception.
+    return "";
+  }
   /**
     * For Information: ./docs/repository-urls.md
     * Now we are using `https://github.com/jonschlinkert/parse-github-url`
