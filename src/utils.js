@@ -22,15 +22,22 @@ const reg = require("./reg.js");
 // Collection of utility functions for the frontend
 
 async function displayError(req, res, errStatus) {
-  switch(errStatus) {
+  let errCode = (typeof errStatus === "number") ? errStatus :
+    (typeof errStatus === "object" && typeof errStatus.status === "number")
+    ? errStatus.status : 500;
+  let DEV = process.env.PULSAR_STATUS === "dev" ? true : false;
+  switch(errCode) {
     case 404:
-      res.status(404).render('404');
-      break;
-    case 505:
-      res.status(505).render('505');
+      res.status(404).render('404', {
+        dev: DEV,
+        package: decodeURIComponent(req.params.packageName)
+      });
       break;
     default:
-      res.status(505).render('505');
+      res.status(500).render('500', {
+        dev: DEV,
+        id: process.env.GAE_INSTANCE ?? process.env.GAE_APPLICATION ?? process.env.COMPUTERNAME ?? process.cwd()
+      });
       break;
   }
 }

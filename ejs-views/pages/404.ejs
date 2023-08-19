@@ -1,1 +1,21 @@
-<p>This Page is a 404! Sorry!</p>
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <title>Page Not Found</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <% if (dev) { %>
+      <link rel="stylesheet" href="/public/site.css" />
+    <% } else { %>
+      <link rel="stylesheet" href="/public/site.min.css" />
+    <% } %>
+  </head>
+  <body class="bg-canvas flex flex-col min-h-screen text-text">
+    <div class="text-center">
+      <% if (typeof package === "string") { %>
+        <h1>The package '<%=package%>' does not exist. Sorry!</h1>
+      <% } else { %>
+        <h1>This page does not exist. Sorry!</h1>
+      <% } %>
+    </div>
+  </body>
+</html>
