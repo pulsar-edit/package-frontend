@@ -1,6 +1,8 @@
 # Download Endpoint
 
-This Microservice allows easy linking to any Pulsar Alpha Cirrus CI Binary.
+This Microservice allows easy linking to any Pulsar Rolling Release Binary.
+
+This binaries are no longer downloaded directly from CirrusCI. Instead these binaries are now uploaded to [`pulsar-edit/pulsar-rolling-releases`](https://github.com/pulsar-edit/pulsar-rolling-releases).
 
 Feel free to refer to the [download table](/docs/download_links.md) to use this endpoint.
 
