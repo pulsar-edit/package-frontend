@@ -118,7 +118,7 @@ async function findLink(os, type) {
     for (let version of releases) {
       for (let asset of version.assets) {
 
-        let name = asset?.name;
+        let name = asset.name;
 
         let returnObj = {
           ok: true,
