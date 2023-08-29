@@ -115,8 +115,8 @@ async function findLink(os, type) {
     // microservice has 0 deps currently. For now lets assume it's a sorted array
     // This same assumption is made on the `pulsar-updater` core package
 
-    for (let version of releases) {
-      for (let asset of version.assets) {
+    for (const version of releases) {
+      for (const asset of version.assets) {
 
         let name = asset.name;
 
