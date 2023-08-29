@@ -1,16 +1,14 @@
 const https = require("node:https");
 
-function doRequest(queryString) {
-  const dataToSend = JSON.stringify({ query: queryString });
+function doRequest() {
 
   const options = {
-    hostname: 'api.cirrus-ci.com',
-    path: '/graphql',
-    method: 'POST',
+    hostname: 'api.github.com',
+    path: '/repos/pulsar-edit/pulsar-rolling-releases/releases',
+    method: 'GET',
     headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Content-Length': dataToSend.length
+      'Accept': 'application/vnd.github+json',
+      'User-Agent': 'pulsar-edit/package-frontend/microservices/download'
     }
   };
 
@@ -32,8 +30,6 @@ function doRequest(queryString) {
       reject(e);
     });
 
-    // Write data to request body
-    req.write(dataToSend);
     req.end();
   });
 };
@@ -111,175 +107,193 @@ async function displayError(req, res, errMsg) {
 
 async function findLink(os, type) {
   try {
-    let repositoryQuery = `
-      query getRepositoryBuildStatuses {
-        repository(id: 6483909499158528) {
-          builds(branch: "master", last: 10) {
-            edges {
-              node {
-                id
-                status
-              }
-            }
+
+    let releases = await doRequest();
+
+    // Now these releases should be sorted already, if we find they aren't we might
+    // have to add semver as a dep on this microservice, which is no fun since this
+    // microservice has 0 deps currently. For now lets assume it's a sorted array
+    // This same assumption is made on the `pulsar-updater` core package
+
+    for (const version of releases) {
+      for (const asset of version.assets) {
+
+        let name = asset.name;
+
+        let returnObj = {
+          ok: true,
+          content: asset?.browser_download_url
+        };
+
+        // Ensure we have valid data to work with
+        if (typeof name !== "string" || typeof returnObj.content !== "string") {
+          continue;
+        }
+
+        if (os === "windows") {
+          if (
+            type === "windows_setup" &&
+            name.startsWith("Pulsar.Setup") &&
+            name.endsWith(".exe")
+          ) {
+
+            return returnObj;
+
+          } else if (
+            type === "windows_portable" &&
+            name.endsWith("-win.zip")
+          ) {
+
+            return returnObj;
+
+          } else if (
+            type === "windows_blockmap" &&
+            name.startsWith("Pulsar.Setup") &&
+            name.endsWith(".exe.blockmap")
+          ) {
+
+            return returnObj;
+
+          }
+        } else if (os === "silicon_mac") {
+          if (
+            type === "mac_zip" &&
+            name.endsWith("-arm64-mac.zip")
+          ) {
+
+            return returnObj;
+
+          } else if (
+            type === "mac_zip_blockmap" &&
+            name.endsWith("-arm64-mac.zip.blockmap")
+          ) {
+
+            return returnObj;
+
+          } else if (
+            type === "mac_dmg" &&
+            name.endsWith("-arm64.dmg")
+          ) {
+
+            return returnObj;
+
+          } else if (
+            type === "mac_dmg_blockmap" &&
+            name.endsWith("-arm64.dmg.blockmap")
+          ) {
+
+            return returnObj;
+
+          }
+        } else if (os === "intel_mac") {
+          if (
+            type === "mac_zip" &&
+            name.endsWith("-mac.zip") &&
+            !name.endsWith("-arm64-mac.zip")
+          ) {
+
+            return returnObj;
+
+          } else if (
+            type === "mac_zip_blockmap" &&
+            name.endsWith("-mac.zip.blockmap") &&
+            !name.endsWith("-arm64-mac.zip.blockmap")
+          ) {
+
+            return returnObj;
+
+          } else if (
+            type === "mac_dmg" &&
+            name.endsWith(".dmg") &&
+            !name.endsWith("-arm64.dmg")
+          ) {
+
+            return returnObj;
+
+          } else if (
+            type === "mac_dmg_blockmap" &&
+            name.endsWith(".dmg.blockmap") &&
+            !name.endsWith("-arm64.dmg.blockmap")
+          ) {
+
+            return returnObj;
+
+          }
+        } else if (os === "arm_linux") {
+          if (
+            type === "linux_appimage" &&
+            name.endsWith("-arm64.AppImage")
+          ) {
+
+            return returnObj;
+
+          } else if (
+            type === "linux_tar" &&
+            name.endsWith("-arm64.tar.gz")
+          ) {
+
+            return returnObj;
+
+          } else if (
+            type === "linux_rpm" &&
+            name.endsWith(".aarch64.rpm")
+          ) {
+
+            return returnObj;
+
+          } else if (
+            type === "linux_deb" &&
+            name.endsWith("_arm64.deb")
+          ) {
+
+            return returnObj;
+
+          }
+        } else if (os === "linux") {
+          if (
+            type === "linux_appimage" &&
+            name.endsWith(".AppImage") &&
+            !name.endsWith("-arm64.AppImage")
+          ) {
+
+            return returnObj;
+
+          } else if (
+            type === "linux_tar" &&
+            name.endsWith(".tar.gz") &&
+            !name.endsWith("-arm64.tar.gz")
+          ) {
+
+            return returnObj;
+
+          } else if (
+            type === "linux_rpm" &&
+            name.endsWith(".x86_64.rpm")
+          ) {
+
+            return returnObj;
+
+          } else if (
+            type === "linux_deb" &&
+            name.endsWith("_amd64.deb")
+          ) {
+
+            return returnObj;
+
           }
         }
-      }
-    `;
 
-    let repositoryGraph = await doRequest(repositoryQuery);
-
-    let buildID;
-
-    for (const edge of repositoryGraph.data.repository.builds.edges) {
-      if (edge.node.status === "COMPLETED") {
-        buildID = edge.node.id;
-        break;
       }
     }
 
-    let buildQuery = `
-      query GetTasksFromBuild {
-        build(id: "${buildID}") {
-          tasks {
-            name
-            id
-            status
-          }
-        }
-      }
-    `;
+    // If we get to this point it means the above loop didn't return.
+    // Meaning we couldn't find a single valid asset among any versions
+    // So we will return an error
 
-    let buildGraph = await doRequest(buildQuery);
-
-    let taskid = undefined;
-
-    const findID = function (name, tasks) {
-      for (const task of tasks) {
-        if (task.name === name && task.status === "COMPLETED") {
-          return task.id;
-        }
-      }
-      return undefined;
-    };
-
-    // While it seems to make total sense to just run `findID(params.os, buildGraph.data.build.tasks)`
-    // The reason this was done, so that if these names change at all or more are added, the bulk
-    // of responsibility to update will lie soley here. Rather than let possible external links fail and expire.
-    // Such as `linux` changing to `Linux`, would only have to be done here rather than every location the link appears.
-    switch(os) {
-      case "linux":
-        taskid = findID("linux", buildGraph.data.build.tasks);
-        break;
-      case "arm_linux":
-        taskid = findID("arm_linux", buildGraph.data.build.tasks);
-        break;
-      case "silicon_mac":
-        taskid = findID("silicon_mac", buildGraph.data.build.tasks);
-        break;
-      case "intel_mac":
-        taskid = findID("intel_mac", buildGraph.data.build.tasks);
-        break;
-      case "windows":
-        taskid = findID("windows", buildGraph.data.build.tasks);
-        break;
-      default:
-        taskid = undefined;
-        break;
-    }
-
-    if (taskid === undefined) {
-      return {
-        ok: false,
-        code: 503,
-        msg: "Invalid OS Download Parameters Provided."
-      };
-    }
-
-    let taskQuery = `
-      query GetTaskDetails {
-        task(id: ${taskid}) {
-          artifacts {
-            files {
-              path
-            }
-          }
-        }
-      }
-    `;
-
-    let taskGraph = await doRequest(taskQuery);
-
-    let binaryPath = undefined;
-
-    const findBinary = function (ext, loc, binaries) {
-      for (const binary of binaries) {
-        if (loc === "start") {
-          if (binary.path.startsWith(ext)) {
-            return binary.path;
-          }
-        } else if (loc === "end") {
-          if (binary.path.endsWith(ext)) {
-            return binary.path;
-          }
-        }
-      }
-      return undefined;
-    };
-
-    switch(type) {
-      // Linux Binaries
-      case "linux_appimage":
-        binaryPath = findBinary(".AppImage", "end", taskGraph.data.task.artifacts[0].files);
-        break;
-      case "linux_tar":
-        binaryPath = findBinary(".tar.gz", "end", taskGraph.data.task.artifacts[0].files);
-        break;
-      case "linux_rpm":
-        binaryPath = findBinary(".rpm", "end", taskGraph.data.task.artifacts[0].files);
-        break;
-      case "linux_deb":
-        binaryPath = findBinary(".deb", "end", taskGraph.data.task.artifacts[0].files);
-        break;
-      // Windows Binaries
-      case "windows_setup":
-        binaryPath = findBinary("binaries/Pulsar Setup", "start", taskGraph.data.task.artifacts[0].files);
-        break;
-      case "windows_portable":
-        binaryPath = findBinary(".zip", "end", taskGraph.data.task.artifacts[0].files);
-        break;
-      case "windows_blockmap":
-        binaryPath = findBinary(".exe.blockmap", "end", taskGraph.data.task.artifacts[0].files);
-        break;
-      // MacOS Builds
-      case "mac_zip":
-        binaryPath = findBinary(".zip", "end", taskGraph.data.task.artifacts[0].files);
-        break;
-      case "mac_zip_blockmap":
-        binaryPath = findBinary(".zip.blockmap", "end", taskGraph.data.task.artifacts[0].files);
-        break;
-      case "mac_dmg":
-        binaryPath = findBinary(".dmg", "end", taskGraph.data.task.artifacts[0].files);
-        break;
-      case "mac_dmg_blockmap":
-        binaryPath = findBinary(".dmb.blockmap", "end", taskGraph.data.task.artifacts[0].files);
-        break;
-      default:
-        binaryPath = undefined;
-        break;
-    }
-
-    if (binaryPath === undefined) {
-      return {
-        ok: false,
-        code: 503,
-        msg: "Invalid TYPE Download Parameters Provided"
-      };
-    }
-
-    // Now that we have the binary, it's time to return a redirect.
     return {
-      ok: true,
-      content: `https://api.cirrus-ci.com/v1/artifact/task/${taskid}/binary/${binaryPath}`
+      ok: false,
+      code: 404,
+      msg: `Unable to find any assets matching the provided parameters: os=${os};type=${type}`
     };
 
   } catch(err) {
