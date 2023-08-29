@@ -126,7 +126,7 @@ async function findLink(os, type) {
         };
 
         // Ensure we have valid data to work with
-        if (typeof name !== "string" && typeof returnObj.content !== "string") {
+        if (typeof name !== "string" || typeof returnObj.content !== "string") {
           continue;
         }
 
