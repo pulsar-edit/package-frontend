@@ -204,6 +204,9 @@ function setup (event) {
     Array.from(document.getElementById("search-bar")).forEach((node) => {
       if (node.name === "sort") {
         document.querySelector(`[data-sort-by=${node.value}]`).classList.add("enabled");
+        //changeSortByButton.innerHTML =
+        //  `Sort By: ${document.querySelector(`[data-sort-by=${node.value}]`).textContent}<i class="fas fa-caret-down ml-2"></i>`;
+        // While this works, I'd have to figure out the CSS to not have a misaligned dropdown
       }
     });
   }
@@ -215,6 +218,10 @@ function setup (event) {
     Array.from(document.getElementById("search-bar")).forEach((node) => {
       if (node.name === "direction") {
         document.querySelector(`[data-direction=${node.value}]`).classList.add("enabled");
+        // We have to use innerHTML because setting `textContent` or `innerText` loses our caret
+        //changeDirectionButton.innerHTML =
+        //  `Order: ${document.querySelector(`[data-direction=${node.value}]`).textContent}<i class="fas fa-caret-down ml-2"></i>`;
+        // While this works, I'd have to figure out the CSS to not have a misaligned dropdown
       }
     });
   }
