@@ -210,7 +210,15 @@ nav.active {
 }
 
 #sort-dropdown:before, #direction-dropdown:before {
-  @apply absolute -top-4 right-10 content-[''] w-0 h-0 border-8 border-transparent border-b-accent;
+  @apply absolute -top-4 content-[''] w-0 h-0 border-8 border-transparent border-b-accent;
+}
+
+#sort-dropdown:before {
+  @apply right-40
+}
+
+#direction-dropdown:before {
+  @apply right-10
 }
 
 #sort-dropdown:before, #direction-dropdown:before {
