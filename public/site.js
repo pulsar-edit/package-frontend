@@ -239,13 +239,11 @@ function setup (event) {
     });
     button.classList.add("enabled");
     let form = document.getElementById("search-bar");
-    console.log(button.getAttribute("data-sort-by"));
     Array.from(form).forEach((node) => {
       if (node.name === "sort") {
         node.value = button.getAttribute("data-sort-by");
       }
     });
-    // TODO call function to set this value
   });
 
   const directionDropdown = document.getElementById("direction-dropdown");
@@ -256,7 +254,12 @@ function setup (event) {
       node.classList.remove("enabled");
     });
     button.classList.add("enabled");
-    // TODO call function to set this value
+    let form = document.getElementById("search-bar");
+    Array.from(form).forEach((node) => {
+      if (node.name === "direction") {
+        node.value = button.getAttribute("data-direction");
+      }
+    });
   });
 
   if (copyToClipboardButton) {
