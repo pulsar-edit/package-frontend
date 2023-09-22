@@ -2,6 +2,14 @@ function changeThemeBtn() {
   document.getElementById("dropdown-list").classList.toggle("show");
 }
 
+function changeSortByBtn() {
+  document.getElementById("sort-dropdown").classList.toggle("show");
+}
+
+function changeDirectionBtn() {
+  document.getElementById("direction-dropdown").classList.toggle("show");
+}
+
 function changeTheme(theme) {
   switch (theme) {
     case "github-dark":
@@ -148,6 +156,22 @@ addEventListener('click', (e) => {
   }
 });
 
+// Close the sort by menu if the click is outside of the button
+addEventListener("click", (e) => {
+  const t = document.getElementById("sort-dropdown");
+  if (!e.target.closest("button.change-search-sort")) {
+    t.classList.remove("show");
+  }
+});
+
+// Close the direction menu if the click is outside of the button
+addEventListener("click", (e) => {
+  const t = document.getElementById("direction-dropdown");
+  if (!e.target.closest("button.change-search-direction")) {
+    t.classList.remove("show");
+  }
+});
+
 function setup (event) {
   if (localStorage.getItem("theme")) {
     // If a theme has been set or saved.
@@ -173,6 +197,28 @@ function setup (event) {
     changeThemeButton.addEventListener("click", changeThemeBtn);
   }
 
+  const changeSortByButton = document.querySelector('button.change-search-sort');
+  if (changeSortByButton) {
+    changeSortByButton.addEventListener("click", changeSortByBtn);
+    // Set the button value to be that of the current sort query
+    Array.from(document.getElementById("search-bar")).forEach((node) => {
+      if (node.name === "sort") {
+        document.querySelector(`[data-sort-by=${node.value}]`).classList.add("enabled");
+      }
+    });
+  }
+
+  const changeDirectionButton = document.querySelector('button.change-search-direction');
+  if (changeDirectionButton) {
+    changeDirectionButton.addEventListener("click", changeDirectionBtn);
+    // Set the button value to be that of the current direction query
+    Array.from(document.getElementById("search-bar")).forEach((node) => {
+      if (node.name === "direction") {
+        document.querySelector(`[data-direction=${node.value}]`).classList.add("enabled");
+      }
+    });
+  }
+
   const copyToClipboardButton = document.querySelector(
     ".copy-to-clipboard-button-js"
   );
@@ -182,6 +228,35 @@ function setup (event) {
     let button = event.target.closest("button[data-theme-name]");
     if (!button) { return; }
     changeTheme(button.getAttribute('data-theme-name'));
+  });
+
+  const sortDropdown = document.getElementById("sort-dropdown");
+  sortDropdown.addEventListener("click", (event) => {
+    let button = event.target.closest("button[data-sort-by]");
+    if (!button) { return; }
+    Array.from(sortDropdown.children).forEach((node) => {
+      node.classList.remove("enabled");
+    });
+    button.classList.add("enabled");
+    let form = document.getElementById("search-bar");
+    console.log(button.getAttribute("data-sort-by"));
+    Array.from(form).forEach((node) => {
+      if (node.name === "sort") {
+        node.value = button.getAttribute("data-sort-by");
+      }
+    });
+    // TODO call function to set this value
+  });
+
+  const directionDropdown = document.getElementById("direction-dropdown");
+  directionDropdown.addEventListener("click", (event) => {
+    let button = event.target.closest("button[data-direction]");
+    if (!button) { return; }
+    Array.from(directionDropdown.children).forEach((node) => {
+      node.classList.remove("enabled");
+    });
+    button.classList.add("enabled");
+    // TODO call function to set this value
   });
 
   if (copyToClipboardButton) {

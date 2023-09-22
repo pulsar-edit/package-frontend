@@ -1,6 +1,23 @@
 <% if (pagination && pagination.total > 0) { %>
     <div id="pagination" class="sm:flex-row flex-col flex items-center justify-between gap-3 border border-secondary rounded p-3">
         <p class="opacity-70">Showing <%- pagination.from %> to <%- pagination.to %> of <%- pagination.total %> entries</p>
+        <div class="relative flex-1 text-right advanced-search">
+          <button class="change-search-sort">Sort By:<i class="fas fa-caret-down ml-2"></i></button>
+          <div class="hidden opacity-100 absolute bg-accent text-left md:text-right md:mt-8 p-3 min-w-[200px] md:right-0" id="sort-dropdown">
+            <button data-sort-by="relevance" class="simple-btn">Relevance</button>
+            <button data-sort-by="downloads" class="simple-btn">Downloads</button>
+            <button data-sort-by="created_at" class="simple-btn">Created At</button>
+            <button data-sort-by="updated_at" class="simple-btn">Updated At</button>
+            <button data-sort-by="stars" class="simple-btn">Stars</button>
+          </div>
+
+          <button class="change-search-direction">Order:<i class="fas fa-caret-down ml-2"></i></button>
+          <div class="hidden opacity-100 absolute bg-accent text-left md:text-right md:mt-8 p-3 min-w-[200px] md:right-0" id="direction-dropdown">
+            <button data-direction="desc" class="simple-btn">Descending</button>
+            <button data-direction="asc" class="simple-btn">Ascending</button>
+          </div>
+
+        </div>
         <div class="flex items-center gap-1 sm:gap-3 lg:gap-6">
             <a href="<%- pagination.routes.first %>" class="<%- !!pagination.routes.first ? '' : 'disabled' %>">
                 <i class="fas fa-chevron-left -mr-1"></i>

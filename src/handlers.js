@@ -122,12 +122,20 @@ async function searchHandler(req, res, timecop) {
     timecop.start("transcribe-json");
     let obj = await utils.prepareForListing(api.body);
     timecop.end("transcribe-json");
-    res.render("search", { dev: DEV, packages: obj, search: req.query.q, pagination, timecop: timecop.timetable, page: {
-      name: `Search ${req.query.q}`,
-      og_url: "https://web.pulsar-edit.dev/packages/search",
-      og_description: "The Pulsar Package Repository",
-      og_image: "https://web.pulsar-edit.dev/public/pulsar_name.svg",
-      og_image_type: "image/svg+xml"
+    res.render("search", {
+      dev: DEV,
+      packages: obj,
+      search: req.query.q,
+      sort: req.query.sort ?? "",
+      direction: req.query.direction ?? "",
+      pagination,
+      timecop: timecop.timetable,
+      page: {
+        name: `Search ${req.query.q}`,
+        og_url: "https://web.pulsar-edit.dev/packages/search",
+        og_description: "The Pulsar Package Repository",
+        og_image: "https://web.pulsar-edit.dev/public/pulsar_name.svg",
+        og_image_type: "image/svg+xml"
     }});
   } catch(err) {
     console.log(err);

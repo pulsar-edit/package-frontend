@@ -197,6 +197,40 @@ nav.active {
   display: block;
 }
 
+/***************************/
+/***** Advanced Search *****/
+/***************************/
+
+#sort-dropdown, #direction-dropdown {
+  z-index: 1;
+}
+
+#sort-dropdown.show, #direction-dropdown.show {
+  @apply !block;
+}
+
+#sort-dropdown:before, #direction-dropdown:before {
+  @apply absolute -top-4 right-10 content-[''] w-0 h-0 border-8 border-transparent border-b-accent;
+}
+
+#sort-dropdown:before, #direction-dropdown:before {
+  display: block;
+}
+
+#sort-dropdown button {
+  display: block;
+}
+
+button.simple-btn {
+  color: var(--header-text, var(--text));
+  padding: 0.75rem;
+  background-color: var(--accent) !important;
+}
+
+button.simple-btn.enabled {
+  background-color: var(--primary) !important;
+}
+
 /**************************/
 /****** SHARE SELECT ******/
 /**************************/
