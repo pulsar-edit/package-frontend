@@ -72,7 +72,7 @@ async function singlePackageListing(req, res, timecop) {
       page: {
         name: "PPR Error Page",
         og_url: "https://web.pulsar-edit.dev/packages",
-        og_description: "THe Pulsar Package Repository",
+        og_description: "The Pulsar Package Repository",
         og_image: "https://web.pulsar-edit.dev/public/pulsar_name.svg",
         og_image_type: "image/svg+xml"
       }
