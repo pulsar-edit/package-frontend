@@ -1,0 +1,16 @@
+<%- include('../partials/header', { page }); %>
+
+<article>
+  <div class="w-full border border-secondary rounded p-3">
+    <span class="text-3xl text-primary">This Page encountered an Error!</span>
+  </div>
+  <div id="readme" class="mt-12 prose max-w-none">
+    <pre>
+      <code class="hljs language-json">
+        <%-error%>
+      </code>
+    </pre>
+  </div>
+</article>
+
+<%- include('../partials/footer'); %>
