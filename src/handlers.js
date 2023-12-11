@@ -27,7 +27,18 @@ async function fullListingPage(req, res, timecop) {
       og_image_type: "image/svg+xml"
     }});
   } catch(err) {
-    utils.displayError(req, res, err);
+    utils.displayError(req, res, {
+      error: utils.modifyErrorText(err),
+      dev: DEV,
+      timecop: false,
+      page: {
+        name: "PPR Error Page",
+        og_url: "https://web.pulsar-edit.dev/packages",
+        og_description: "The Pulsar Package Repository",
+        og_image: "https://web.pulsar-edit.dev/public/pulsar_name.svg",
+        og_image_type: "image/svg+xml"
+      }
+    });
   }
 }
 
@@ -54,7 +65,18 @@ async function singlePackageListing(req, res, timecop) {
       og_image_height: 600,
     }});
   } catch(err) {
-    utils.displayError(req, res, err);
+    utils.displayError(req, res, {
+      error: utils.modifyErrorText(err),
+      dev: DEV,
+      timecop: false,
+      page: {
+        name: "PPR Error Page",
+        og_url: "https://web.pulsar-edit.dev/packages",
+        og_description: "The Pulsar Package Repository",
+        og_image: "https://web.pulsar-edit.dev/public/pulsar_name.svg",
+        og_image_type: "image/svg+xml"
+      }
+    });
   }
 }
 

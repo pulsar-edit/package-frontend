@@ -21,17 +21,27 @@ const reg = require("./reg.js");
 
 // Collection of utility functions for the frontend
 
-async function displayError(req, res, errStatus) {
-  switch(errStatus) {
-    case 404:
-      res.status(404).render('404');
-      break;
-    case 505:
-      res.status(505).render('505');
-      break;
-    default:
-      res.status(505).render('505');
-      break;
+async function displayError(req, res, details) {
+  console.error(details);
+  res.status(500).render('error', details);
+}
+
+function modifyErrorText(err) {
+  // This function takes an error object, or error message string, and attempts
+  // to find the optimal formatting of the message to display to users.
+
+  if (typeof err === "object") {
+    if (typeof err.status === "number") {
+      // This is likely an error thrown from `superagent`
+      let text = `'${err.status}' Received from '${err?.response?.req?.host}${err?.response?.req?.path}'\n\t\t ${err.toString()}`;
+      return text;
+    } else {
+      // TODO Additional possibilities added here
+      return err;
+    }
+  } else {
+    // We likely already have an error message string
+    return err;
   }
 }
 
@@ -463,4 +473,5 @@ module.exports = {
   prepareForDetail,
   getPagination,
   Timecop,
+  modifyErrorText
 };

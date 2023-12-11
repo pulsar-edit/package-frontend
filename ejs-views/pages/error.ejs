@@ -1,0 +1,21 @@
+<%- include('../partials/header', { page }); %>
+
+<article>
+  <div class="w-full border border-secondary rounded p-3">
+    <span class="text-3xl text-primary">This Page encountered an Error!</span>
+  </div>
+  <div id="readme" class="mt-12 prose max-w-none">
+    <h1>
+      If you think you're seeing this page in error. Please report an issue on
+      <a href="https://github.com/pulsar-edit/package-frontend/issues">GitHub</a> or
+      <a href="https://discord.gg/7aEbB9dGRT">Discord</a>.
+    </h1>
+    <pre>
+      <code class="hljs language-json">
+        <%-error%>
+      </code>
+    </pre>
+  </div>
+</article>
+
+<%- include('../partials/footer'); %>
