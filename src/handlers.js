@@ -4,7 +4,7 @@ const server_version = require("../package.json").version;
 const { apiurl } = require("./config.js").getConfig();
 const cache = require("./cache.js");
 
-const DEV =  process.env.PULSAR_STATUS === "dev" ? true : false;
+const DEV = process.env.PULSAR_STATUS === "dev" ? true : false;
 
 async function statusPage(req, res) {
   res.render('status', { message: `Server is up and running ${server_version}` });
@@ -65,6 +65,27 @@ async function singlePackageListing(req, res, timecop) {
       og_image_height: 600,
     }});
   } catch(err) {
+    let status_to_display = false; // Since the status is ignored if not a number,
+    // we initialize as boolean to no-op in the case we don't find a proper status
+
+    const validStatus = (val, key) => {
+      if (val?.response?.[key] && typeof val.response[key] === "boolean" && val.response[key]) {
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+    if (validStatus(err, "notFound")) {
+      status_to_display = 404;
+    } else if (validStatus(err, "unauthorized")) {
+      status_to_display = 401;
+    } else if (validStatus(err, "forbidden")) {
+      status_to_display = 403;
+    } else if (validStatus(err, "badRequest")) {
+      status_to_display = 400;
+    }
+
     utils.displayError(req, res, {
       error: utils.modifyErrorText(err),
       dev: DEV,
@@ -75,7 +96,8 @@ async function singlePackageListing(req, res, timecop) {
         og_description: "The Pulsar Package Repository",
         og_image: "https://web.pulsar-edit.dev/public/pulsar_name.svg",
         og_image_type: "image/svg+xml"
-      }
+      },
+      status_to_display: status_to_display
     });
   }
 }

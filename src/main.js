@@ -4,6 +4,8 @@ const path = require("path");
 const handlers = require("./handlers.js");
 const utils = require("./utils.js");
 
+const DEV = process.env.PULSAR_STATUS === "dev" ? true : false;
+
 app.set("views", "./ejs-views/pages");
 app.set("view engine", "ejs");
 
@@ -69,7 +71,19 @@ app.get("/logout", async (req, res) => {
 
 app.use(async (req, res) => {
   // 404 here, keep at last position
-  await utils.displayError(req, res, 404);
+  await utils.displayError(req, res, {
+      error: `The page '${req.url}' cannot be found.`,
+      dev: DEV,
+      timecop: false,
+      page: {
+        name: "PPR Error Page",
+        og_url: "https://web.pulsar-edit.dev/packages",
+        og_description: "The Pulsar Package Repository",
+        og_image: "https://web.pulsar-edit.dev/public/pulsar_name.svg",
+        og_image_type: "image/svg+xml"
+      },
+      status_to_display: 404
+    });
 });
 
 module.exports = app;
