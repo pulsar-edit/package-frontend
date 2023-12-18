@@ -23,7 +23,7 @@ const reg = require("./reg.js");
 
 async function displayError(req, res, details) {
   console.error(details);
-  if (details?.status_to_display && typeof details.status_to_display === "number") {
+  if (typeof details?.status_to_display === "number") {
     res.status(details.status_to_display).render("error", details);
   } else {
     res.status(500).render("error", details);
