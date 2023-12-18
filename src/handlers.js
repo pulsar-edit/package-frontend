@@ -68,7 +68,7 @@ async function singlePackageListing(req, res, timecop) {
     let status_to_display = false; // Since the status is ignored if not a number,
     // we initialize as boolean to no-op in the case we don't find a proper status
 
-    const validStatus = (val, key) => {
+    const validStatusIs = (val, key) => {
       if (val?.response?.[key] && typeof val.response[key] === "boolean" && val.response[key]) {
         return true;
       } else {
@@ -76,13 +76,13 @@ async function singlePackageListing(req, res, timecop) {
       }
     };
 
-    if (validStatus(err, "notFound")) {
+    if (validStatusIs(err, "notFound")) {
       status_to_display = 404;
-    } else if (validStatus(err, "unauthorized")) {
+    } else if (validStatusIs(err, "unauthorized")) {
       status_to_display = 401;
-    } else if (validStatus(err, "forbidden")) {
+    } else if (validStatusIs(err, "forbidden")) {
       status_to_display = 403;
-    } else if (validStatus(err, "badRequest")) {
+    } else if (validStatusIs(err, "badRequest")) {
       status_to_display = 400;
     }
 
