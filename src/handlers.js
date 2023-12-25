@@ -69,7 +69,7 @@ async function singlePackageListing(req, res, timecop) {
     // we initialize as boolean to no-op in the case we don't find a proper status
 
     const validStatusIs = (val, key) => {
-      if (val?.response?.[key] && typeof val.response[key] === "boolean" && val.response[key]) {
+      if (typeof val?.response?.[key] === "boolean" && val.response[key]) {
         return true;
       } else {
         return false;
