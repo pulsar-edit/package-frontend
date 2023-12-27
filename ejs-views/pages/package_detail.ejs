@@ -2,6 +2,7 @@
 
 <article>
   <%- include('../partials/package_listing', {verbose: true}); %>
+  <%- include('../partials/service_listing', {pack}); %>
   <div id="readme" class="mt-12 prose max-w-none">
     <%-pack.readme%>
   </div>

@@ -2,6 +2,7 @@
 
 <article>
   <%- include('../partials/search_bar'); %>
+  <%- include('../partials/search_description'); %>
   <%- include('../partials/pagination'); %>
   <%- include('../partials/package_grid', { packages }); %>
   <% if (pagination && pagination.total > 0) { %>

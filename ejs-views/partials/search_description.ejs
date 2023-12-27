@@ -1,0 +1,12 @@
+<%
+  let serviceSpecified = locals.serviceType && locals.serviceName;
+  let serviceTypeVerb = locals.serviceType === 'provided' ? 'provide' : 'consume';
+%>
+
+<% if (serviceSpecified)  { %>
+<div class="text-center mt-4 mb-4">
+  <p>
+    Displaying all packages which <%= serviceTypeVerb %> the <strong><%= locals.serviceName %></strong> service.
+  </p>
+</div>
+<% } %>

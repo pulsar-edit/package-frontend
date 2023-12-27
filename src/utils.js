@@ -146,6 +146,9 @@ function prepareForDetail(obj) {
     pack.bugLink = obj.metadata.bugs ? obj.metadata.bugs.url : "";
     pack.install = `atom://settings-view/show-package?package=${pack.name}`;
 
+    pack.providedServices = obj.metadata.providedServices ?? null;
+    pack.consumedServices = obj.metadata.consumedServices ?? null;
+
     // Add custom handling of image links. This aims to fix the common issue of users specifying local paths in their links.
     // Which result in them not loading here since they live on GitHub.
     // This is declared here, since this needs access to the repo the package is on.
