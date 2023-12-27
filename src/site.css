@@ -271,3 +271,20 @@ nav.active {
 #pagination a.disabled {
   @apply pointer-events-none text-secondary;
 }
+
+/********************************/
+/******* SERVICE LISTING ********/
+/********************************/
+
+@media screen and (min-width: 769px) {
+  .service-listing {
+    float: right;
+    max-width: 25vw;
+  }
+}
+@media screen and (max-width: 768px) {
+  .service-listing {
+    float: none;
+    max-width: auto;
+  }
+}

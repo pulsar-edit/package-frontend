@@ -20,22 +20,6 @@
   let provided = aggregateServices(providedServices);
 %>
 
-<style media="screen">
-  <%# I hate Tailwind. %>
-  @media screen and (min-width: 769px) {
-    .service-listing {
-      float: right;
-      max-width: 25vw;
-    }
-  }
-  @media screen and (max-width: 768px) {
-    .service-listing {
-      float: none;
-      max-width: auto;
-    }
-  }
-</style>
-
 <div class="service-listing mt-4 mb-4 border p-4 rounded text-sm overflow-hidden">
   <% if (provided.size > 0) { %>
     <div class="service-listing-provided mb-3">
