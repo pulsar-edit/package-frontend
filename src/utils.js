@@ -23,7 +23,11 @@ const reg = require("./reg.js");
 
 async function displayError(req, res, details) {
   console.error(details);
-  res.status(500).render('error', details);
+  if (typeof details?.status_to_display === "number") {
+    res.status(details.status_to_display).render("error", details);
+  } else {
+    res.status(500).render("error", details);
+  }
 }
 
 function modifyErrorText(err) {
