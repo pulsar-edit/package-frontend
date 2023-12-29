@@ -1,6 +1,6 @@
 <%
   const TYPE_VALUES = new Set(['provided', 'consumed']);
-  let serviceSpecified = locals.serviceType && TYPE_VALUES.has(locals.serviceName);
+  let serviceSpecified = locals.serviceType && TYPE_VALUES.has(locals.serviceType);
   let serviceTypeVerb = locals.serviceType === 'provided' ? 'provide' : 'consume';
 %>
 
