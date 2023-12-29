@@ -20,13 +20,13 @@
   let provided = aggregateServices(providedServices);
 %>
 
-<div class="service-listing mt-4 mb-4 border p-4 rounded text-sm overflow-hidden">
+<div class="service-listing my-4 mr-0 lg:ml-4 border p-4 rounded text-sm overflow-hidden">
   <% if (provided.size > 0) { %>
     <div class="service-listing-provided mb-3">
       <p class="italic mb-1">This package <strong>provides</strong> the following services:</p>
       <ul>
         <% for (let [name, versions] of provided) { %>
-          <li class="inline-block">
+          <li class="max-md:inline-block">
             <a class="text-xs font-semibold underline decoration-gray-400 decoration-1 mr-1" href="<%- urlForPackageSearch(name, 'consumed') %>" title="Versions: <%- versions.join(', ') %>"><code><%- name %></code></a>
           </li>
         <% } %>
@@ -39,7 +39,7 @@
       <p class="italic mb-1">This package <strong>consumes</strong> the following services:</p>
       <ul style="margin: 0;">
         <% for (let [name, versions] of consumed) { %>
-          <li class="inline-block">
+          <li class="max-md:inline-block">
             <a class="text-xs font-semibold underline decoration-gray-400 decoration-1 mr-1" href="<%- urlForPackageSearch(name, 'provided') %>" title="Versions: <%- versions.join(', ') %>"><code><%- name %></code></a>
           </li>
         <% } %>
