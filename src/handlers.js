@@ -13,19 +13,31 @@ async function statusPage(req, res) {
 async function fullListingPage(req, res, timecop) {
   timecop.start("api-request");
   try {
-    let api = await superagent.get(`${apiurl}/api/packages`).query(req.query);
+    let api = await superagent.get(`${apiurl}/api/packages`)
+      .query(req.query);
     const pagination = utils.getPagination(req, api);
     timecop.end("api-request");
     timecop.start("transcribe-json");
     let obj = await utils.prepareForListing(api.body);
     timecop.end("transcribe-json");
-    res.render("package_list", { dev: DEV, packages: obj, pagination, timecop: timecop.timetable, page: {
-      name: "All Pulsar Packages",
-      og_url: "https://web.pulsar-edit.dev/packages",
-      og_description: "The Pulsar Package Repository",
-      og_image: "https://web.pulsar-edit.dev/public/pulsar_name.svg",
-      og_image_type: "image/svg+xml"
-    }});
+    res.render(
+      "package_list",
+      {
+        dev: DEV,
+        packages: obj,
+        pagination,
+        serviceName: req.query.service,
+        serviceType: req.query.serviceType,
+        timecop: timecop.timetable,
+        page: {
+          name: "All Pulsar Packages",
+          og_url: "https://web.pulsar-edit.dev/packages",
+          og_description: "The Pulsar Package Repository",
+          og_image: "https://web.pulsar-edit.dev/public/pulsar_name.svg",
+          og_image_type: "image/svg+xml"
+        }
+      }
+    );
   } catch(err) {
     utils.displayError(req, res, {
       error: utils.modifyErrorText(err),
@@ -55,15 +67,20 @@ async function singlePackageListing(req, res, timecop) {
     timecop.start("transcribe-json");
     let obj = await utils.prepareForDetail(api.body);
     timecop.end("transcribe-json");
-    res.render("package_detail", { dev: DEV, pack: obj, timecop: timecop.timetable, page: {
-      name: obj.name,
-      og_url: `https://web.pulsar-edit.dev/packages/${obj.name}`,
-      og_description: obj.description,
-      og_image: `https://image.pulsar-edit.dev/packages/${obj.name}?image_kind=${og_image_kind}&theme=${og_image_theme}`,
-      og_image_type: "image/png",
-      og_image_width: 1200,
-      og_image_height: 600,
-    }});
+    res.render("package_detail", {
+      dev: DEV,
+      pack: obj,
+      timecop: timecop.timetable,
+      page: {
+        name: obj.name,
+        og_url: `https://web.pulsar-edit.dev/packages/${obj.name}`,
+        og_description: obj.description,
+        og_image: `https://image.pulsar-edit.dev/packages/${obj.name}?image_kind=${og_image_kind}&theme=${og_image_theme}`,
+        og_image_type: "image/png",
+        og_image_width: 1200,
+        og_image_height: 600,
+      }
+    });
   } catch(err) {
     utils.displayError(req, res, {
       error: utils.modifyErrorText(err),
@@ -88,13 +105,18 @@ async function featuredPackageListing(req, res, timecop) {
     timecop.start("transcribe-json");
     let obj = await utils.prepareForListing(api.body);
     timecop.end("transcribe-json");
-    res.render("package_list", { dev: DEV, packages: obj, timecop: timecop.timetable, page: {
-      name: "Featured Packages",
-      og_url: "https://web.pulsar-edit.dev/packages/featured",
-      og_description: "The Pulsar Package Repository",
-      og_image: "https://web.pulsar-edit.dev/public/pulsar_name.svg",
-      og_image_type: "image/svg+xml"
-    }});
+    res.render("package_list", {
+      dev: DEV,
+      packages: obj,
+      timecop: timecop.timetable,
+      page: {
+        name: "Featured Packages",
+        og_url: "https://web.pulsar-edit.dev/packages/featured",
+        og_description: "The Pulsar Package Repository",
+        og_image: "https://web.pulsar-edit.dev/public/pulsar_name.svg",
+        og_image_type: "image/svg+xml"
+      }
+    });
   } catch(err) {
     utils.displayError(req, res, err);
   }
@@ -115,7 +137,12 @@ async function homePage(req, res, timecop) {
   if (cached !== null) {
     timecop.end("cache-check");
     // We know our cache is good and lets serve the data
-    res.render("home", { dev: DEV, featured: cached, timecop: timecop.timetable, page: homePage });
+    res.render("home", {
+      dev: DEV,
+      featured: cached,
+      timecop: timecop.timetable,
+      page: homePage
+    });
   } else {
     // the cache is invalid.
     timecop.end("cache-check");
@@ -139,18 +166,31 @@ async function searchHandler(req, res, timecop) {
   timecop.start("api-request");
   try {
     let api = await superagent.get(`${apiurl}/api/packages/search`).query(req.query);
+
     const pagination = utils.getPagination(req, api);
     timecop.end("api-request");
     timecop.start("transcribe-json");
     let obj = await utils.prepareForListing(api.body);
     timecop.end("transcribe-json");
-    res.render("search", { dev: DEV, packages: obj, search: req.query.q, pagination, timecop: timecop.timetable, page: {
-      name: `Search ${req.query.q}`,
-      og_url: "https://web.pulsar-edit.dev/packages/search",
-      og_description: "The Pulsar Package Repository",
-      og_image: "https://web.pulsar-edit.dev/public/pulsar_name.svg",
-      og_image_type: "image/svg+xml"
-    }});
+    res.render(
+      "search",
+      {
+        dev: DEV,
+        packages: obj,
+        search: req.query.q,
+        serviceName: req.query.service,
+        serviceType: req.query.serviceType,
+        pagination,
+        timecop: timecop.timetable,
+        page: {
+          name: `Search ${req.query.q}`,
+          og_url: "https://web.pulsar-edit.dev/packages/search",
+          og_description: "The Pulsar Package Repository",
+          og_image: "https://web.pulsar-edit.dev/public/pulsar_name.svg",
+          og_image_type: "image/svg+xml"
+        }
+      }
+    );
   } catch(err) {
     console.log(err);
     utils.displayError(req, res, err);

@@ -1,0 +1,52 @@
+<% if (pack.consumedServices || pack.providedServices) { %>
+<%
+
+  function urlForPackageSearch (serviceName, serviceType) {
+    return `/packages?serviceType=${serviceType}&service=${serviceName}`;
+  }
+
+  function aggregateServices(services) {
+    let aggregated = new Map();
+    for (let name in services) {
+      let versions = Object.keys(services[name].versions);
+      aggregated.set(name, versions);
+    }
+    return aggregated;
+  }
+
+
+  let { consumedServices, providedServices } = pack;
+  let consumed = aggregateServices(consumedServices);
+  let provided = aggregateServices(providedServices);
+%>
+
+<div class="service-listing my-4 mr-0 lg:ml-4 border p-4 rounded text-sm overflow-hidden">
+  <% if (provided.size > 0) { %>
+    <div class="service-listing-provided mb-3">
+      <p class="italic mb-1">This package <strong>provides</strong> the following services:</p>
+      <ul>
+        <% for (let [name, versions] of provided) { %>
+          <li class="max-md:inline-block">
+            <a class="text-xs font-semibold underline decoration-gray-400 decoration-1 mr-1" href="<%- urlForPackageSearch(name, 'consumed') %>" title="Versions: <%- versions.join(', ') %>"><code><%- name %></code></a>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  <% } %>
+
+  <% if (consumed.size > 0) { %>
+    <div class="service-listing-consumed">
+      <p class="italic mb-1">This package <strong>consumes</strong> the following services:</p>
+      <ul style="margin: 0;">
+        <% for (let [name, versions] of consumed) { %>
+          <li class="max-md:inline-block">
+            <a class="text-xs font-semibold underline decoration-gray-400 decoration-1 mr-1" href="<%- urlForPackageSearch(name, 'provided') %>" title="Versions: <%- versions.join(', ') %>"><code><%- name %></code></a>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  <% } %>
+
+</div>
+
+<% } %>
