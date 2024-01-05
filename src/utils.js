@@ -30,6 +30,109 @@ async function displayError(req, res, details) {
   }
 }
 
+let currentPackage = null;
+let addedCustomMarkdownHandling = false;
+
+function addCustomMarkdownHandling () {
+  if (addedCustomMarkdownHandling) return;
+
+  // Add custom handling of image links. This aims to fix the common issue of
+  // users specifying local paths in their links — which results in them not
+  // loading here since they live on GitHub.
+  let defaultImageRender = md.renderer.rules.image;
+
+  md.renderer.rules.image = function(tokens, idx, options, env, self) {
+    let token = tokens[idx];
+    let aIndex = token.attrIndex('src');
+
+    // Let's say a user adds: ./my-cool-image.png
+    // We need to turn it into this:
+    // https://github.com/USER/REPO/raw/HEAD/my-cool-image.png
+    // While we could reference git.usercontent This seems more straightforward.
+    // Additionally GitHub does support us using `HEAD` here, to avoid having to know the master branch.
+    // We also have to ensure that the repo doesn't use .git at the end.
+    if (reg.localLinks.currentDir.test(token.attrGet('src'))) {
+      // Let's prepare our links.
+      let cleanRepo = pack.repoLink.replace(".git", "");
+      let rawLink = token.attrGet('src');
+      rawLink = rawLink.replace(reg.localLinks.currentDir, "");
+      token.attrSet('src', `${cleanRepo}/raw/HEAD/${rawLink}`);
+    } else if (reg.localLinks.rootDir.test(token.attrGet('src'))) {
+      // Let's prepare our links.
+      let cleanRepo = pack.repoLink.replace(".git", "");
+      let rawLink = token.attrGet('src');
+      rawLink = rawLink.replace(reg.localLinks.rootDir, "");
+      token.attrSet('src', `${cleanRepo}/raw/HEAD/${rawLink}`);
+    } else if (!token.attrGet('src').startsWith("http")) {
+      // Check for implicit relative urls
+      let cleanRepo = pack.repoLink.replace(".git", "");
+      let rawLink = token.attrGet('src');
+      token.attrSet('src', `${cleanRepo}/raw/HEAD/${rawLink}`);
+    } else if ([".gif", ".png", ".jpg", ".jpeg", ".webp"].find(ext => token.attrGet("src").endsWith(ext)) && token.attrGet("src").startsWith("https://github.com") && token.attrGet("src").includes("blob")) {
+      // Should match on any image being distributed from GitHub that's using `blob` instead of `raw` causing images to not load correctly
+      let rawLink = token.attrGet("src");
+      token.attrSet("src", rawLink.replace("blob", "raw"));
+    }
+
+    // pass token to default renderer.
+    return defaultImageRender(tokens, idx, options, env, self);
+  }
+
+  // Let's fix any links pointing to Atom, and links that expect to only live
+  // on GitHub.
+  md.core.ruler.after("inline", "fix-atom-links", (state) => {
+    state.tokens.forEach((blockToken) => {
+      // HACK: Get the `pack` object from an outer scope so that we don't have
+      // to redefine this handler on every request.
+      let pack = currentPackage;
+      if (blockToken.type === "inline" && blockToken.children) {
+        blockToken.children.forEach((token) => {
+          if (token.type === "link_open") {
+            token.attrs.forEach((attr) => {
+              if (attr[0] === "href") {
+                let link = attr[1];
+                if (reg.atomLinks.package.test(link)) {
+                  // Fix any links that attempt to point to packages on `https://atom.io/packages/...`
+                  attr[1] = `https://web.pulsar-edit.dev/packages/${link.match(reg.atomLinks.package)[1]}`;
+
+                } else if (pack && reg.localLinks.currentDir.test(link)) {
+                  // Since we are here let's check for any other links to
+                  // github Fix links that use `./` expecting to use the
+                  // current dir of the github repo
+                  let cleanRepo = pack.repoLink.replace(".git", "");
+                  let tmpLink = link.replace(reg.localLinks.currentDir, "");
+                  attr[1] = `${cleanRepo}/raw/HEAD/${tmpLink}`;
+
+                } else if (pack && reg.localLinks.rootDir.test(link)) {
+                  // Fix links that use `/` expecting to use the root dir of github repo
+                  let cleanRepo = pack.repoLink.replace(".git", "");
+                  let tmpLink = link.replace(reg.localLinks.rootDir, "");
+                  attr[1] = `${cleanRepo}/raw/HEAD/${tmpLink}`;
+
+                } else if (pack && !link.startsWith("http")) {
+                  // attempt to fix any links not starting with http to point to github
+                  let cleanRepo = pack.repoLink.replace(".git", "");
+                  let tmpLink = link.replace(".git", "");
+                  attr[1] = `${cleanRepo}/raw/HEAD/${tmpLink}`;
+
+                } else if (reg.atomLinks.flightManual.test(link)) {
+                  // Resolve any links to the flight manual to web archive
+                  attr[1] = link.replace(
+                    reg.atomLinks.flightManual,
+                    "https://web.archive.org/web/20221215003438/https://flight-manual.atom.io/"
+                  );
+                }
+              }
+            });
+          }
+        });
+      }
+    });
+  });
+
+  addedCustomMarkdownHandling = true;
+}
+
 function modifyErrorText(err) {
   // This function takes an error object, or error message string, and attempts
   // to find the optimal formatting of the message to display to users.
@@ -57,7 +160,7 @@ function prepareForListing(obj) {
 
     for (let i = 0; i < obj.length; i++) {
       try {
-        // Lets first check that we can safely grab all the data we need
+        // Let's first check that we can safely grab all the data we need
         // https://github.com/pulsar-edit/package-frontend/issues/74
         const valid = (obj[i]?.name ?? false) &&
                       (obj[i]?.downloads ?? false) &&
@@ -153,99 +256,20 @@ function prepareForDetail(obj) {
     pack.providedServices = obj.metadata.providedServices ?? null;
     pack.consumedServices = obj.metadata.consumedServices ?? null;
 
-    // Add custom handling of image links. This aims to fix the common issue of users specifying local paths in their links.
-    // Which result in them not loading here since they live on GitHub.
-    // This is declared here, since this needs access to the repo the package is on.
-    let defaultImageRender = md.renderer.rules.image;
+    // Since filters are rendered at compile time, they won't work the way I'd
+    // hoped to display Markdown on the page — by using the `markdown-it`
+    // filter. So the best method will likely be to instead provide the
+    // `readme` key as straight HTML.
 
-    md.renderer.rules.image = function(tokens, idx, options, env, self) {
-      let token = tokens[idx];
-      let aIndex = token.attrIndex('src');
-
-      // Lets say a user adds: ./my-cool-image.png
-      // We need to turn it into this:
-      // https://github.com/USER/REPO/raw/HEAD/my-cool-image.png
-      // While we could reference git.usercontent This seems more straightforward.
-      // Additionally GitHub does support us using `HEAD` here, to avoid having to know the master branch.
-      // We also have to ensure that the repo doesn't use .git at the end.
-      if (reg.localLinks.currentDir.test(token.attrGet('src'))) {
-
-        // Lets prepare our links.
-        let cleanRepo = pack.repoLink.replace(".git", "");
-        let rawLink = token.attrGet('src');
-        rawLink = rawLink.replace(reg.localLinks.currentDir, "");
-        token.attrSet('src', `${cleanRepo}/raw/HEAD/${rawLink}`);
-      } else if (reg.localLinks.rootDir.test(token.attrGet('src'))) {
-        // Lets prepare our links.
-        let cleanRepo = pack.repoLink.replace(".git", "");
-        let rawLink = token.attrGet('src');
-        rawLink = rawLink.replace(reg.localLinks.rootDir, "");
-        token.attrSet('src', `${cleanRepo}/raw/HEAD/${rawLink}`);
-      } else if (!token.attrGet('src').startsWith("http")) {
-        // Check for implicit relative urls
-        let cleanRepo = pack.repoLink.replace(".git", "");
-        let rawLink = token.attrGet('src');
-        token.attrSet('src', `${cleanRepo}/raw/HEAD/${rawLink}`);
-      } else if ([".gif", ".png", ".jpg", ".jpeg", ".webp"].find(ext => token.attrGet("src").endsWith(ext)) && token.attrGet("src").startsWith("https://github.com") && token.attrGet("src").includes("blob")) {
-        // Should match on any image being distributed from GitHub that's using `blob` instead of `raw` causing images to not load correctly
-        let rawLink = token.attrGet("src");
-        token.attrSet("src", rawLink.replace("blob", "raw"));
-      }
-
-      // pass token to default renderer.
-      return defaultImageRender(tokens, idx, options, env, self);
-    }
-
-    // Lets ensure to fix any links pointing to Atom, and links that expect to only live on GitHub
-    md.core.ruler.after("inline", "fix-atom-links", (state) => {
-      state.tokens.forEach((blockToken) => {
-        if (blockToken.type === "inline" && blockToken.children) {
-          blockToken.children.forEach((token) => {
-            if (token.type === "link_open") {
-              token.attrs.forEach((attr) => {
-                if (attr[0] === "href") {
-                  let link = attr[1];
-                  if (reg.atomLinks.package.test(link)) {
-                    // Fix any links that attempt to point to packages on `https://atom.io/packages/...`
-                    attr[1] = `https://web.pulsar-edit.dev/packages/${link.match(reg.atomLinks.package)[1]}`;
-
-                  } else if (reg.localLinks.currentDir.test(link)) {
-                    // Since we are here lets check for any other links to github
-                    // Fix links that use `./` expecting to use the current dir of the github repo
-                    let cleanRepo = pack.repoLink.replace(".git", "");
-                    let tmpLink = link.replace(reg.localLinks.currentDir, "");
-                    attr[1] = `${cleanRepo}/raw/HEAD/${tmpLink}`;
-
-                  } else if (reg.localLinks.rootDir.test(link)) {
-                    // Fix links that use `/` expecting to use the root dir of github repo
-                    let cleanRepo = pack.repoLink.replace(".git", "");
-                    let tmpLink = link.replace(reg.localLinks.rootDir, "");
-                    attr[1] = `${cleanRepo}/raw/HEAD/${tmpLink}`;
-
-                  } else if (!link.startsWith("http")) {
-                    // attempt to fix any links not starting with http to point to github
-                    let cleanRepo = pack.repoLink.replace(".git", "");
-                    let tmpLink = link.replace(".git", "");
-                    attr[1] = `${cleanRepo}/raw/HEAD/${tmpLink}`;
-
-                  } else if (reg.atomLinks.flightManual.test(link)) {
-                    // Resolve any links to the flight manual to web archive
-                    attr[1] = link.replace(reg.atomLinks.flightManual, "https://web.archive.org/web/20221215003438/https://flight-manual.atom.io/");
-                  }
-                }
-              });
-            }
-          });
-        }
-      });
-    });
-
-    // Since filters are rendered at compile time they won't work the way I'd hoped to display
-    // Markdown on the page, by using the `markdown-it` filter.
-    // So the best method will likely be to instead provide the `readme` key as straight HTML.
+    // HACK: The ambient `currentPackage` declaration above is the simplest way
+    // for us to make `pack` available to the Markdown handler that rewrites
+    // URLs.
+    currentPackage = pack;
     pack.readme = md.render(obj.readme);
+    currentPackage = null;
 
-    // Then we want to do some cleanup on these final values. Mostly ensuring numbers look pretty enough
+    // Then we want to do some cleanup on these final values. Mostly ensuring
+    // numbers look pretty enough
     pack.stars = Number(pack.stars).toLocaleString();
     pack.downloads = Number(pack.downloads).toLocaleString();
 
@@ -290,7 +314,8 @@ function findAuthorField(obj) {
   } else if (typeof obj.metadata.author === "object" && obj.metadata.author.hasOwnProperty("name")) {
     author = obj.metadata.author.name;
   } else {
-    // If no standards are found, lets instead use the name pulled from the repo.
+    // If no standards are found, let's instead use the name pulled from the
+    // repo.
     let repo = findRepoField(obj);
     let repoConstru = repo.match(reg.repoLink.standard);
 
@@ -473,6 +498,8 @@ class Timecop {
       this.timetable[service].start;
   }
 }
+
+addCustomMarkdownHandling();
 
 module.exports = {
   displayError,
