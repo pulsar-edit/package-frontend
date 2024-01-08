@@ -42,6 +42,9 @@ function addCustomMarkdownHandling () {
   let defaultImageRender = md.renderer.rules.image;
 
   md.renderer.rules.image = function(tokens, idx, options, env, self) {
+    // HACK: Get the `pack` object from an outer scope so that we don't have
+    // to redefine this handler on every request.
+    let pack = currentPackage;
     let token = tokens[idx];
     let aIndex = token.attrIndex('src');
 
