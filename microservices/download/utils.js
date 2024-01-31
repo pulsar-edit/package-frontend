@@ -110,6 +110,17 @@ async function findLink(os, type) {
 
     let releases = await doRequest();
 
+    if (!Array.isArray(releases)) {
+      console.error("GitHub Returned invalid data on release request!");
+      console.error(releases);
+
+      return {
+        ok: false,
+        code: 500,
+        msg: "Request to GitHub for releases failed."
+      };
+    }
+
     // Now these releases should be sorted already, if we find they aren't we might
     // have to add semver as a dep on this microservice, which is no fun since this
     // microservice has 0 deps currently. For now lets assume it's a sorted array
