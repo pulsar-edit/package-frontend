@@ -38,6 +38,10 @@ function query_os(req) {
   let raw = req; // The URL string containing any number of query params.
   let prov = undefined;
 
+  if (typeof raw !== "string") {
+    return false;
+  }
+
   let full = raw.split("&");
 
   for (const param of full) {
