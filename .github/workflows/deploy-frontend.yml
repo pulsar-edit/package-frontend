@@ -1,0 +1,39 @@
+# This GitHub Action is intended to deploy a new revision of the frontend website
+# to Google App Engine
+
+name: Deploy Frontend
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - '!microservices/**'
+      - '!README.md'
+      - '!LICENSE'
+      - '!docs/**'
+      - '!.github/**'
+      - '!.git/**'
+
+jobs:
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+    - name: Checkout Most Recent Code
+      uses: actions/checkout@v3
+
+    - name: Authenticate Google Action
+      uses: google-github-actions/auth@v1
+      with:
+        credentials_json: '${{ secrets.GOOGLE_APP_ENGINE_CREDENTIALS }}'
+
+    - name: Deploy
+      uses: google-github-actions/deploy-appengine@v1
