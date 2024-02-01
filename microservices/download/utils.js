@@ -1,4 +1,18 @@
 const https = require("node:https");
+let TOKEN = process.env.GH_TOKEN_DOWNLOAD_MICROSERVICE;
+
+// Environment Variables Check
+
+if (typeof TOKEN === "undefined") {
+  if (process.env.PULSAR_STATUS === "dev") {
+    // We are in dev mode, assign dev values
+    TOKEN = "123456";
+  } else {
+    // We are not in dev mode. Our secrets are gone and the application will fail to work
+    console.log("Missing Required Environment Variables! Something has gone wrong!");
+    process.exit(1);
+  }
+}
 
 function doRequest() {
 
@@ -8,7 +22,8 @@ function doRequest() {
     method: 'GET',
     headers: {
       'Accept': 'application/vnd.github+json',
-      'User-Agent': 'pulsar-edit/package-frontend/microservices/download'
+      'User-Agent': 'pulsar-edit/package-frontend/microservices/download',
+      'Authorization': `Bearer ${TOKEN}`
     }
   };
 
