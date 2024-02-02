@@ -1,5 +1,21 @@
 const https = require("node:https");
+const bins = require("./bins.js");
 let TOKEN = process.env.GH_TOKEN_DOWNLOAD_MICROSERVICE;
+
+const VALID_OS = [ "linux", "arm_linux", "silicon_mac", "intel_mac", "windows" ];
+const VALID_TYPE = [
+  "linux_appimage",
+  "linux_tar",
+  "linux_rpm",
+  "linux_deb",
+  "windows_setup",
+  "windows_portable",
+  "windows_blockmap",
+  "mac_zip",
+  "mac_zip_blockmap",
+  "mac_dmg",
+  "mac_dmg_blockmap"
+];
 
 // Environment Variables Check
 
@@ -9,7 +25,7 @@ if (typeof TOKEN === "undefined") {
     TOKEN = "123456";
   } else {
     // We are not in dev mode. Our secrets are gone and the application will fail to work
-    console.log("Missing Required Environment Variables! Something has gone wrong!");
+    console.log("Missing Required Environment Variable: 'GH_TOKEN_DOWNLOAD_MICROSERVICE'!");
     process.exit(1);
   }
 }
@@ -49,8 +65,8 @@ function doRequest() {
   });
 };
 
-function query_os(req) {
-  let raw = req; // The URL string containing any number of query params.
+function query_os(param) {
+  let raw = param; // The query string. From the URL string split by `?`
   let prov = undefined;
 
   if (typeof raw !== "string") {
@@ -70,13 +86,11 @@ function query_os(req) {
     return false;
   }
 
-  let valid = [ "linux", "arm_linux", "silicon_mac", "intel_mac", "windows" ];
-
-  return valid.includes(prov) ? prov : false;
+  return VALID_OS.includes(prov) ? prov : false;
 }
 
-function query_type(req) {
-  let raw = req;
+function query_type(param) {
+  let raw = param;
   let prov = undefined;
 
   let full = raw.split("&");
@@ -92,21 +106,7 @@ function query_type(req) {
     return false;
   }
 
-  let valid = [
-    "linux_appimage",
-    "linux_tar",
-    "linux_rpm",
-    "linux_deb",
-    "windows_setup",
-    "windows_portable",
-    "windows_blockmap",
-    "mac_zip",
-    "mac_zip_blockmap",
-    "mac_dmg",
-    "mac_dmg_blockmap"
-  ];
-
-  return valid.includes(prov) ? prov : false;
+  return VALID_TYPE.includes(prov) ? prov : false;
 }
 
 async function displayError(req, res, errMsg) {
@@ -160,157 +160,8 @@ async function findLink(os, type) {
           continue;
         }
 
-        if (os === "windows") {
-          if (
-            type === "windows_setup" &&
-            name.startsWith("Pulsar.Setup") &&
-            name.endsWith(".exe")
-          ) {
-
-            return returnObj;
-
-          } else if (
-            type === "windows_portable" &&
-            name.endsWith("-win.zip")
-          ) {
-
-            return returnObj;
-
-          } else if (
-            type === "windows_blockmap" &&
-            name.startsWith("Pulsar.Setup") &&
-            name.endsWith(".exe.blockmap")
-          ) {
-
-            return returnObj;
-
-          }
-        } else if (os === "silicon_mac") {
-          if (
-            type === "mac_zip" &&
-            name.endsWith("-arm64-mac.zip")
-          ) {
-
-            return returnObj;
-
-          } else if (
-            type === "mac_zip_blockmap" &&
-            name.endsWith("-arm64-mac.zip.blockmap")
-          ) {
-
-            return returnObj;
-
-          } else if (
-            type === "mac_dmg" &&
-            name.endsWith("-arm64.dmg")
-          ) {
-
-            return returnObj;
-
-          } else if (
-            type === "mac_dmg_blockmap" &&
-            name.endsWith("-arm64.dmg.blockmap")
-          ) {
-
-            return returnObj;
-
-          }
-        } else if (os === "intel_mac") {
-          if (
-            type === "mac_zip" &&
-            name.endsWith("-mac.zip") &&
-            !name.endsWith("-arm64-mac.zip")
-          ) {
-
-            return returnObj;
-
-          } else if (
-            type === "mac_zip_blockmap" &&
-            name.endsWith("-mac.zip.blockmap") &&
-            !name.endsWith("-arm64-mac.zip.blockmap")
-          ) {
-
-            return returnObj;
-
-          } else if (
-            type === "mac_dmg" &&
-            name.endsWith(".dmg") &&
-            !name.endsWith("-arm64.dmg")
-          ) {
-
-            return returnObj;
-
-          } else if (
-            type === "mac_dmg_blockmap" &&
-            name.endsWith(".dmg.blockmap") &&
-            !name.endsWith("-arm64.dmg.blockmap")
-          ) {
-
-            return returnObj;
-
-          }
-        } else if (os === "arm_linux") {
-          if (
-            type === "linux_appimage" &&
-            name.endsWith("-arm64.AppImage")
-          ) {
-
-            return returnObj;
-
-          } else if (
-            type === "linux_tar" &&
-            name.endsWith("-arm64.tar.gz")
-          ) {
-
-            return returnObj;
-
-          } else if (
-            type === "linux_rpm" &&
-            name.endsWith(".aarch64.rpm")
-          ) {
-
-            return returnObj;
-
-          } else if (
-            type === "linux_deb" &&
-            name.endsWith("_arm64.deb")
-          ) {
-
-            return returnObj;
-
-          }
-        } else if (os === "linux") {
-          if (
-            type === "linux_appimage" &&
-            name.endsWith(".AppImage") &&
-            !name.endsWith("-arm64.AppImage")
-          ) {
-
-            return returnObj;
-
-          } else if (
-            type === "linux_tar" &&
-            name.endsWith(".tar.gz") &&
-            !name.endsWith("-arm64.tar.gz")
-          ) {
-
-            return returnObj;
-
-          } else if (
-            type === "linux_rpm" &&
-            name.endsWith(".x86_64.rpm")
-          ) {
-
-            return returnObj;
-
-          } else if (
-            type === "linux_deb" &&
-            name.endsWith("_amd64.deb")
-          ) {
-
-            return returnObj;
-
-          }
+        if (stringMatchesBin(name, bins[os][type])) {
+          return returnObj;
         }
 
       }
@@ -333,6 +184,42 @@ async function findLink(os, type) {
       code: 505,
       msg: "Server Error"
     };
+  }
+}
+
+function stringMatchesBin(str, bin = {}) {
+  // Takes an object from the `bins.js` file and checks it against the provided
+  // string.
+
+  let checkCount = 0;
+  let passingCheckCount = 0;
+
+  if (typeof bin.startsWith === "string") {
+    checkCount++;
+    if (str.startsWith(bin.startsWith)) {
+      passingCheckCount++;
+    }
+  }
+
+  if (typeof bin.endsWith === "string") {
+    checkCount++;
+    if (str.endsWith(bin.endsWith)) {
+      passingCheckCount++;
+    }
+  }
+
+  if (typeof bin.endsWithNot === "string") {
+    checkCount++;
+    if (!str.endsWith(bin.endsWithNot)) {
+      passingCheckCount++;
+    }
+  }
+
+  if (passingCheckCount === checkCount && checkCount != 0) {
+    // if we passed all checks, and there were actual checks
+    return true;
+  } else {
+    return false;
   }
 }
 
