@@ -3,14 +3,17 @@ const utils = require("./utils.js");
 const port = parseInt(process.env.PORT) || 8080;
 
 const server = http.createServer(async (req, res) => {
-  // Since req.url is our URL pluse query params, lets split them first.
-  const path = req.url.split("?");
+  // Since req.url is our URL plus query params, lets split them first.
+  const url = req.url.split("?");
+  const path = url[0];
+  const queryParams = url[1];
+
   // Set our Request Route
-  if (path[0] === "/" && req.method === "GET") {
+  if (path === "/" && req.method === "GET") {
 
     let params = {
-      os: utils.query_os(path[1]),
-      type: utils.query_type(path[1])
+      os: utils.query_os(queryParams),
+      type: utils.query_type(queryParams)
     };
 
     if (!params.os || !params.type) {
