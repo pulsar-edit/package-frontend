@@ -93,6 +93,10 @@ function query_type(param) {
   let raw = param;
   let prov = undefined;
 
+  if (typeof raw !== "string") {
+    return false;
+  }
+
   let full = raw.split("&");
 
   for (const param of full) {
