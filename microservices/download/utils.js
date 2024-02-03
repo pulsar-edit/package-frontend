@@ -2,29 +2,12 @@ const https = require("node:https");
 const bins = require("./bins.js");
 let TOKEN = process.env.GH_TOKEN_DOWNLOAD_MICROSERVICE;
 
-const VALID_OS = [ "linux", "arm_linux", "silicon_mac", "intel_mac", "windows" ];
-const VALID_TYPE = [
-  "linux_appimage",
-  "linux_tar",
-  "linux_rpm",
-  "linux_deb",
-  "windows_setup",
-  "windows_portable",
-  "windows_blockmap",
-  "mac_zip",
-  "mac_zip_blockmap",
-  "mac_dmg",
-  "mac_dmg_blockmap"
-];
-
 // Environment Variables Check
 
 if (typeof TOKEN === "undefined") {
-  if (process.env.PULSAR_STATUS === "dev") {
-    // We are in dev mode, assign dev values
-    TOKEN = "123456";
-  } else {
-    // We are not in dev mode. Our secrets are gone and the application will fail to work
+  if (process.env.PULSAR_STATUS !== "dev") {
+    // We are not in dev mode. Our auth token is gone, and the application may fail to work
+    // due to rate limiting by GitHub for unauthenticated API requests.
     console.log("Missing Required Environment Variable: 'GH_TOKEN_DOWNLOAD_MICROSERVICE'!");
     process.exit(1);
   }
@@ -42,6 +25,12 @@ function doRequest() {
       'Authorization': `Bearer ${TOKEN}`
     }
   };
+
+  if (process.env.PULSAR_STATUS === "dev") {
+    // We don't expect to be authed in dev mode.
+    // Fetching releases from GitHub without authentication is fine in dev mode.
+    delete options.headers['Authorization'];
+  }
 
   return new Promise((resolve, reject) => {
     let data = '';
@@ -65,52 +54,58 @@ function doRequest() {
   });
 };
 
-function query_os(param) {
-  let raw = param; // The query string. From the URL string split by `?`
-  let prov = undefined;
-
-  if (typeof raw !== "string") {
+function query_os(queryString) {
+  if (typeof queryString !== "string") {
     return false;
   }
 
-  let full = raw.split("&");
+  const allParams = queryString.split("&");
+  const valid = [ "linux", "arm_linux", "silicon_mac", "intel_mac", "windows" ];
 
-  for (const param of full) {
+  for (const param of allParams) {
     if (param.startsWith("os=")) {
-      prov = param.split("=")[1];
-      break;
+      // Returning a result based on the first "os=" param we encounter.
+      // Users should not provide the same param twice, that would be invalid.
+      const prov = param.split("=")[1];
+      return valid.includes(prov) ? prov : false;
     }
   }
 
-  if (prov === undefined) {
-    return false;
-  }
-
-  return VALID_OS.includes(prov) ? prov : false;
+  // No "os" query param was provided, return false
+  return false;
 }
 
-function query_type(param) {
-  let raw = param;
-  let prov = undefined;
-
-  if (typeof raw !== "string") {
+function query_type(queryString) {
+  if (typeof queryString !== "string") {
     return false;
   }
 
-  let full = raw.split("&");
+  const allParams = queryString.split("&");
+  const valid = [
+    "linux_appimage",
+    "linux_tar",
+    "linux_rpm",
+    "linux_deb",
+    "windows_setup",
+    "windows_portable",
+    "windows_blockmap",
+    "mac_zip",
+    "mac_zip_blockmap",
+    "mac_dmg",
+    "mac_dmg_blockmap"
+  ];
 
-  for (const param of full) {
+  for (const param of allParams) {
     if (param.startsWith("type=")) {
-      prov = param.split("=")[1];
-      break;
+      // Returning a result based on the first "type=" param we encounter.
+      // Users should not provide the same param twice, that would be invalid.
+      const prov = param.split("=")[1];
+      return valid.includes(prov) ? prov : false;
     }
   }
 
-  if (prov === undefined) {
-    return false;
-  }
-
-  return VALID_TYPE.includes(prov) ? prov : false;
+  // No "type" query param was provided, return false
+  return false;
 }
 
 async function displayError(req, res, errMsg) {
@@ -185,8 +180,8 @@ async function findLink(os, type) {
     console.log(err);
     return {
       ok: false,
-      code: 505,
-      msg: "Server Error"
+      code: 500,
+      msg: "Server Error While Finding Link"
     };
   }
 }
