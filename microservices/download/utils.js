@@ -180,8 +180,8 @@ async function findLink(os, type) {
     console.log(err);
     return {
       ok: false,
-      code: 505,
-      msg: "Server Error"
+      code: 500,
+      msg: "Server Error While Finding Link"
     };
   }
 }

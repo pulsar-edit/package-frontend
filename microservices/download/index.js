@@ -48,10 +48,10 @@ const server = http.createServer(async (req, res) => {
 
     if (!validatedParams.os || !validatedParams.type) {
       await utils.displayError(req, res, {
-        code: 503,
+        code: 400,
         msg: "Required Download Parameters Missing or Invalid"
       });
-      console.log("Download Returned 503 due to missing or invalid os or type");
+      console.log("Download Returned 400 due to missing or invalid os or type");
       return;
     }
 
