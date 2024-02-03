@@ -30,8 +30,9 @@ const server = http.createServer(async (req, res) => {
       return;
     }
 
-    if (queryParams.length > 36){
-      // Longest valid combo is 36 characters ("os=silicon_mac&type=mac_zip_blockmap")
+    if (queryParams.length > 100){
+      // Longest valid combo is 36 characters ("os=silicon_mac&type=mac_zip_blockmap"),
+      // But leaving extra room to update the parameters in the future.
       await utils.displayError(req, res, {
         code: 414,
         msg: "Requested Parameters are Too Long"
