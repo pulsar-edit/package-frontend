@@ -1,6 +1,20 @@
 const https = require("node:https");
 const bins = require("./bins.js");
 let TOKEN = process.env.GH_TOKEN_DOWNLOAD_MICROSERVICE;
+const VALID_OS = [ "linux", "arm_linux", "silicon_mac", "intel_mac", "windows" ];
+const VALID_TYPE = [
+  "linux_appimage",
+  "linux_tar",
+  "linux_rpm",
+  "linux_deb",
+  "windows_setup",
+  "windows_portable",
+  "windows_blockmap",
+  "mac_zip",
+  "mac_zip_blockmap",
+  "mac_dmg",
+  "mac_dmg_blockmap"
+];
 
 // Environment Variables Check
 
@@ -60,14 +74,13 @@ function query_os(queryString) {
   }
 
   const allParams = queryString.split("&");
-  const valid = [ "linux", "arm_linux", "silicon_mac", "intel_mac", "windows" ];
 
   for (const param of allParams) {
     if (param.startsWith("os=")) {
       // Returning a result based on the first "os=" param we encounter.
       // Users should not provide the same param twice, that would be invalid.
       const prov = param.split("=")[1];
-      return valid.includes(prov) ? prov : false;
+      return VALID_OS.includes(prov) ? prov : false;
     }
   }
 
@@ -81,26 +94,13 @@ function query_type(queryString) {
   }
 
   const allParams = queryString.split("&");
-  const valid = [
-    "linux_appimage",
-    "linux_tar",
-    "linux_rpm",
-    "linux_deb",
-    "windows_setup",
-    "windows_portable",
-    "windows_blockmap",
-    "mac_zip",
-    "mac_zip_blockmap",
-    "mac_dmg",
-    "mac_dmg_blockmap"
-  ];
 
   for (const param of allParams) {
     if (param.startsWith("type=")) {
       // Returning a result based on the first "type=" param we encounter.
       // Users should not provide the same param twice, that would be invalid.
       const prov = param.split("=")[1];
-      return valid.includes(prov) ? prov : false;
+      return VALID_TYPE.includes(prov) ? prov : false;
     }
   }
 
