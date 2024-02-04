@@ -1,6 +1,6 @@
 {
   "name": "download-microservice",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Microservice to Redirect to our Cirrus CI Builds Correctly",
   "main": "index.js",
   "scripts": {
