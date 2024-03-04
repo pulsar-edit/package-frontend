@@ -1,0 +1,12 @@
+## There is no actual config available for this data
+## But in the spirit of full documentation this will be added in a made up format.
+
+client_id: ""
+application_logo:
+  file: pulsar_discord.png
+  background_color: "#fff"
+application_name: "Pulsar Admin Dashboard"
+homepage_url: "https://pulsar-edit.dev"
+application_description: "Admin Dashboard for Pulsar; Authorized users only."
+callback_url: "https://admin.pulsar-edit.dev/auth/github/callback"
+enable_device_flow: false
