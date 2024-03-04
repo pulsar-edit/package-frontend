@@ -1,0 +1,60 @@
+:root {
+  --background: #282c34;
+  --text: #fff;
+  --background-secondary: #2c313c;
+}
+
+body {
+  background: var(--background);
+  color: var(--text);
+}
+
+/* Forms */
+
+button,
+input[type="submit"],
+input[type="button"] {
+  background-color: var(--background-secondary);
+  color: var(--text);
+}
+
+input[type="text"],
+input[type="url"],
+select {
+  background-color: var(--background-secondary);
+  color: var(--text);
+}
+
+select,
+input {
+  margin: 5px;
+}
+
+select:disabled,
+input:disabled {
+  cursor: not-allowed;
+}
+
+/* Page Structure */
+
+.center {
+  width: 70%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* Text Fields */
+
+.text {
+  padding: 20px;
+}
+
+.code {
+
+}
+
+/* Visibility */
+
+.hidden {
+  display: none;
+}
