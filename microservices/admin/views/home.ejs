@@ -8,7 +8,158 @@
   </head>
   <body>
 
-    <p>Hello <%=user.username%></p>
+    <h1>Welcome <%=user.username%></h1>
+
+    <div class="center">
+      <h2>Add Badges</h2>
+
+      <div class="text">
+        To add a new badge to a package:
+        <ol>
+          <li>Enter in the package's name.</li>
+          <li>Select the title that best fits the package's issue.</li>
+          <li>Modify the auto populated data if at all necessary.</li>
+          <li>Add the link to the Admin Actions Log of this change.</li>
+          <li>If you are adding the <code>Deprecated</code> badge, and a fork has already
+            been published to the PPR of that package, enable the <code>Alt</code> option
+            and enter <strong>only</strong> the name of the alternative package.</li>
+        </ol>
+      </div>
+
+      <form action="/api/badge" method="post" id="badge_form">
+        <fieldset>
+          <legend>Select the options for the new badge</legend>
+
+          <ul>
+            <li>
+              <label for="package_name">Package Name:</label>
+              <input type="text" id="package_name" name="package_name" required />
+            </li>
+
+            <li>
+              <label for="title">Title:</label>
+              <select id="title" name="title" required >
+                <option value="">Select...</option>
+                <option value="Outdated">Outdated</option>
+                <option value="Broken">Broken</option>
+                <option value="Archived">Archived</option>
+                <option value="Deprecated">Deprecated</option>
+              </select>
+            </li>
+
+            <li>
+              <label for="type">Type:</label>
+              <select id="type" name="type" required >
+                <option value="">Select...</option>
+                <option value="info">Informational</option>
+                <option value="warn">Warning</option>
+                <option value="success">Success</option>
+              </select>
+            </li>
+
+            <li>
+              <label for="text">Text: (No period at end of text)</label>
+              <input type="text" id="text" name="text" pattern="(.*)[^.]$" required />
+            </li>
+
+            <li>
+              <label for="link">Link:</label>
+              <input type="url" id="link" name="link" required />
+            </li>
+
+            <li>
+              <label for="enable_alt">Enable Alt:</label>
+              <input type="checkbox" id="enable_alt" name="enable_alt" value="enable_alt" />
+            </li>
+
+            <li>
+              <label for="alt">Alt:</label>
+              <input type="text" id="alt" name="alt" disabled />
+            </li>
+
+          </ul>
+
+          <button type="submit" value="submit">Submit</button>
+
+        </fieldset>
+      </form>
+
+      <div class="text hidden" id="outdated_description" data-meta="title_description">
+        <p>
+          The <code>Outdated</code> badge is used to indicate that the version of a package
+          that may exist on the PPR, may be out of date when compared to the package on GitHub
+          (or other VCS host).
+        </p>
+        <p>
+          This badge should only be used when the main functionality of the package is
+          missing/broken/or otherwise non-functional when installed onto Pulsar, in a supported
+          Pulsar configuration.
+        </p>
+        <p>
+          That is, if a Pulsar user on a supported platform, independent of any other issues, installs
+          a package and it immediately does not work, displays severe visual bugs, or causes
+          an error message logged as a notification, and there is a fix available for that
+          package within it's source code, that has not been pushed to Pulsar in a
+          reasonable time, then it is eligble to receive this badge.
+        </p>
+        <p>
+          This badge would be added on a case by case basis, and would likely only be added if Pulsar
+          users are reporting the error.
+        </p>
+      </div>
+
+      <div class="text hidden" id="broken_description" data-meta="title_description">
+        <p>
+          The <code>Broken</code> badge is used to indicate that the package available
+          on the PPR does not work at all in its current form, on any supported platform.
+          Either requiring manual changes to the source code, or otherwise being unrealistic
+          to fix from the users perspective.
+        </p>
+        <p>
+          This package likely emits warnings immediately, or may even cause the editor
+          to crash as a whole. Installation of these packages is not recommended by the Pulsar
+          team, and instead it is encouraged to work with the original maintainer to get these
+          packages working, or otherwise the community is encouraged to maintain and manage a
+          fork of said package.
+        </p>
+      </div>
+
+      <div class="text hidden" id="archived_description" data-meta="title_description">
+        <p>
+          The <code>Archived</code> badge is used to indicate that this package has been
+          archived on GitHub (Or other VCS host). This does not mean that the package doesn't
+          work, or has any kind of issue, it only means that if there does become issues with
+          this package then support is most likely not going to exist.
+        </p>
+        <p>
+          The `Archived` badge should only be used as a neutral badge, to not cause any kind
+          of concern beyond informing the user of what might be expected, and to avoid any
+          assumptions for this package relating to:
+
+          <ul>
+            <li>Bugs being fixed.</li>
+            <li>New features being added.</li>
+            <li>Support of any kind from the package maintainer.</li>
+          </ul>
+        </p>
+      </div>
+
+      <div class="text hidden" id="deprecated_description" data-meta="title_description">
+        <p>
+          The <code>Deprecated</code> badge is used to indicate that this package, which is
+          <code>Broken</code> has a working fork published to the PPR. It is recommended
+          that users install the forked version of this package instead, to avoid the broken
+          behavior of the original package.
+        </p>
+        <p>
+          Pointing out this forked package does not constitute a recommendation from Pulsar,
+          only drawing attention to the fact that it is possible to have a bug free experience
+          with a more up to date version of the package.
+        </p>
+      </div>
+
+    </div>
 
   </body>
+  <script src="/site.js"></script>
 </html>
