@@ -1,4 +1,4 @@
-runtime: nodejs18
+runtime: nodejs22
 service: package-browser
 
 env_variables:

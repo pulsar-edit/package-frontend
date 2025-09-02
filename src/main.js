@@ -10,6 +10,10 @@ app.set("views", "./ejs-views/pages");
 app.set("view engine", "ejs");
 
 app.use((req, res, next) => {
+  // Setup redirect of all `web` requests to `packages`
+  if (req.subdomains[0] === "web") {
+    res.status(301).redirect(`https://packages.pulsar-edit.dev${req.originalUrl}`);
+  }
   req.start = Date.now();
   next();
 });
