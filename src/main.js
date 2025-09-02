@@ -81,9 +81,9 @@ app.use(async (req, res) => {
     timecop: false,
     page: {
       name: "PPR Error Page",
-      og_url: "https://web.pulsar-edit.dev/packages",
+      og_url: "https://packages.pulsar-edit.dev/packages",
       og_description: "The Pulsar Package Repository",
-      og_image: "https://web.pulsar-edit.dev/public/pulsar_name.svg",
+      og_image: "https://packages.pulsar-edit.dev/public/pulsar_name.svg",
       og_image_type: "image/svg+xml"
     },
     status_to_display: 404

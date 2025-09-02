@@ -96,7 +96,7 @@ function addCustomMarkdownHandling () {
                 let link = attr[1];
                 if (reg.atomLinks.package.test(link)) {
                   // Fix any links that attempt to point to packages on `https://atom.io/packages/...`
-                  attr[1] = `https://web.pulsar-edit.dev/packages/${link.match(reg.atomLinks.package)[1]}`;
+                  attr[1] = `https://packages.pulsar-edit.dev/packages/${link.match(reg.atomLinks.package)[1]}`;
 
                 } else if (pack && reg.localLinks.currentDir.test(link)) {
                   // Since we are here let's check for any other links to
@@ -270,10 +270,10 @@ function prepareForDetail(obj) {
 
     // Add Sharing data to it for easy access to the package_listing
     pack.share = {
-      pageLink: `https://web.pulsar-edit.dev/packages/${pack.name}`,
+      pageLink: `https://packages.pulsar-edit.dev/packages/${pack.name}`,
       mdLink: {
-        default: `[![${pack.name}](https://image.pulsar-edit.dev/packages/${pack.name})](https://web.pulsar-edit.dev/packages/${pack.name})`,
-        iconic: `[![${pack.name}](https://image.pulsar-edit.dev/packages/${pack.name}?image_kind=iconic)](https://web.pulsar-edit.dev/packages/${pack.name})`
+        default: `[![${pack.name}](https://image.pulsar-edit.dev/packages/${pack.name})](https://packages.pulsar-edit.dev/packages/${pack.name})`,
+        iconic: `[![${pack.name}](https://image.pulsar-edit.dev/packages/${pack.name}?image_kind=iconic)](https://packages.pulsar-edit.dev/packages/${pack.name})`
       }
     };
 
