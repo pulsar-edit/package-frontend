@@ -31,9 +31,9 @@ async function fullListingPage(req, res, timecop) {
         timecop: timecop.timetable,
         page: {
           name: "All Pulsar Packages",
-          og_url: "https://web.pulsar-edit.dev/packages",
+          og_url: "https://packages.pulsar-edit.dev/packages",
           og_description: "The Pulsar Package Repository",
-          og_image: "https://web.pulsar-edit.dev/public/pulsar_name.svg",
+          og_image: "https://packages.pulsar-edit.dev/public/pulsar_name.svg",
           og_image_type: "image/svg+xml"
         }
       }
@@ -45,9 +45,9 @@ async function fullListingPage(req, res, timecop) {
       timecop: false,
       page: {
         name: "PPR Error Page",
-        og_url: "https://web.pulsar-edit.dev/packages",
+        og_url: "https://packages.pulsar-edit.dev/packages",
         og_description: "The Pulsar Package Repository",
-        og_image: "https://web.pulsar-edit.dev/public/pulsar_name.svg",
+        og_image: "https://packages.pulsar-edit.dev/public/pulsar_name.svg",
         og_image_type: "image/svg+xml"
       }
     });
@@ -73,7 +73,7 @@ async function singlePackageListing(req, res, timecop) {
       timecop: timecop.timetable,
       page: {
         name: obj.name,
-        og_url: `https://web.pulsar-edit.dev/packages/${obj.name}`,
+        og_url: `https://packages.pulsar-edit.dev/packages/${obj.name}`,
         og_description: obj.description,
         og_image: `https://image.pulsar-edit.dev/packages/${obj.name}?image_kind=${og_image_kind}&theme=${og_image_theme}`,
         og_image_type: "image/png",
@@ -109,9 +109,9 @@ async function singlePackageListing(req, res, timecop) {
       timecop: false,
       page: {
         name: "PPR Error Page",
-        og_url: "https://web.pulsar-edit.dev/packages",
+        og_url: "https://packages.pulsar-edit.dev/packages",
         og_description: "The Pulsar Package Repository",
-        og_image: "https://web.pulsar-edit.dev/public/pulsar_name.svg",
+        og_image: "https://packages.pulsar-edit.dev/public/pulsar_name.svg",
         og_image_type: "image/svg+xml"
       },
       status_to_display: status_to_display
@@ -133,9 +133,9 @@ async function featuredPackageListing(req, res, timecop) {
       timecop: timecop.timetable,
       page: {
         name: "Featured Packages",
-        og_url: "https://web.pulsar-edit.dev/packages/featured",
+        og_url: "https://packages.pulsar-edit.dev/packages/featured",
         og_description: "The Pulsar Package Repository",
-        og_image: "https://web.pulsar-edit.dev/public/pulsar_name.svg",
+        og_image: "https://packages.pulsar-edit.dev/public/pulsar_name.svg",
         og_image_type: "image/svg+xml"
       }
     });
@@ -150,9 +150,9 @@ async function homePage(req, res, timecop) {
 
   let homePage = {
     name: "Pulsar Package Explorer",
-    og_url: "https://web.pulsar-edit.dev/",
+    og_url: "https://packages.pulsar-edit.dev/",
     og_description: "The Pulsar Package Repository",
-    og_image: "https://web.pulsar-edit.dev/public/pulsar_name.svg",
+    og_image: "https://packages.pulsar-edit.dev/public/pulsar_name.svg",
     og_image_type: "image/svg+xml"
   };
 
@@ -206,9 +206,9 @@ async function searchHandler(req, res, timecop) {
         timecop: timecop.timetable,
         page: {
           name: `Search ${req.query.q}`,
-          og_url: "https://web.pulsar-edit.dev/packages/search",
+          og_url: "https://packages.pulsar-edit.dev/packages/search",
           og_description: "The Pulsar Package Repository",
-          og_image: "https://web.pulsar-edit.dev/public/pulsar_name.svg",
+          og_image: "https://packages.pulsar-edit.dev/public/pulsar_name.svg",
           og_image_type: "image/svg+xml"
         }
       }
@@ -223,9 +223,9 @@ async function loginHandler(req, res, timecop) {
   // This is a very simple return with no api, so we will just render
   res.render("login", { dev: DEV, timecop: timecop.timetable, page: {
     name: "Pulsar Sign In/Up",
-    og_url: "https://web.pulsar-edit.dev/login",
+    og_url: "https://packages.pulsar-edit.dev/login",
     og_description: "The Pulsar User Sign In Page",
-    og_image: "https://web.pulsar-edit.dev/public/pulsar_name.svg",
+    og_image: "https://packages.pulsar-edit.dev/public/pulsar_name.svg",
     og_image_type: "image/svg+xml"
   }});
 }
@@ -234,9 +234,9 @@ async function logoutHandler(req, res, timecop) {
   // This is a very simple return with no api, so we will just render
   res.render("logout", { dev: DEV, timecop: timecop.timetable, page: {
     name: "Pulsar Logout",
-    og_url: "https://web.pulsar-edit.dev/logout",
+    og_url: "https://packages.pulsar-edit.dev/logout",
     og_description: "The Pulsar Log Out Page",
-    og_image: "https://web.pulsar-edit.dev/public/pulsar_name.svg",
+    og_image: "https://packages.pulsar-edit.dev/public/pulsar_name.svg",
     og_image_type: "image/svg+xml"
   }});
 }
@@ -247,9 +247,9 @@ async function userPageHandler(req, res, timecop) {
   // render a page and not do anything
   res.render("user_page", { dev: DEV, timecop: timecop.timetable, page: {
     name: "Pulsar User Account",
-    og_url: "https://web.pulsar-edit.dev/users",
+    og_url: "https://packages.pulsar-edit.dev/users",
     og_description: "The Pulsar User Account Page",
-    og_image: "https://web.pulsar-edit.dev/public/pulsar_name.svg",
+    og_image: "https://packages.pulsar-edit.dev/public/pulsar_name.svg",
     org_image_type: "image/svg+xml"
   }});
 }

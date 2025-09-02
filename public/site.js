@@ -229,7 +229,7 @@ function userAccountLocal() {
   } else {
     // They haven't given us any query parameters, but don't have any local data either
     // Lets redirect to the sign in page.
-    window.location.href = "https://web.pulsar-edit.dev/login";
+    window.location.href = "https://pacakges.pulsar-edit.dev/login";
   }
 }
 
