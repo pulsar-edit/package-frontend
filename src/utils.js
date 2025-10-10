@@ -430,6 +430,25 @@ function getPagination(req, api) {
   }
 }
 
+function getOpenGraphData(overrides = {}) {
+  const og = {
+    name: overrides.name ?? "Pulsar Package Explorer",
+    og_url: overrides.og_url ?? "https://packages.pulsar-edit.dev/",
+    og_description: overrides.og_description ?? "The Pulsar Package Registry",
+    og_image: overrides.og_image ?? "https://web.pulsar-edit.dev/public/pulsar_name.svg",
+    og_image_type: overrides.og_image_type ?? "image/svg+xml"
+  };
+
+  if (overrides.og_image_width) {
+    og.og_image_width = overrides.og_image_width;
+  }
+  if (overrides.og_image_height) {
+    og.og_image_height = overrides.og_image_height;
+  }
+
+  return og;
+}
+
 class Timecop {
   constructor() {
     this.timetable = {};
@@ -458,5 +477,6 @@ module.exports = {
   prepareForDetail,
   getPagination,
   Timecop,
-  modifyErrorText
+  modifyErrorText,
+  getOpenGraphData,
 };
