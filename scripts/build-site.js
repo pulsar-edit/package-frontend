@@ -1,5 +1,4 @@
 const fs = require("node:fs");
-const minify = require("minify");
 const less = require("less");
 
 const data = {
@@ -19,6 +18,7 @@ const data = {
 };
 
 (async () => {
+  const minify = await import("minify").then(minify => minify.default); // ESM export only
   // Generate Output
   data.js.output = await minify.minify(data.js.source_loc);
   const lessRender = await less.render(fs.readFileSync(data.less.source_loc, { encoding: "utf-8"}));
