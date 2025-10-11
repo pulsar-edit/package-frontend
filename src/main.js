@@ -18,6 +18,7 @@ app.use((req, res, next) => {
     res.status(301).redirect(`https://packages.pulsar-edit.dev${req.originalUrl}`);
   }
   req.start = Date.now();
+  res.append("Server", `Pulsar Package Frontend/${server_version} (${process.platform})`);
   next();
 });
 
@@ -56,10 +57,6 @@ app.get("/", async (req, res) => {
       utils.displayError(req, res, err);
     }
   }
-});
-
-app.get("/status", async (req, res) => {
-  res.render("status", { message: `Server is up and running ${server_version}`});
 });
 
 app.get("/packages", async (req, res) => {
