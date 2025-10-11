@@ -18,9 +18,9 @@ const data = {
 };
 
 (async () => {
-  const minify = await import("minify").then(minify => minify.default); // ESM export only
+  const minify = await import("minify").then(minify => minify.minify); // ESM export only
   // Generate Output
-  data.js.output = await minify.minify(data.js.source_loc);
+  data.js.output = await minify(data.js.source_loc);
   const lessRender = await less.render(fs.readFileSync(data.less.source_loc, { encoding: "utf-8"}));
   data.less.output = lessRender.css;
 
@@ -29,7 +29,7 @@ const data = {
   }
   fs.writeFileSync(data.css.source_loc, data.less.output, { encoding: "utf-8" });
 
-  data.css.output = await minify.minify(data.css.source_loc);
+  data.css.output = await minify(data.css.source_loc);
 
   // Write Output
   fs.writeFileSync("./site/resources-generated-serve/site.min.js", data.js.output, { encoding: "utf-8" });
