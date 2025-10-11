@@ -1,0 +1,62 @@
+.title#title {
+  font-weight: 600;
+}
+
+.blocks {
+  padding-top: 3rem !important;
+  margin-top: 3rem !important; // Override default styling
+}
+
+.block {
+  padding-bottom: 3rem !important;
+  margin-bottom: 3rem !important; // Override default styling
+  border-bottom: .25rem solid var(--thematic-break-color);
+  padding-bottom: 1.5rem;
+
+  &__header {
+    line-height: 1.6 !important;
+  }
+
+  &__details {
+    font-size: 1.5rem;
+
+    & > * {
+      margin-right: .5em;
+    }
+  }
+
+  &__summary {
+    font-size: 1.75rem;
+    & > :last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.pagination {
+
+  &__list {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  &__list-entry {
+    list-style: none;
+    display: inline-block;
+    border: 2px solid var(--thematic-break-color);
+
+    &--current {
+      border-color: transparent;
+      font-weight: 800;
+    }
+  }
+
+  &__box {
+    display: block;
+    padding: 0 10px;
+    text-decoration: none;
+  }
+}

@@ -9,7 +9,7 @@ const cache = require("./cache.js");
 
 const DEV = process.env.PULSAR_STATUS === "dev" ? true : false;
 
-app.set("views", "./ejs-views/pages");
+app.set("views", "./site/templates");
 app.set("view engine", "ejs");
 
 app.use((req, res, next) => {
@@ -74,7 +74,7 @@ app.get("/packages", async (req, res) => {
     timecop.end("transcribe-json");
     res.append("Server-Timing", timecop.toHeader());
     res.render(
-      "package_list",
+      "package",
       {
         dev: DEV,
         packages: obj,

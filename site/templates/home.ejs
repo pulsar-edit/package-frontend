@@ -1,0 +1,12 @@
+<%- include("header") %>
+<body class="layout--home">
+  <%- include("page_header") %>
+  <div class="content">
+    <main class="container">
+
+      <%- include("package_grid", { packages: featured }) %>
+    </main>
+  </div>
+  <%- include("page_footer") %>
+</body>
+<%- include("footer") %>

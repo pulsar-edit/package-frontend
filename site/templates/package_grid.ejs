@@ -1,0 +1,26 @@
+<div class="blocks">
+  <% for (const pack of packages) { %>
+    <section class="block">
+      <header class="block__header">
+        <a href="/packages/<%=pack.name%>"><%= pack.name %></a>
+      </header>
+      <div class="block__summary">
+        <%= pack.description %>
+      </div>
+      <div class="block__details">
+        <span class="block__details-author icon icon-person">
+          <%= pack.author %>
+        </span>
+        <span class="block__details-downloads icon icon-cloud-download">
+          <%= pack.downloads %>
+        </span>
+        <span class="block__details-stars icon icon-star">
+          <%= pack.stars %>
+        </span>
+        <button class="block__details-install icon icon-package">
+          Install
+        </button>
+      </div>
+    </section>
+  <% } %>
+</div>
