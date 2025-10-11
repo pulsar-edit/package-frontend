@@ -21,9 +21,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/public", express.static("./public"));
+app.use("/resources", express.static("./site/resources-generated"));
 
-app.use("/", express.static("./static"));
+app.use("/", express.static("./site/resources-static"));
 
 app.get("/", async (req, res) => {
   let timecop = new utils.Timecop();
