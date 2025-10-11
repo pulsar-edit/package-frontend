@@ -85,14 +85,6 @@ function toggleNavBtn() {
   document.querySelector('nav').classList.toggle('active');
 }
 
-function loadStats() {
-  if (timetable) {
-    console.log(timetable);
-  } else {
-    console.error("No stats found!");
-  }
-}
-
 // Copy string from input field
 function copyToClipboard(triggerElement) {
   const target = document.querySelector(".copy-to-clipboard-input-js");

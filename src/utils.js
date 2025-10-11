@@ -467,6 +467,21 @@ class Timecop {
       this.timetable[service].end -
       this.timetable[service].start;
   }
+
+  toHeader() {
+    console.log("Called");
+    let str = "";
+
+    for (const service in this.timetable) {
+      if (str.length > 0) {
+        str = str + ", ";
+      }
+
+      str = str + `${service};dur=${Number(this.timetable[service].duration).toFixed(2)}`;
+    }
+
+    return str;
+  }
 }
 
 addCustomMarkdownHandling();

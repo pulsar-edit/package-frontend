@@ -34,10 +34,10 @@ app.get("/", async (req, res) => {
   if (cached !== null) {
     timecop.end("cache-check");
     // We know our cache is good and lets serve the data
+    res.append("Server-Timing", timecop.toHeader());
     res.render("home", {
       dev: DEV,
       featured: cached,
-      timecop: timecop.timetable,
       page: utils.getOpenGraphData()
     });
   } else {
@@ -50,7 +50,8 @@ app.get("/", async (req, res) => {
       timecop.start("transcribe-json");
       let obj = await utils.prepareForListing(api.body);
       timecop.end("transcribe-json");
-      res.render("home", { dev: DEV, featured: obj, timecop: timecop.timetable, page: utils.getOpenGraphData() });
+      res.append("Server-Timing", timecop.toHeader());
+      res.render("home", { dev: DEV, featured: obj, page: utils.getOpenGraphData() });
       // then set featured cache
       cache.setFeatured(obj);
     } catch(err) {
@@ -71,6 +72,7 @@ app.get("/packages", async (req, res) => {
     timecop.start("transcribe-json");
     let obj = await utils.prepareForListing(api.body);
     timecop.end("transcribe-json");
+    res.append("Server-Timing", timecop.toHeader());
     res.render(
       "package_list",
       {
@@ -79,7 +81,6 @@ app.get("/packages", async (req, res) => {
         pagination,
         serviceName: req.query.service,
         serviceType: req.query.serviceType,
-        timecop: timecop.timetable,
         page: utils.getOpenGraphData({ og_url: "https://packages.pulsar-edit.dev/packages" })
       }
     );
@@ -87,7 +88,6 @@ app.get("/packages", async (req, res) => {
     utils.displayError(req, res, {
       error: utils.modifyErrorText(err),
       dev: DEV,
-      timecop: false,
       page: utils.getOpenGraphData({ og_url: "https://packages.pulsar-edit.dev/packages" })
     });
   }
@@ -103,10 +103,10 @@ app.get("/packages/featured", async (req, res) => {
     timecop.start("transcribe-json");
     let obj = await utils.prepareForListing(api.body);
     timecop.end("transcribe-json");
+    res.append("Server-Timing", timecop.toHeader());
     res.render("package_list", {
       dev: DEV,
       packages: obj,
-      timecop: timecop.timetable,
       page: utils.getOpenGraphData({ name: "Featured Packages", og_url: "https://web.pulsar-edit.dev/packages/featured" })
     });
   } catch(err) {
@@ -126,6 +126,7 @@ app.get("/packages/search", async (req, res) => {
     timecop.start("transcribe-json");
     let obj = await utils.prepareForListing(api.body);
     timecop.end("transcribe-json");
+    res.append("Server-Timing", timecop.toHeader());
     res.render(
       "search",
       {
@@ -135,7 +136,6 @@ app.get("/packages/search", async (req, res) => {
         serviceName: req.query.service,
         serviceType: req.query.serviceType,
         pagination,
-        timecop: timecop.timetable,
         page: utils.getOpenGraphData({
           name: `${req.query.q} - Pulsar Package Search`,
           og_url: `https://packages.pulsar-edit.dev/packages/search?q=${req.query.q}`
@@ -163,10 +163,10 @@ app.get("/packages/:packageName", async (req, res) => {
     timecop.start("transcribe-json");
     let obj = await utils.prepareForDetail(api.body);
     timecop.end("transcribe-json");
+    res.append("Server-Timing", timecop.toHeader());
     res.render("package_detail", {
       dev: DEV,
       pack: obj,
-      timecop: timecop.timetable,
       page: utils.getOpenGraphData({
         name: obj.name,
         og_url: `https://packages.pulsar-edit.dev/packages/${obj.name}`,
@@ -202,7 +202,6 @@ app.get("/packages/:packageName", async (req, res) => {
     utils.displayError(req, res, {
       error: utils.modifyErrorText(err),
       dev: DEV,
-      timecop: false,
       page: utils.getOpenGraphData({ og_url: "https://packages.pulsar-edit.dev/packages" }),
       status_to_display: status_to_display
     });
@@ -211,11 +210,11 @@ app.get("/packages/:packageName", async (req, res) => {
 
 app.get("/users", async (req, res) => {
   // The Signed in User Details Page
-  let timecop = new utils.Timecop();
+
   // This is the signed in user page.
   // Since we will let the JavaScript on the page handle any API call needed here lets just
   // render a page and not do anything
-  res.render("user_page", { dev: DEV, timecop: timecop.timetable, page: utils.getOpenGraphData({
+  res.render("user_page", { dev: DEV, page: utils.getOpenGraphData({
     name: "Pulsar User Account",
     og_url: "https://packages.pulsar-edit.dev/users"
   })});
@@ -223,9 +222,9 @@ app.get("/users", async (req, res) => {
 
 app.get("/login", async (req, res) => {
   // The Login/Sign Up Page showing all sign in options
-  let timecop = new utils.Timecop();
+
   // This is a very simple return with no api, so we will just render
-  res.render("login", { dev: DEV, timecop: timecop.timetable, page: utils.getOpenGraphData({
+  res.render("login", { dev: DEV, page: utils.getOpenGraphData({
     name: "Pulsar Sign In/Up",
     og_url: "https://packages.pulsar-edit.dev/login",
     og_description: "The Pulsar User Sign In Page"
@@ -234,9 +233,9 @@ app.get("/login", async (req, res) => {
 
 app.get("/logout", async (req, res) => {
   // The Login/Sign Up Page showing all sign in options
-  let timecop = new utils.Timecop();
+
   // This is a very simple return with no api, so we will just render
-  res.render("logout", { dev: DEV, timecop: timecop.timetable, page: utils.getOpenGraphData({
+  res.render("logout", { dev: DEV, page: utils.getOpenGraphData({
     name: "Pulsar Logout",
     og_url: "https://packages.pulsar-edit.dev/logout",
     og_description: "The Pulsar Log Out Page"
@@ -248,7 +247,6 @@ app.use(async (req, res) => {
   await utils.displayError(req, res, {
     error: `The page '${req.url}' cannot be found.`,
     dev: DEV,
-    timecop: false,
     page: utils.getOpenGraphData(),
     status_to_display: 404
   });
