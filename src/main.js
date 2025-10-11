@@ -21,7 +21,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/resources", express.static("./site/resources-generated"));
+app.use("/resources", express.static("./site/resources-generated-serve"));
 
 app.use("/", express.static("./site/resources-static"));
 
