@@ -3,32 +3,9 @@
     padding-bottom: 1.5rem;
     border-bottom: .5rem solid var(--thematic-break-color);
     margin-bottom: 3rem;
-  }
 
-  &__details-author-and-date {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin: 0 0 0.5rem;
-  }
-
-  &__details-categories-and-tags {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-
-  &__details-tags,
-  &__details-categories {
-    font-size: 14px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    list-style-type: none;
-    margin: 0;
-
-    &:before {
-      padding: 0 0.5ch 0 0;
+    & > * {
+      margin-right: .5em;
     }
   }
 
@@ -39,13 +16,6 @@
 
     &:last-of-type {
       padding-right: 0;
-    }
-  }
-
-  &__details-date {
-    &:before {
-      // Calendar icon needs a bit more breathing room.
-      padding-right: 3px;
     }
   }
 

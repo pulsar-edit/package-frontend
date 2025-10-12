@@ -1,0 +1,118 @@
+<%- include("header") %>
+<body>
+  <%- include("page_header") %>
+  <div class="content">
+    <section class="sidebar">
+      <div class="sidebar__section sidebar__section--consumed-services">
+        <header>
+          <h3 class="sidebar__section-title icon icon-code">Consumed Services (<%=Object.keys(pack.consumedServices).length%>)</h3>
+        </header>
+        <div class="sidebar__section-content">
+          <ul class="service-list">
+            <% for (let service in pack.consumedServices) { %>
+            <li class="service-list__item">
+              <a class="service-list__item-link" href="/packages?serviceType=provided&service=<%=service%>">
+                <%=service%>@<%=Object.keys(pack.consumedServices[service].versions)%>
+              </a>
+            </li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
+      <div class="sidebar__section sidebar__section-provided-services">
+        <header>
+          <h3 class="sidebar__section-title icon icon-code">Provided Services (<%=Object.keys(pack.providedServices).length%>)</h3>
+        </header>
+        <div class="sidebar__section-content">
+          <ul class="service-list">
+            <% for (let service in pack.providedServices) { %>
+            <li class="service-list__item">
+              <a class="service-list__item-link" href="/packages?serviceType=consumed&service=<%=service%>">
+                <%=service%>@<%=Object.keys(pack.providedServices[service].versions)%>
+              </a>
+            </li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
+      <div class="sidebar__section sidebar__section-dependencies">
+        <header>
+          <h3 class="sidebar__section-title icon icon-package">Dependencies (<%=Object.keys(pack.dependencies).length%>)</h3>
+        </header>
+        <div class="sidebar__section-content">
+          <ul class="sidebar__section-content-list">
+            <% for (let dep in pack.dependencies) { %>
+            <li class="sidebar__section-content-list__item">
+              <span class="sidebar__section-content-list__item-test"><%= dep %>@<%= pack.dependencies[dep] %></span>
+            </li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
+      <div class="sidebar__section sidebar__section--keywords">
+        <header>
+          <h3 class="sidebar__section-title icon icon-tag">Keywords (<%=pack.keywords.length%>)</h3>
+        </header>
+        <div class="sidebar__section-content">
+          <ul class="keyword-list">
+            <% for (let keyword of pack.keywords) { %>
+            <li class="keyword-list__item">
+              <span class="keyword-list__item-text"><%= keyword %></span>
+            </li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <main class="container">
+      <section class="header">
+        <h1 class="title" id="title"><%= pack.name %></h1>
+        <div class="header__summary">
+          <%= pack.description %>
+        </div>
+        <div class="header__details">
+          <span class="header__details-author icon icon-person" aria-label="Author" title="Author">
+            <%= pack.author %>
+          </span>
+          <span class="header__details-downloads icon icon-cloud-download" aria-label="Downloads" title="Downloads">
+            <%= pack.downloads %>
+          </span>
+          <span class="header__details-stars icon icon-star" aria-label="Stars" title="Stars">
+            <%= pack.stars %>
+          </span>
+          <span class="header__details-version icon icon-tag" aria-label="Latest Version" title="Latest Version">
+            <%= pack.version %>
+          </span>
+          <span class="header__details-license icon icon-law" aria-label="License" title="License">
+            <%= pack.license %>
+          </span>
+          <span class="header__details-repo icon icon-repo">
+            <a href="<%=pack.repoLink%>">Repository</a>
+          </span>
+          <button class="header__details-share icon icon-link">
+            Share
+          </button>
+          <button class="header__details-install icon icon-package">
+            Install
+          </button>
+        </div>
+      </section>
+      <section class="badges">
+        <% for (const badge of pack.badges) { %>
+          <% if (badge.type === "warn") { %>
+          <div class="badges__item bages__item--warn">
+            <span class="badges__item-text icon icon-alert"><%=badge.title%></span>
+          </div>
+          <% } else if (badge.type === "success") { %>
+          <div class="badges__item badges__item--success">
+            <span class="badges__item-text icon icon-verified"><%=badge.title%></span>
+          </div>
+          <% } %>
+        <% } %>
+      </section>
+      <%- pack.readme %>
+    </main>
+  </div>
+  <%- include("page_footer") %>
+</body>
+<%- include("footer") %>

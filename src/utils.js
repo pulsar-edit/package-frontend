@@ -248,8 +248,25 @@ function prepareForDetail(obj) {
     pack.install = `atom://settings-view/show-package?package=${pack.name}`;
     pack.is_bundled = obj.is_bundled ?? false;
 
-    pack.providedServices = obj.metadata.providedServices ?? null;
-    pack.consumedServices = obj.metadata.consumedServices ?? null;
+    const validateServices = (services = {}) => {
+      const cleanService = {};
+      for (let name in services) {
+        let service = services[name];
+        if (!service.versions || typeof service.versions !== "object") {
+          // Malformed object. Pulsar won't understand it, so we shouldn't treat
+          // it as valid.
+          // (Example: https://github.com/ayame113/atom-ide-deno/blob/main/package.json#L66-L72)
+          continue;
+        }
+        cleanService[name] = { versions: service.versions };
+      }
+      return cleanService;
+    };
+
+    pack.providedServices = validateServices(obj.metadata.providedServices);
+    pack.consumedServices = validateServices(obj.metadata.consumedServices);
+
+    pack.dependencies = obj.metadata.dependencies ?? {};
 
     // Since filters are rendered at compile time, they won't work the way I'd
     // hoped to display Markdown on the page — by using the `markdown-it`

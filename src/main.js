@@ -164,7 +164,7 @@ app.get("/packages/:packageName", async (req, res) => {
     let obj = await utils.prepareForDetail(api.body);
     timecop.end("transcribe-json");
     res.append("Server-Timing", timecop.toHeader());
-    res.render("package_detail", {
+    res.render("package_page", {
       dev: DEV,
       pack: obj,
       page: utils.getOpenGraphData({
