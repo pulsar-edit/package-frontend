@@ -1,0 +1,26 @@
+<% if (pagination && pagination.total > 0) { %>
+  <nav class="pagination">
+    <p>Showing <%=pagination.from%> to <%=pagination.to%> of <%=pagination.total%> entries</p>
+    <ol class="pagination__list">
+      <li class="pagination__list-entry">
+        <a href="<%=pagination.routes.first%>" class="icon icon-jump-left pagination__box <%= !!pagination.routes.first ? '' : 'disabled'%>"></a>
+      </li>
+      <li class="pagination__list-entry">
+        <a href="<%=pagination.routes.prev%>" class="icon icon-chevron-left pagination__box <%= !!pagination.routes.prev ? '' : 'disabled'%>"></a>
+      </li>
+      <% pagination.options.forEach(option => { %>
+        <li class="pagination__list-entry <%=option.label == pagination.page ? 'pagination__list-entry--current' : ''%>">
+          <a href="<%=option.value%>" class="pagination__box">
+            <%=option.label%>
+          </a>
+        </li>
+      <% }); %>
+      <li class="pagination__list-entry">
+        <a href="<%=pagination.routes.next%>" class="icon icon-chevron-right pagination__box <%= !!pagination.routes.next ? '' : 'disabled'%>"></a>
+      </li>
+      <li class="pagination__list-entry">
+        <a href="<%=pagination.routes.last%>" class="icon icon-jump-right pagination__box <%= !!pagination.routes.last ? '' : 'disabled'%>"></a>
+      </li>
+    </ol>
+  </nav>
+<% } %>

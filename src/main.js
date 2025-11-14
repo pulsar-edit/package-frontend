@@ -74,7 +74,7 @@ app.get("/packages", async (req, res) => {
     timecop.end("transcribe-json");
     res.append("Server-Timing", timecop.toHeader());
     res.render(
-      "package",
+      "package_list",
       {
         dev: DEV,
         packages: obj,
@@ -128,7 +128,7 @@ app.get("/packages/search", async (req, res) => {
     timecop.end("transcribe-json");
     res.append("Server-Timing", timecop.toHeader());
     res.render(
-      "search",
+      "package_list",
       {
         dev: DEV,
         packages: obj,

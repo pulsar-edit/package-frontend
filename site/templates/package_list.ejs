@@ -4,7 +4,10 @@
   <div class="content">
     <main class="container">
       <%- include("search_bar") %>
-      <%- include("package_grid", { packages: featured }) %>
+      <%- include("pagination") %>
+      <%- include("package_grid", { packages: packages }) %>
+      <%- include("pagination") %>
+      <%- include("pagination") %>
     </main>
   </div>
   <%- include("page_footer") %>
