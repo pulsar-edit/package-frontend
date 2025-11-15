@@ -28,11 +28,11 @@ app.use("/", express.static("./site/resources-static"));
 
 app.get("/", async (req, res) => {
   let timecop = new utils.Timecop();
-  timecop.start("cache-check");
+  timecop.start("cache");
   let cached = await cache.getFeatured();
 
   if (cached !== null) {
-    timecop.end("cache-check");
+    timecop.end("cache");
     // We know our cache is good and lets serve the data
     res.append("Server-Timing", timecop.toHeader());
     res.render("home", {
@@ -42,14 +42,14 @@ app.get("/", async (req, res) => {
     });
   } else {
     // the cache is invalid.
-    timecop.end("cache-check");
-    timecop.start("api-request");
+    timecop.end("cache");
+    timecop.start("api");
     try {
       let api = await superagent.get(`${apiurl}/api/packages/featured`);
-      timecop.end("api-request");
-      timecop.start("transcribe-json");
+      timecop.end("api");
+      timecop.start("transcribe");
       let obj = await utils.prepareForListing(api.body);
-      timecop.end("transcribe-json");
+      timecop.end("transcribe");
       res.append("Server-Timing", timecop.toHeader());
       res.render("home", { dev: DEV, featured: obj, page: utils.getOpenGraphData() });
       // then set featured cache
@@ -63,15 +63,15 @@ app.get("/", async (req, res) => {
 app.get("/packages", async (req, res) => {
   // the main package listing
   let timecop = new utils.Timecop();
-  timecop.start("api-request");
+  timecop.start("api");
   try {
     let api = await superagent.get(`${apiurl}/api/packages`)
       .query(req.query);
     const pagination = utils.getPagination(req, api);
-    timecop.end("api-request");
-    timecop.start("transcribe-json");
+    timecop.end("api");
+    timecop.start("transcribe");
     let obj = await utils.prepareForListing(api.body);
-    timecop.end("transcribe-json");
+    timecop.end("transcribe");
     res.append("Server-Timing", timecop.toHeader());
     res.render(
       "package_list",
@@ -95,13 +95,13 @@ app.get("/packages", async (req, res) => {
 app.get("/packages/featured", async (req, res) => {
   // view list of featured packages
   let timecop = new utils.Timecop();
-  timecop.start("api-request");
+  timecop.start("api");
   try {
     let api = await superagent.get(`${apiurl}/api/packages/featured`).query(req.query);
-    timecop.end("api-request");
-    timecop.start("transcribe-json");
+    timecop.end("api");
+    timecop.start("transcribe");
     let obj = await utils.prepareForListing(api.body);
-    timecop.end("transcribe-json");
+    timecop.end("transcribe");
     res.append("Server-Timing", timecop.toHeader());
     res.render("package_list", {
       dev: DEV,
@@ -116,15 +116,15 @@ app.get("/packages/featured", async (req, res) => {
 app.get("/packages/search", async (req, res) => {
   // execute a search for packages
   let timecop = new utils.Timecop();
-  timecop.start("api-request");
+  timecop.start("api");
   try {
     let api = await superagent.get(`${apiurl}/api/packages/search`).query(req.query);
 
     const pagination = utils.getPagination(req, api);
-    timecop.end("api-request");
-    timecop.start("transcribe-json");
+    timecop.end("api");
+    timecop.start("transcribe");
     let obj = await utils.prepareForListing(api.body);
-    timecop.end("transcribe-json");
+    timecop.end("transcribe");
     res.append("Server-Timing", timecop.toHeader());
     res.render(
       "package_list",
@@ -149,7 +149,7 @@ app.get("/packages/search", async (req, res) => {
 app.get("/packages/:packageName", async (req, res) => {
   // view details of a package
   let timecop = new utils.Timecop();
-  timecop.start("api-request");
+  timecop.start("api");
 
   // See if there are any query parameters we want to pass to our OG images.
   let og_image_kind = req.query.image_kind ?? "default";
@@ -157,10 +157,10 @@ app.get("/packages/:packageName", async (req, res) => {
 
   try {
     let api = await superagent.get(`${apiurl}/api/packages/${decodeURIComponent(req.params.packageName)}`).query(req.query);
-    timecop.end("api-request");
-    timecop.start("transcribe-json");
+    timecop.end("api");
+    timecop.start("transcribe");
     let obj = await utils.prepareForDetail(api.body);
-    timecop.end("transcribe-json");
+    timecop.end("transcribe");
     res.append("Server-Timing", timecop.toHeader());
     res.render("package_page", {
       dev: DEV,
