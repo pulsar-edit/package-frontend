@@ -15,6 +15,13 @@
   "engines": {
     "node": ">=16 <=18"
   },
+  "nodemonConfig": {
+    "ext": "*.js, *.ejs, *.less",
+    "events": {
+      "restart": "npm run build:site"
+    },
+    "ignore": "./site/resources-generated-serve/"
+  },
   "author": "confused-Techie",
   "license": "MIT",
   "dependencies": {
