@@ -89,25 +89,42 @@
           <span class="header__details-repo icon icon-repo">
             <a href="<%=pack.repoLink%>">Repository</a>
           </span>
-          <button class="header__details-share icon icon-link">
+          <button class="header__details-share icon icon-link" data-clipboard="<%=pack.share.pageLink%>">
             Share
           </button>
-          <button class="header__details-install icon icon-package">
-            Install
-          </button>
+          <% if (!pack.is_bundled) { %>
+            <a href="<%=pack.install%>">
+              <button class="header__details-install icon icon-package">
+                Install
+              </button>
+            </a>
+          <% } %>
         </div>
       </section>
       <section class="badges">
         <% for (const badge of pack.badges) { %>
-          <% if (badge.type === "warn") { %>
-          <div class="badges__item bages__item--warn">
-            <span class="badges__item-text icon icon-alert"><%=badge.title%></span>
+          <div class="badges__item badges__item--<%=badge.type%>">
+            <% let badgeIcon = ""; %>
+            <% if (badge.type === "warn") { %>
+              <% badgeIcon = "icon icon-alert"; %>
+            <% } else if (badge.type === "success") { %>
+              <% badgeIcon = "icon icon-verified"; %>
+            <% } else if (badge.type === "info") { %>
+              <% badgeIcon = "icon icon-info"; %>
+            <% } %>
+            <span class="badges__item-title <%=badgeIcon%>">
+              <% if (typeof badge.link === "string") { %>
+                <a href="<%=badge.link%>">
+                  <%=badge.title%>
+                </a>
+              <% } else { %>
+                <%=badge.title%>
+              <% } %>
+            </span>
+            <span class="badges__item-text">
+              <%=badge.text%>
+            </span>
           </div>
-          <% } else if (badge.type === "success") { %>
-          <div class="badges__item badges__item--success">
-            <span class="badges__item-text icon icon-verified"><%=badge.title%></span>
-          </div>
-          <% } %>
         <% } %>
       </section>
       <%- pack.readme %>

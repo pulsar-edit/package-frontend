@@ -11,6 +11,12 @@
     border-color: var(--alert-border-danger);
   }
 
+  .badges__item--info {
+    color: var(--alert-color-info);
+    background-color: var(--alert-bg-info);
+    border-color: var(--alert-border-info);
+  }
+
   .badges__item {
     border-style: solid;
     border-width: 1px;
@@ -18,9 +24,17 @@
     text-align: center;
     box-sizing: border-box;
 
-    .badges__item-text {
+    .badges__item-title {
       padding: 1px 3px;
       display: block;
+    }
+
+    .badges__item-title:before {
+      padding-right: 5px;
+    }
+
+    .badges__item-text {
+
     }
   }
 }

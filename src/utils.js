@@ -287,10 +287,10 @@ function prepareForDetail(obj) {
 
     // Add Sharing data to it for easy access to the package_listing
     pack.share = {
-      pageLink: `https://web.pulsar-edit.dev/packages/${pack.name}`,
+      pageLink: `https://packages.pulsar-edit.dev/packages/${pack.name}`,
       mdLink: {
-        default: `[![${pack.name}](https://image.pulsar-edit.dev/packages/${pack.name})](https://web.pulsar-edit.dev/packages/${pack.name})`,
-        iconic: `[![${pack.name}](https://image.pulsar-edit.dev/packages/${pack.name}?image_kind=iconic)](https://web.pulsar-edit.dev/packages/${pack.name})`
+        default: `[![${pack.name}](https://image.pulsar-edit.dev/packages/${pack.name})](https://packages.pulsar-edit.dev/packages/${pack.name})`,
+        iconic: `[![${pack.name}](https://image.pulsar-edit.dev/packages/${pack.name}?image_kind=iconic)](https://packages.pulsar-edit.dev/packages/${pack.name})`
       }
     };
 
