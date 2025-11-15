@@ -212,7 +212,7 @@ app.get("/users", async (req, res) => {
   // This is the signed in user page.
   // Since we will let the JavaScript on the page handle any API call needed here lets just
   // render a page and not do anything
-  res.render("user_page", { dev: DEV, page: utils.getOpenGraphData({
+  res.render("user", { dev: DEV, page: utils.getOpenGraphData({
     name: "Pulsar User Account",
     og_url: "https://packages.pulsar-edit.dev/users"
   })});
