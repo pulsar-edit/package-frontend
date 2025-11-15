@@ -1,304 +1,210 @@
-function changeThemeBtn() {
-  document.getElementById("dropdown-list").classList.toggle("show");
-}
 
-function changeTheme(theme) {
-  switch (theme) {
-    case "github-dark":
-      changeSyntax("github-dark-syntax");
-      document.body.setAttribute("theme", "github-dark");
-      localStorage.setItem("theme", "github-dark");
-      break;
-    case "dracula":
-      changeSyntax("base16-dracula-syntax");
-      document.body.setAttribute("theme", "dracula");
-      localStorage.setItem("theme", "dracula");
-      break;
-    case "one-dark":
-      changeSyntax("atom-one-dark-syntax");
-      document.body.setAttribute("theme", "one-dark");
-      localStorage.setItem("theme", "one-dark");
-      break;
-    case "one-light":
-      changeSyntax("atom-one-light-syntax");
-      document.body.setAttribute("theme", "one-light");
-      localStorage.setItem("theme", "one-light");
-      break;
-    case "original-theme":
-    default:
-      changeSyntax("atom-one-light-syntax");
-      document.body.setAttribute("theme", "original-theme");
-      localStorage.setItem("theme", "original-theme");
-      break;
-  }
-}
+const ThemeSwitcher = {
+  DEFAULT_THEME_PREFERENCE: "auto",
+  MEDIA: window.matchMedia("(prefers-color-scheme: light)"),
+  setup() {
+    this.root = document.documentElement;
+    this.button = document.getElementById("theme-switcher");
+    this.metaScheme = document.getElementById("meta-scheme");
 
-function changeSyntax(syntax) {
+    // We want to:
+    // - listen for clicks on this button to switch the theme
+    // - change this theme according to the OS prefferred theme
+    // - change this theme according to any stored preferences on this site
+    // - listen for OS preferred theme changing
+    let preference = this.findSavedPreference() ?? this.DEFAULT_THEME_PREFERENCE;
+    this.setPreference(preference);
+    this.setupListeners();
+  },
 
-  const syntaxList = {
-    "github-dark-syntax": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/github-dark.min.css",
-    "atom-one-dark-syntax": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/atom-one-dark.min.css",
-    "atom-one-light-syntax": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/atom-one-light.min.css",
-    "base16-dracula-syntax": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/base16/dracula.min.css"
-  };
+  findSavedPreference() {
+    return localStorage.getItem("preferred-theme");
+  },
 
-  // Remove the previous syntax theme
-  const oldSyntax = document.getElementById("syntax-theme");
-  if (oldSyntax) {
-    // In case the default was only previously set which has no syntax theme.
-    oldSyntax.remove();
-  }
+  findOSTheme() {
+    return this.MEDIA.matches ? "light" : "dark";
+  },
 
-  // Create the new syntax theme
-  if (syntaxList[syntax]) {
-    const syntaxLink = document.createElement("link");
-    syntaxLink.setAttribute("rel", "stylesheet");
-    syntaxLink.setAttribute("class", "codestyle");
-    syntaxLink.setAttribute("id", "syntax-theme");
-    syntaxLink.setAttribute("href", syntaxList[syntax]);
-
-    document.head.appendChild(syntaxLink);
-  }
-}
-
-function shareDropDown() {
-  const list = document.getElementById("share-dropdown-list");
-  const willBeShown = !list.classList.contains("show");
-  list.classList.toggle("show");
-
-  if (willBeShown) {
-    // Position the share menu horizontally so that the arrow is directly below
-    // the middle of the share button.
-    let btn = document.querySelector("button.share-button");
-    if (!btn) { return; }
-    // Take the difference between the right edge of the body and the right
-    // edge of the share button; then adjust for the widths of the share button
-    // and the share menu.
-    let bodyRect = document.body.getBoundingClientRect();
-    let btnRect = btn.getBoundingClientRect();
-    let menuRect = list.getBoundingClientRect();
-    list.style.right = `${bodyRect.width - btnRect.right - (menuRect.width / 2) + (btnRect.width / 2)}px`;
-  }
-}
-
-function toggleNavBtn() {
-  document.querySelector('nav').classList.toggle('active');
-}
-
-// Copy string from input field
-function copyToClipboard(triggerElement) {
-  const target = document.querySelector(".copy-to-clipboard-input-js");
-
-  if (target) {
-    navigator.clipboard.writeText(target.value);
-
-    if (triggerElement) {
-      // Store original value before manipulating
-      const label = triggerElement.innerText;
-      triggerElement.innerText = "Copied!";
-
-      // Reset to original button text after 3s
-      setTimeout(() => {
-        triggerElement.innerText = label;
-      }, 3000);
-    }
-  }
-}
-
-// Agnostic Copy to Clipboard for all Share Btns
-function copyToClipboardAgnostic(value, target) {
-  if (value && target) {
-    navigator.clipboard.writeText(value);
-    const element = document.querySelector(`#${target} > span`);
-
-    // Store original value before manipulating
-    const label = element.innerText;
-    element.innerText = "Copied!";
-    // Reset to original button text after 3s
-    setTimeout(() => {
-      element.innerText = label;
-    }, 3000);
-  }
-}
-
-// Close the share menu if the user clicks outside of the share button or the
-// share menu.
-addEventListener('click', (e) => {
-  const o = document.getElementById('share-dropdown-list');
-  if (o && !e.target.closest('button.share-button, #share-dropdown-list')) {
-    o.classList.remove('show');
-  }
-});
-
-// Close the change-theme menu if the click is outside of the change-theme
-// button. (We want the menu to close automatically when the user selects an
-// option.)
-addEventListener('click', (e) => {
-  const t = document.getElementById('dropdown-list');
-  if (!e.target.closest('button.change-theme')) {
-    t.classList.remove('show');
-  }
-});
-
-function setup (event) {
-  if (localStorage.getItem("theme")) {
-    // If a theme has been set or saved.
-    changeTheme(localStorage.getItem("theme"));
-  }
-
-  // Add the header links if we are logged in
-  if (isLoggedIn()) { modifyNavigation(); }
-
-  // Check to see if we are on the User Account Page
-  if (window.location.pathname === "/users") {
-    // Now that we know we are on the user page, lets start requesting their user data
-    userAccountActions();
-  }
-
-  const shareButton = document.querySelector('button.share-button');
-  if (shareButton) {
-    shareButton.addEventListener("click", shareDropDown);
-  }
-
-  const changeThemeButton = document.querySelector('button.change-theme');
-  if (changeThemeButton) {
-    changeThemeButton.addEventListener("click", changeThemeBtn);
-  }
-
-  const copyToClipboardButton = document.querySelector(
-    ".copy-to-clipboard-button-js"
-  );
-
-  const dropdownList = document.getElementById("dropdown-list");
-  dropdownList.addEventListener("click", (event) => {
-    let button = event.target.closest("button[data-theme-name]");
-    if (!button) { return; }
-    changeTheme(button.getAttribute('data-theme-name'));
-  });
-
-  if (copyToClipboardButton) {
-    copyToClipboardButton.addEventListener("click", (event) => {
-      event.preventDefault();
-
-      // We pass the event.target to the handler, we will
-      // use this to change the button label to 'copied'
-      copyToClipboard(event.target);
+  setupListeners() {
+    this.button.addEventListener("click", this.onButtonClick.bind(this));
+    this.MEDIA.addEventListener("change", () => {
+      let newTheme = event.matches ? "light" : "dark";
+      this.setTheme(newTheme);
     });
+  },
+
+  setTheme(newTheme) {
+    if (this.root.dataset.theme === newTheme) return;
+    this.root.dataset.theme = newTheme;
+
+    this.metaScheme.setAttribute(
+      "content",
+      newTheme
+    );
+  },
+
+  setPreference(newPreference) {
+    localStorage.setItem("preferred-theme", newPreference);
+    if (this.root.dataset.themeSetting === newPreference) return;
+    this.root.dataset.themeSetting = newPreference;
+    let theme = newPreference === "auto" ? this.findOSTheme() : newPreference;
+    this.setTheme(theme);
+  },
+
+  onButtonClick() {
+    let currentValue = this.root.dataset.themeSetting;
+    let newValue;
+
+    switch(currentValue) {
+      case "dark":
+        newValue = "light";
+        break;
+      case "light":
+        newValue = "auto";
+        break;
+      case "auto":
+        newValue = "dark";
+        break;
+      default:
+        newValue = this.DEFAULT_THEME_PREFERENCE;
+    }
+    this.setPreference(newValue);
   }
 };
 
-document.addEventListener('DOMContentLoaded', setup);
+const CopyToClipboard = {
+  setup() {
+    const items = document.querySelectorAll("[data-clipboard]");
+    for (const item of items) {
+      item.addEventListener("click", () => {
+        this.copy(item);
+      });
+    }
+  },
 
-function userAccountActions() {
-  // First lets see if they have a token in their request
-  // This likely means a first time user or they are updating their user details
-  const urlParams = new URLSearchParams(window.location.search);
-  const params = Object.fromEntries(urlParams.entries());
+  copy(item) {
+    navigator.clipboard.writeText(item.dataset.clipboard);
+    // Store the original text of the item before manipulating
+    const str = item.innerText;
+    item.innerText = "Copied!";
 
-  let token = params.token;
-
-  if (typeof token === undefined || !token) {
-    // The user expects to already be logged in. Do they have data saved locally?
-    userAccountLocal();
-  } else {
-    // The user needs to access the API to retreive user details. Ignore any local data.
-    userAccountAPI(token);
+    // Reset to original text after 3s
+    setTimeout(() => {
+      item.innerText = str;
+    }, 3000);
   }
-}
+};
 
-function isLoggedIn() {
-  return !!localStorage.getItem("user");
-}
+const AccountActions = {
+  isLoggedIn() {
+    return !!localStorage.getItem("user");
+  },
 
-function userAccountLocal() {
-  if (isLoggedIn()) {
-    let user = localStorage.getItem("user");
+  async setup() {
+    // Adjust navigation headers
+    if (this.isLoggedIn()) { this.modifyNav(); }
 
-    user = JSON.parse(user);
-    modifyUserPage(user);
+    if (window.location.pathname === "/users") {
+      // We are currently on the user page, so we need to fill in their account details
+      await this.userPageActions();
+    }
+  },
 
-    // Now we have a user matching the object available in userAccountAPI
-  } else {
-    // They haven't given us any query parameters, but don't have any local data either
-    // Lets redirect to the sign in page.
-    window.location.href = "https://web.pulsar-edit.dev/login";
-  }
-}
+  modifyNav() {
+    // Modify the top header navigation like so:
+    // DEFAULT: Featured | Packages | Sign In | HomePage
+    // When Signed in: Featured | Packages | Account | Sign Out | HomePage
 
-function userAccountAPI(token) {
-  fetch("https://api.pulsar-edit.dev/api/users", {
-    method: "GET",
-    headers: {
-      'Authorization': token,
-      'Access-Control-Allow-Credentials': true
-    },
-    credentials: 'include'
-  })
-    .then((response) => {
+    const header = document.querySelector("header > div > nav");
+    const headerLinks = document.querySelectorAll("header > div > nav > a");
+
+    // Set the "Sign In" to be "Sign Out"
+    const loginLink = Array.from(headerLinks).find(i => i.href === `${document.location.origin}/login`);
+    console.log(headerLinks);
+    loginLink.innerHTML = "Sign Out";
+    loginLink.href = "/logout";
+
+    // Create the link for "Account"
+    const accountLink = document.createElement("a");
+    accountLink.href = "/users";
+    accountLink.innerHTML = "My Account";
+    accountLink.classList.add("page-header__link");
+
+    // Insert "Account" before "Sign Out"
+    header.insertBefore(accountLink, loginLink);
+  },
+
+  async userPageActions() {
+    // Try to find a token in their request
+    const urlParams = new URLSearchParams(window.location.search);
+    const params = Object.fromEntries(urlParams.entries());
+    const token = params.token;
+    let userDetails = {};
+
+    if (typeof token === undefined || !token) {
+      // The user has not supplied a token, meaning they expect to be able to load
+      // already saved user account details
+      userDetails = this.getLocalUserDetails();
+    } else {
+      // The user has supplied a token, likely meaning a first time sign up
+      // We need to retreive their user account details from the backend
+      userDetails = await this.getRemoteUserDetails(token);
+
+      // Store the new user details
+      localStorage.setItem("user", JSON.stringify(userDetails));
+    }
+
+    // Now with the user details, lets modify the content of the page to show them
+    let img = document.getElementById("user-data-avatar");
+    let username = document.getElementById("user-data-name");
+    let usercreated = document.getElementById("user-data-created");
+    let usertoken = document.getElementById("user-data-token");
+    let usertokenclipboard = document.getElementById("user-data-token-clipboard");
+
+    img.style.backgroundImage = `url(${userDetails.avatar})`;
+    username.textContent = userDetails.username;
+    usercreated.textContent = `Account Created: ${new Date(userDetails.created_at).toISOString().slice(0, 10)}`;
+    usertoken.value = userDetails.token;
+    usertokenclipboard.dataset.clipboard = userDetails.token;
+  },
+
+  getLocalUserDetails() {
+    if (this.isLoggedIn()) {
+      return JSON.parse(localStorage.getItem("user"));
+    } else {
+      // The user expects to get locally saved account data, but is not logged in
+      // Redirect to login
+      window.location.href = "https://packages.pulsar-edit.dev/login";
+    }
+  },
+
+  async getRemoteUserDetails(token) {
+    try {
+      const res = await fetch("https://api.pulsar-edit.dev/api/users", {
+        method: "GET",
+        headers: {
+          "Authorization": token,
+          "Access-Control-Allow-Credentials": true
+        },
+        credentials: "include"
+      });
+
       if (response.ok) {
-        return response.json();
+        const data = await response.json();
+        return data;
+      } else {
+        console.error("Failed to get remote user data!");
+        console.error(response);
       }
+    } catch(err) {
+      console.error("Failed to get remote user data!");
+      console.error(err);
+    }
+  }
+};
 
-      // Handle exception
-    })
-    .then((data) => {
-      // Now we should have a data object matching the below.
-      // data.username
-      // data.avatar
-      // data.created_at
-      // data.data
-      // data.node_id
-      // data.token
-      // data.packages
-
-      // Now with our user we want to modify the page, and save the user to local storage.
-      modifyUserPage(data);
-
-      localStorage.setItem("user", JSON.stringify(data));
-    })
-    .catch((err) => {
-      // Handle error
-      console.log("error", err);
-    });
-}
-
-function modifyUserPage(user) {
-  // This expects to be handed a proper user object.
-  let img = document.getElementById("user-account-avatar");
-  let username = document.getElementById("user-info-block-name").childNodes[0];
-  let userhandle = document.getElementById("user-info-block-handle");
-  let accountcreated = document.getElementById("account-created");
-  let tokenBox = document.getElementById("api-token");
-
-  // Modify Image
-  img.style.backgroundImage = `url(${user.avatar})`;
-
-  // Modify User Name Details
-  username.textContent = user.username;
-  userhandle.textContent = `@${user.username}`; // We may want to look at removing this.
-
-  // Modify Creation Date
-  accountcreated.textContent = `Account Created: ${new Date(user.created_at).toISOString().slice(0, 10)}`;
-
-  // Modify Token
-  tokenBox.value = user.token;
-}
-
-function modifyNavigation() {
-  // Obtain references to the header
-  const header = document.querySelector("header > nav");
-  const headerLinks = document.querySelectorAll('header > nav > a');
-
-  // Set the "log in" link to now be "log out"
-  const loginLink = Array.from(headerLinks).find(i => i.href === `${document.location.origin}/login`);
-  loginLink.innerHTML = 'Log Out';
-  loginLink.href = '/logout';
-
-  // Create a new button to go to their account
-  const accountLink = document.createElement("a");
-  accountLink.href = '/users';
-  accountLink.innerHTML = 'My Account';
-
-  // Insert the button before the "log out" button
-  header.insertBefore(accountLink, loginLink);
-}
+window.onload = () => {
+  AccountActions.setup();
+  ThemeSwitcher.setup();
+  CopyToClipboard.setup();
+};

@@ -9,14 +9,13 @@
             <div id="user-data-avatar" style="width: 96px; height: 96px; background-size: cover; background-position: center; background-image: url(https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg)"></div>
             <div>
               <h2 id="user-data-name">Jane Smith</h2>
-              <p id="user-data-handle">@jane.smith</p>
               <p id="user-data-created">Account Created: {TIMESTAMP}</p>
             </div>
           </div>
           <div>
             <h2>Your Pulsar API Token</h2>
             <input id="user-data-token" type="text" disabled value="api-token-goes-here" />
-            <button class="icon icon-clippy" data-clipboard="api-token-goes-here">
+            <button class="icon icon-clippy" id="user-data-token-clipboard" data-clipboard="api-token-goes-here">
               Copy Token
             </button>
           </div>
