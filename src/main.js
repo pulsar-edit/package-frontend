@@ -79,8 +79,7 @@ app.get("/packages", async (req, res) => {
         dev: DEV,
         packages: obj,
         pagination,
-        serviceName: req.query.service,
-        serviceType: req.query.serviceType,
+        query: req.query,
         page: utils.getOpenGraphData({ og_url: "https://packages.pulsar-edit.dev/packages" })
       }
     );
@@ -132,9 +131,8 @@ app.get("/packages/search", async (req, res) => {
       {
         dev: DEV,
         packages: obj,
+        query: req.query,
         search: req.query.q,
-        serviceName: req.query.service,
-        serviceType: req.query.serviceType,
         pagination,
         page: utils.getOpenGraphData({
           name: `${req.query.q} - Pulsar Package Search`,
