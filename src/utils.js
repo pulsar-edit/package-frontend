@@ -486,7 +486,6 @@ class Timecop {
   }
 
   toHeader() {
-    console.log("Called");
     let str = "";
 
     for (const service in this.timetable) {
