@@ -1,7 +1,7 @@
-<% if (query.q) { %>
+
   <%# If the user is executing a search on this page %>
   <%# Excludes other package_list pages such as featured or default package listing %>
-  <section class="sidebar">
+  <section class="sidebar hidden" id="advanced-search-sidebar">
     <div class="sidebar__section sidebar__section--sort">
       <header>
         <h3 class="sidebar__section-title icon icon-graph">Sort</h3>
@@ -129,4 +129,3 @@
       </div>
     </div>
   </section>
-<% } %>

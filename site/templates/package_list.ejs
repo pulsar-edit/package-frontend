@@ -5,9 +5,15 @@
     <%- include("advanced_search_sidebar") %>
     <main class="container">
       <%- include("search_bar") %>
+      <button
+        class="icon icon-jump-right"
+        title="Expand Advanced Search"
+        aria-label="Expand Advanced Search"
+        id="advanced-search-control"
+        data-enabled="false"
+      ></button>
       <%- include("pagination") %>
       <%- include("package_grid", { packages: packages }) %>
-      <%- include("pagination") %>
       <%- include("pagination") %>
     </main>
   </div>
