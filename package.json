@@ -5,9 +5,8 @@
   "main": "./src/server.js",
   "scripts": {
     "postinstall": "npm run build:site",
-    "start": "npm run node:prod",
+    "start": "node ./src/server.js",
     "start:dev": "cross-env PULSAR_STATUS=dev nodemon ./src/server.js",
-    "node:prod": "node ./src/server.js",
     "test": "jest ./src/tests/",
     "build:site": "node ./scripts/build-site.js",
     "deploy_script": "echo 'Do not run!' && gcloud app deploy"
