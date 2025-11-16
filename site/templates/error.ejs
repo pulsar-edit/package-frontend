@@ -1,0 +1,21 @@
+<%- include("header") %>
+<body class="layout--home">
+  <%- include("page_header") %>
+  <div class="content">
+    <main class="container">
+      <h1>This Page encountered an error!</h1>
+      <h2>
+        If you think you're seeing this page in error, please report an issue on
+        <a href="https://github.com/pulsar-edit/package-frontend/issues">GitHub</a> or
+        <a href="https://discord.gg/7aEbB9dGRT">Discord</a>
+      </h2>
+      <pre>
+        <code class="hljs language-json">
+          <%-error%>
+        </code>
+      </pre>
+    </main>
+  </div>
+  <%- include("page_footer") %>
+</body>
+<%- include("footer") %>
