@@ -216,22 +216,6 @@ const AccountActions = {
     }
   });
 
-  function annotateSelectElement (select) {
-    if (select.value !== '') {
-      select.classList.remove('empty');
-    } else {
-      select.classList.add('empty');
-    }
-  }
-
-  let serviceTypeSelect = document.getElementById('service-type');
-  if (serviceTypeSelect) {
-    annotateSelectElement(serviceTypeSelect);
-    serviceTypeSelect.addEventListener('change', () => {
-      annotateSelectElement(event.target);
-    });
-  }
-
   let url = new URL(location.toString());
 
   window.addEventListener('pageshow', () => {
