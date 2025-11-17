@@ -1,12 +1,29 @@
-<div class="search_bar">
-  <h1>Packages make Pulsar do amazing things.</h1>
+<div class="search-area">
+  <h1 class="search-area__tagline">Packages make Pulsar do amazing things.</h1>
   <search>
     <form id="search" action="/packages/search">
-      <input type="search" class="search_bar__input" value="<%=locals.query?.q ? query.q : ''%>" name="q" placeholder="Search Packages..." />
-      <button type="submit">
-        <i class="icon icon-search"></i>
-        Search
-      </button>
+      <div class="search-bar">
+        <input
+          type="search"
+          class="search-bar__input"
+          value="<%=locals.query?.q ? query.q : ''%>"
+          name="q"
+          placeholder="Search Packages...">
+
+        <button type="submit">
+          <i class="icon icon-search"></i>
+          Search
+        </button>
+      </div>
+
+      <% if (locals.advanced_search) { %>
+        <details class="search-area__advanced-search">
+          <summary>Advanced search</summary>
+          <div>
+            <%- include("advanced_search") %>
+          </div>
+        </details>
+      <% } %>
     </form>
   </search>
 </div>

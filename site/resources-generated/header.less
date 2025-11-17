@@ -55,3 +55,17 @@
     }
   }
 }
+
+.header.header--package-single {
+  --sidebar-width: 0px;
+  --content-gap: 0rem;
+  .top-level-element();
+  padding-left: calc(var(--content-margin) + var(--sidebar-width) + var(--content-gap));
+}
+
+@media (min-width: @bp-larger-than-tablet) {
+  .header.header--package-single {
+    --sidebar-width: 250px;
+    --content-gap: 2rem;
+  }
+}

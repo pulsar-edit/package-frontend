@@ -1,6 +1,14 @@
 <% if (pagination && pagination.total > 0) { %>
   <nav class="pagination">
-    <p>Showing <%=pagination.from%> to <%=pagination.to%> of <%=pagination.total%> entries</p>
+    <p class="pagination__description">
+      Showing
+      <%= helpers.formatNumber(pagination.from) %>
+      to
+      <%= helpers.formatNumber(pagination.to )%>
+      of
+      <%= helpers.formatNumber(pagination.total) %>
+      entries
+    </p>
     <ol class="pagination__list">
       <li class="pagination__list-entry">
         <a href="<%=pagination.routes.first%>" class="icon icon-jump-left pagination__box <%= !!pagination.routes.first ? '' : 'disabled'%>"></a>

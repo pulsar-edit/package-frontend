@@ -171,15 +171,15 @@ const AccountActions = {
     if (this.isLoggedIn()) {
       return JSON.parse(localStorage.getItem("user"));
     } else {
-      // The user expects to get locally saved account data, but is not logged in
-      // Redirect to login
+      // The user expects to get locally saved account data, but is not logged
+      // in. Redirect to login.
       window.location.href = "https://packages.pulsar-edit.dev/login";
     }
   },
 
   async getRemoteUserDetails(token) {
     try {
-      const res = await fetch("https://api.pulsar-edit.dev/api/users", {
+      const response = await fetch("https://api.pulsar-edit.dev/api/users", {
         method: "GET",
         headers: {
           "Authorization": token,
@@ -202,143 +202,66 @@ const AccountActions = {
   }
 };
 
-class AdvancedSearch {
-  /**
-  * The advanced search form is a secondary form element.
-  * This means by default any values there are not associated with the proper
-  * 'search' form during the submit event.
-  * But we can assign each individual input to the 'search' form at will.
-  * Except we **must** ensure to not assign any empty values or else those can
-  * cause a failed search, such as search for packages that provide the service '',
-  * since none do, nothing would be returned.
-  * So that means we can't just assign every input the 'form="search"' attribute,
-  * and we have to do it dynamically.
-  */
-  constructor() {
-    // Opts contains all advanced search options matching how they are specified in the document
-    this.opts = [ "sort", "direction", "fileExtension", "serviceType", "service", "serviceVersion", "owner" ];
-    this.forms = {};
-    this.advancedOptsSet = false; // Knowing if any advanced parameters have been set
-  }
+{
+  const SearchForm = document.getElementById('search');
 
-  setup() {
-    for (const opt of this.opts) {
-      this.forms[opt] = {
-        form: document.getElementById(`search__${opt}`)
-      };
-
-      this.forms[opt].form.addEventListener("input", this.changed.bind(this));
-    }
-
-    this.applyDefaults();
-    this.applyParams();
-    this.setupControlBtn();
-  }
-
-  changed(event) {
-    if (event.type === "input" && event.target.form !== "search") {
-      // Assign the input to the 'search' form to associate it's value to that form element
-      event.target.setAttribute("form", "search");
-    }
-
-    // But if it's a text value that's now empty, we **must** make sure to remove the association
-    if (event.target.type === "text" && event.target.value == "" && event.target.form === "search") {
-      event.target.removeAttribute("form");
-    }
-  }
-
-  applyDefaults() {
-    // Apply the default values to the advanced search forms
-
-    // Default values are only for some items
-    document.getElementById("search__sort--downloads").checked = true;
-    document.getElementById("search__direction--desc").checked = true;
-  }
-
-  applyParams() {
-    // Apply the paramaters from the URL to the advanced search forms
-    const urlParams = new URLSearchParams(window.location.search);
-    const params = Object.fromEntries(urlParams.entries());
-
-    for (const param in params) {
-      switch(param) {
-        case "sort":
-          document.querySelector(`input[value="${params[param]}"]`).checked = true;
-          this.advancedOptsSet = true;
-          break;
-        case "direction":
-          document.querySelector(`input[value="${params[param]}"]`).checked = true;
-          this.advancedOptsSet = true;
-          break;
-        case "fileExtension":
-          document.getElementById("search__fileExtension--input").value = params[param];
-          this.advancedOptsSet = true;
-          break;
-        case "serviceType":
-          document.querySelector(`input[value="${params[param]}"]`).checked = true;
-          this.advancedOptsSet = true;
-          break;
-        case "service":
-          document.getElementById("search__service--input").value = params[param];
-          this.advancedOptsSet = true;
-          break;
-        case "serviceVersion":
-          document.getElementById("search__serviceVersion--input").value = params[param];
-          this.advancedOptsSet = true;
-          break;
-        case "owner":
-          document.getElementById("search__owner--input").value = params[param];
-          this.advancedOptsSet = true;
-          break;
+  SearchForm?.addEventListener('submit', () => {
+    // Strip empty fields from the URL. Ideally empty URL parameters would be
+    // treated identically to missing parameters on the backend; failing that, we
+    // can disable the empty fields just before submission.
+    for (let control of document.querySelectorAll('input, select')) {
+      if (control.value === '') {
+        control.disabled = true;
       }
     }
-  }
+  });
 
-  setupControlBtn() {
-    // Setup the advanced search button that controls expanding or collapsing
-    // the advanced search sidebar
-    document.getElementById("advanced-search-control").addEventListener("click", this.toggleControlBtn);
-
-    if (this.advancedOptsSet) {
-      // This means the previous search query was an advanced one, and the advanced options
-      // have been modified from the default
-      // We will want to immediately toggle the advanced sidebar from the default of
-      // disabled to enabled
-      this.toggleControlBtn();
-    }
-  }
-
-  toggleControlBtn() {
-    // Toggle the advanced search button
-    const btn = document.getElementById("advanced-search-control");
-    const sidebar = document.getElementById("advanced-search-sidebar");
-    const enabled = (btn.dataset.enabled.toLowerCase() == "true");
-    // The dataset value will be set here, so if it's enabled we know the user
-    // intends to disable it & vice versa
-
-    if (enabled) {
-      // It's enabled, the user intends to disable it
-      btn.classList.remove("icon-jump-right");
-      btn.classList.add("icon-jump-left");
-      sidebar.classList.add("hidden");
-      btn.dataset.enabled = "false";
+  function annotateSelectElement (select) {
+    if (select.value !== '') {
+      select.classList.remove('empty');
     } else {
-      // It's disabled, the user intends to enable it
-      btn.classList.remove("icon-jump-left");
-      btn.classList.add("icon-jump-right");
-      sidebar.classList.remove("hidden");
-      btn.dataset.enabled = "true";
+      select.classList.add('empty');
     }
   }
+
+  let serviceTypeSelect = document.getElementById('service-type');
+  if (serviceTypeSelect) {
+    annotateSelectElement(serviceTypeSelect);
+    serviceTypeSelect.addEventListener('change', () => {
+      annotateSelectElement(event.target);
+    });
+  }
+
+  let url = new URL(location.toString());
+
+  window.addEventListener('pageshow', () => {
+    // Once we disable the empty fields, they'll stay disabled if the user
+    // navigates backward to the page via the bfcache… unless we listen for
+    // `pageshow` and un-disable them.
+    for (let control of document.querySelectorAll('input, select')) {
+      control.disabled = false;
+      let filled = false;
+      if (control.type === 'radio' || control.type === 'checkbox') {
+        if (control.value === url.searchParams.get(control.name)) {
+          control.checked = true;
+          filled = true;
+        }
+      } else if (url.searchParams.has(control.name)) {
+        control.value = url.searchParams.get(control.name);
+        filled = true;
+      }
+      if (filled && control.name !== 'q') {
+        let details = document.querySelector('.search-area__advanced-search');
+        if (details) {
+          details.open = true;
+        }
+      }
+    }
+  });
 }
 
-window.onload = () => {
+document.addEventListener('DOMContentLoaded', () => {
   AccountActions.setup();
   ThemeSwitcher.setup();
   CopyToClipboard.setup();
-
-  if (document.getElementById("advanced-search-sidebar")) {
-    const advancedSearch = new AdvancedSearch();
-    advancedSearch.setup();
-  }
-};
+});

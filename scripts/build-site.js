@@ -18,7 +18,8 @@ const data = {
 };
 
 (async () => {
-  const minify = await import("minify").then(minify => minify.minify); // ESM export only
+  let minify;
+  await import("minify").then(m => minify = m.minify); // ESM export only
   // Generate Output
   data.js.output = await minify(data.js.source_loc);
   const lessRender = await less.render(fs.readFileSync(data.less.source_loc, { encoding: "utf-8"}));
