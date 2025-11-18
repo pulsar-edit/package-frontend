@@ -3,20 +3,18 @@
   h1, h2, h3, h4, h5, h6 {
     &:has(.anchor) {
       position: relative;
-      margin-left: -2rem;
+      text-indent: -2rem;
     }
 
+    // Make the "link" icon hidden…
     .anchor {
       display: inline-block;
       width: 2rem;
       visibility: hidden;
-      // position: absolute;
-      // left: 0;
-      // top: 0;
-      // top: 50%;
-      // transform: translateY(-100%);
+      text-indent: 0;
     }
 
+    // …until the user hover over it.
     &:hover {
       .anchor {
         visibility: visible;
