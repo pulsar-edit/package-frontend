@@ -27,9 +27,9 @@
         </li>
       </ul>
       <div>
-        <select name="direction" id="direction">
-          <option value="provided">ascending</option>
-          <option value="consumed">descending</option>
+        <select name="direction" id="direction" data-skip-expand>
+          <option value="desc">descending</option>
+          <option value="asc">ascending</option>
         </select>
       </div>
     </div>
@@ -53,7 +53,7 @@
     <div class="as__section-content">
       <div class="as__section-subcontent">
         <label for="service-type">Find a…</label>
-        <select name="serviceType" id="service-type">
+        <select name="serviceType" id="service-type" data-skip-expand>
           <option value="" disabled></option>
           <option value="provided">provider</option>
           <option value="consumed">consumer</option>
@@ -62,7 +62,7 @@
         <div>
           <input
             type="text"
-            name="serviceName"
+            name="service"
             id="service-name"
             placeholder="e.g., autocomplete.provider">
         </div>

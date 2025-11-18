@@ -234,7 +234,12 @@ const AccountActions = {
         control.value = url.searchParams.get(control.name);
         filled = true;
       }
-      if (filled && control.name !== 'q') {
+      // Some form fields have `data-skip-expand` to signify that the presence
+      // of the associated param in the current URL _should not_ automatically
+      // trigger the expansion of the `details` element. This is used for
+      // `select` elements so we don't have to have an empty `option` inside of
+      // them.
+      if (filled && control.name !== 'q' && !('skipExpand' in control.dataset)) {
         let details = document.querySelector('.search-area__advanced-search');
         if (details) {
           details.open = true;
