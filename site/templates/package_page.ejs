@@ -137,7 +137,7 @@
               <% let badgeDescription = helpers.badgeDescription(badge.title); %>
               <% if (badgeDescription || badge.text) { %>
                 <p class="badges__item-description">
-                  <%= badgeDescription || badge.text %>
+                  <%= badge.text || badgeDescription %>
                 </p>
               <% } %>
             </li>
