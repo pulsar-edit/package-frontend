@@ -6,7 +6,13 @@
     <div class="as__section-content">
       <ul class="as__list">
         <li>
-          <input type="radio" name="sort" id="sort-downloads" value="downloads">
+          <%#
+            `data-skip-expand` is on this radio button because it's the default
+            value. Unless other values in advanced search are also present, we
+            don't want the presence of `sort=downloads` in the URL to trigger
+            the expansion of this advanced search area.
+          %>
+          <input type="radio" name="sort" id="sort-downloads" value="downloads" data-skip-expand checked>
           <label for="sort-downloads">Downloads</label>
         </li>
         <li>
@@ -28,7 +34,7 @@
       </ul>
       <div>
         <select name="direction" id="direction" data-skip-expand>
-          <option value="desc">descending</option>
+          <option value="desc" checked>descending</option>
           <option value="asc">ascending</option>
         </select>
       </div>
@@ -54,7 +60,7 @@
       <div class="as__section-subcontent">
         <label for="service-type">Find a…</label>
         <select name="serviceType" id="service-type" data-skip-expand>
-          <option value="" disabled></option>
+          <option value=""></option>
           <option value="provided">provider</option>
           <option value="consumed">consumer</option>
         </select>
