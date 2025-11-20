@@ -2,16 +2,8 @@
 <body class="layout--home">
   <%- include("page_header") %>
   <div class="content">
-    <%- include("advanced_search_sidebar") %>
     <main class="container">
-      <%- include("search_bar") %>
-      <button
-        class="icon icon-jump-right"
-        title="Expand Advanced Search"
-        aria-label="Expand Advanced Search"
-        id="advanced-search-control"
-        data-enabled="false"
-      ></button>
+      <%- include("search_bar", { advanced_search: true }) %>
       <%- include("pagination") %>
       <%- include("package_grid", { packages: packages }) %>
       <%- include("pagination") %>

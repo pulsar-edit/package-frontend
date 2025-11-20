@@ -126,6 +126,7 @@ app.get("/packages/search", async (req, res) => {
     let obj = await utils.prepareForListing(api.body);
     timecop.end("transcribe");
     res.append("Server-Timing", timecop.toHeader());
+    let title = req.query.q ? `${req.query.q} - Pulsar Package Search` : `Pulsar Package Search`;
     res.render(
       "package_list",
       {
@@ -135,7 +136,7 @@ app.get("/packages/search", async (req, res) => {
         search: req.query.q,
         pagination,
         page: utils.getOpenGraphData({
-          name: `${req.query.q} - Pulsar Package Search`,
+          name: title,
           og_url: `https://packages.pulsar-edit.dev/packages/search?q=${req.query.q}`
         })
       }
@@ -249,5 +250,74 @@ app.use(async (req, res) => {
     status_to_display: 404
   });
 });
+
+const BADGE_META = {
+  "Made for Pulsar!": {
+    description: "This package was written specifically for Pulsar and did not exist in the Atom package repository."
+  },
+  "Updated for Pulsar!": {
+    description: "This package existed in the Atom package repository, but has seen at least one update published to the Pulsar Package Repository."
+  },
+  "Archived": {
+    description: "This package has been archived on GitHub. The source code is still available, but this package is definitely no longer being maintained. Despite this, the package may still work if installed."
+  }
+};
+
+let formatter = new Intl.NumberFormat(undefined, {});
+
+globalThis.helpers = {
+  truncate (text, maxLength, delimiter = '…') {
+    if (!text) return '';
+    if (text.length <= maxLength) return text;
+    return `${text.substring(0, maxLength - delimiter.length)}${delimiter}`;
+  },
+
+  badgeDescription (title) {
+    return BADGE_META[title]?.description ?? '';
+  },
+
+  hasServices (pack, type = 'both') {
+    let providedServicesCount = Object.keys(pack.providedServices ?? {}).length;
+    let consumedServicesCount = Object.keys(pack.consumedServices ?? {}).length;
+    switch (type) {
+      case 'provided':
+        return providedServicesCount > 0;
+      case 'consumed':
+        return consumedServicesCount > 0;
+      default:
+        return (providedServicesCount + consumedServicesCount) > 0;
+    }
+  },
+
+  hasDependencies (pack) {
+    return Object.keys(pack.dependencies).length > 0;
+  },
+
+  hasKeywords (pack) {
+    return Object.keys(pack.keywords).length > 0;
+  },
+
+  formatNumber (number) {
+    return formatter.format(number);
+  },
+
+  classesForBadge(badge) {
+    switch (badge.type) {
+      case 'warn':
+        return 'icon icon-alert';
+      case 'success':
+        return 'icon icon-verified';
+      case 'info':
+        return 'icon icon-info';
+      default:
+        return '';
+    }
+  },
+
+  repoDescription (url) {
+    if (url.includes('github')) return 'GitHub';
+    return 'Repo';
+  },
+};
 
 module.exports = app;

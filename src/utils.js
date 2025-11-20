@@ -15,7 +15,7 @@ let md = new MarkdownIt({
 }).use(require("markdown-it-task-checkbox"), {
   disabled: true,
   divWrap: false
-});
+}).use(require("markdown-it-github-alerts"));
 
 const reg = require("./reg.js");
 
