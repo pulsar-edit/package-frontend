@@ -21,13 +21,14 @@ const reg = require("./reg.js");
 
 // Collection of utility functions for the frontend
 
-async function displayError(req, res, details) {
+function displayError(req, res, details) {
   console.error(details);
-  if (typeof details?.status_to_display === "number") {
-    res.status(details.status_to_display).render("error", details);
-  } else {
-    res.status(500).render("error", details);
-  }
+  const status = details.status ?? 500;
+  const msg = modifyErrorText(details) ?? details;
+  res.status(status).render("error", {
+    page: { name: "This page encountered an error!", include_og: false },
+    error: msg
+  });
 }
 
 let currentPackage = null;
@@ -143,11 +144,10 @@ function modifyErrorText(err) {
   if (typeof err === "object") {
     if (typeof err.status === "number") {
       // This is likely an error thrown from `superagent`
-      let text = `'${err.status}' Received from '${err?.response?.req?.host}${err?.response?.req?.path}'\n\t\t ${err.toString()}`;
-      return text;
+      return `'${err.status}' Received from '${err?.response?.req?.host}${err?.response?.req?.path}'\n\t\t ${err.toString()}`;
     } else {
       // TODO Additional possibilities added here
-      return err;
+      return err.toString();
     }
   } else {
     // We likely already have an error message string
@@ -453,7 +453,8 @@ function getOpenGraphData(overrides = {}) {
     og_url: overrides.og_url ?? "https://packages.pulsar-edit.dev/",
     og_description: overrides.og_description ?? "The Pulsar Package Registry",
     og_image: overrides.og_image ?? "https://web.pulsar-edit.dev/public/pulsar_name.svg",
-    og_image_type: overrides.og_image_type ?? "image/svg+xml"
+    og_image_type: overrides.og_image_type ?? "image/svg+xml",
+    include_og: true
   };
 
   if (overrides.og_image_width) {
