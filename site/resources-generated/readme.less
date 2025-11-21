@@ -1,0 +1,120 @@
+
+.readme {
+  h1, h2, h3, h4, h5, h6 {
+    &:has(.anchor) {
+      position: relative;
+      text-indent: -2rem;
+    }
+
+    // Make the "link" icon hidden…
+    .anchor {
+      display: inline-block;
+      width: 2rem;
+      visibility: hidden;
+      text-indent: 0;
+    }
+
+    // …until the user hover over it.
+    &:hover {
+      .anchor {
+        visibility: visible;
+      }
+    }
+  }
+}
+
+// Style GitHub alerts (https://github.com/orgs/community/discussions/16925).
+.markdown-alert {
+  position: relative;
+  overflow: clip;
+  margin: 1rem 3rem 2rem 0;
+  padding: 0rem 1rem 0.25rem;
+  border-radius: 0.8rem;
+  border-left: 0.45rem solid var(--alert-border);
+  background-color: var(--alert-bg);
+  color: var(--alert-color);
+
+  & > :last-child {
+    margin-bottom: 0.5rem !important;
+  }
+
+
+  .markdown-alert-title {
+    margin: 0rem -1rem 0.25rem;
+    padding-top: 0.75rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+    background-color: var(--alert-bg-title);
+    color: var(--alert-color-title);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  &-note {
+    border-color: var(--alert-border-note, var(--alert-border));
+    background-color: var(--alert-bg-note, var(--alert-bg));
+    color: var(--alert-color-note, var(--alert-color));
+
+    .markdown-alert-title {
+      background-color: var(--alert-bg-title-note, var(--alert-bg-title));
+      color: var(--alert-color-title-note, var(--alert-color-title));
+    }
+  }
+
+  &-tip {
+    border-color: var(--alert-border-tip, var(--alert-border));
+    background-color: var(--alert-bg-tip, var(--alert-bg));
+    color: var(--alert-color-tip, var(--alert-color));
+
+    .markdown-alert-title {
+      background-color: var(--alert-bg-title-tip, var(--alert-bg-title));
+      color: var(--alert-color-title-tip, var(--alert-color-title));
+    }
+  }
+
+  &-warning {
+    border-color: var(--alert-border-warning, var(--alert-border));
+    background-color: var(--alert-bg-warning, var(--alert-bg));
+    color: var(--alert-color-warning, var(--alert-color));
+
+    .markdown-alert-title {
+      background-color: var(--alert-bg-title-warning, var(--alert-bg-title));
+      color: var(--alert-color-title-warning, var(--alert-color-title));
+    }
+  }
+
+  &-info {
+    border-color: var(--alert-border-info, var(--alert-border));
+    background-color: var(--alert-bg-info, var(--alert-bg));
+    color: var(--alert-color-info, var(--alert-color));
+
+    .markdown-alert-title {
+      background-color: var(--alert-bg-title-info, var(--alert-bg-title));
+      color: var(--alert-color-title-info, var(--alert-color-title));
+    }
+  }
+
+  &-caution {
+    border-color: var(--alert-border-danger, var(--alert-border));
+    background-color: var(--alert-bg-danger, var(--alert-bg));
+    color: var(--alert-color-danger, var(--alert-color));
+
+    .markdown-alert-title {
+      background-color: var(--alert-bg-title-danger, var(--alert-bg-title));
+      color: var(--alert-color-title-danger, var(--alert-color-title));
+    }
+  }
+}
+
+// Ensure proper alignment and spacing between the icon and the title.
+.markdown-alert-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  svg {
+    display: inline-block;
+    margin-right: 0.35rem;
+  }
+}

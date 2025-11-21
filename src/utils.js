@@ -15,7 +15,7 @@ let md = new MarkdownIt({
 }).use(require("markdown-it-task-checkbox"), {
   disabled: true,
   divWrap: false
-});
+}).use(require("markdown-it-github-alerts"));
 
 const reg = require("./reg.js");
 
@@ -248,8 +248,25 @@ function prepareForDetail(obj) {
     pack.install = `atom://settings-view/show-package?package=${pack.name}`;
     pack.is_bundled = obj.is_bundled ?? false;
 
-    pack.providedServices = obj.metadata.providedServices ?? null;
-    pack.consumedServices = obj.metadata.consumedServices ?? null;
+    const validateServices = (services = {}) => {
+      const cleanService = {};
+      for (let name in services) {
+        let service = services[name];
+        if (!service.versions || typeof service.versions !== "object") {
+          // Malformed object. Pulsar won't understand it, so we shouldn't treat
+          // it as valid.
+          // (Example: https://github.com/ayame113/atom-ide-deno/blob/main/package.json#L66-L72)
+          continue;
+        }
+        cleanService[name] = { versions: service.versions };
+      }
+      return cleanService;
+    };
+
+    pack.providedServices = validateServices(obj.metadata.providedServices);
+    pack.consumedServices = validateServices(obj.metadata.consumedServices);
+
+    pack.dependencies = obj.metadata.dependencies ?? {};
 
     // Since filters are rendered at compile time, they won't work the way I'd
     // hoped to display Markdown on the page — by using the `markdown-it`
@@ -270,10 +287,10 @@ function prepareForDetail(obj) {
 
     // Add Sharing data to it for easy access to the package_listing
     pack.share = {
-      pageLink: `https://web.pulsar-edit.dev/packages/${pack.name}`,
+      pageLink: `https://packages.pulsar-edit.dev/packages/${pack.name}`,
       mdLink: {
-        default: `[![${pack.name}](https://image.pulsar-edit.dev/packages/${pack.name})](https://web.pulsar-edit.dev/packages/${pack.name})`,
-        iconic: `[![${pack.name}](https://image.pulsar-edit.dev/packages/${pack.name}?image_kind=iconic)](https://web.pulsar-edit.dev/packages/${pack.name})`
+        default: `[![${pack.name}](https://image.pulsar-edit.dev/packages/${pack.name})](https://packages.pulsar-edit.dev/packages/${pack.name})`,
+        iconic: `[![${pack.name}](https://image.pulsar-edit.dev/packages/${pack.name}?image_kind=iconic)](https://packages.pulsar-edit.dev/packages/${pack.name})`
       }
     };
 
@@ -430,6 +447,25 @@ function getPagination(req, api) {
   }
 }
 
+function getOpenGraphData(overrides = {}) {
+  const og = {
+    name: overrides.name ?? "Pulsar Package Explorer",
+    og_url: overrides.og_url ?? "https://packages.pulsar-edit.dev/",
+    og_description: overrides.og_description ?? "The Pulsar Package Registry",
+    og_image: overrides.og_image ?? "https://web.pulsar-edit.dev/public/pulsar_name.svg",
+    og_image_type: overrides.og_image_type ?? "image/svg+xml"
+  };
+
+  if (overrides.og_image_width) {
+    og.og_image_width = overrides.og_image_width;
+  }
+  if (overrides.og_image_height) {
+    og.og_image_height = overrides.og_image_height;
+  }
+
+  return og;
+}
+
 class Timecop {
   constructor() {
     this.timetable = {};
@@ -448,6 +484,20 @@ class Timecop {
       this.timetable[service].end -
       this.timetable[service].start;
   }
+
+  toHeader() {
+    let str = "";
+
+    for (const service in this.timetable) {
+      if (str.length > 0) {
+        str = str + ", ";
+      }
+
+      str = str + `${service};dur=${Number(this.timetable[service].duration).toFixed(2)}`;
+    }
+
+    return str;
+  }
 }
 
 addCustomMarkdownHandling();
@@ -458,5 +508,6 @@ module.exports = {
   prepareForDetail,
   getPagination,
   Timecop,
-  modifyErrorText
+  modifyErrorText,
+  getOpenGraphData,
 };

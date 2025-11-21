@@ -1,0 +1,51 @@
+<div class="blocks">
+  <% for (const pack of packages) { %>
+    <section class="block block--package">
+      <header class="block__header">
+        <a href="/packages/<%=pack.name%>"><%= pack.name %></a>
+
+        <% if ((pack.badges ?? []).length > 0) { %>
+          <ul class="block__badge-list">
+            <% for (let badge of pack.badges) { %>
+              <%
+                let badgeIconClasses = helpers.classesForBadge(badge);
+                if (!badgeIconClasses) continue;
+                let badgeDescription = badge.text ?? helpers.badgeDescription(badge.title);
+                if (badgeDescription) {
+                  badgeDescription = `: ${badgeDescription}`;
+                }
+              %>
+              <li class="block__badge" title="<%= badge.title %><%= badgeDescription %>">
+                <span class="block__badge-span <%= badgeIconClasses %>"></span>
+              </li>
+            <% } %>
+          </ul>
+          <div class="block__badge"></div>
+        <% } %>
+      </header>
+      <div class="block__summary">
+        <%= pack.description %>
+      </div>
+      <div class="block__details">
+        <div class="block__meta">
+          <span class="block__meta-item block__meta-item--author icon icon-person" title="<%= pack.author %>">
+            <%= helpers.truncate(pack.author, 20) %>
+          </span>
+          <span class="block__meta-item block__meta-item--downloads icon icon-cloud-download">
+            <%= pack.downloads %>
+          </span>
+          <span class="block__meta-item block__meta-item--stars icon icon-star">
+            <%= pack.stars %>
+          </span>
+        </div>
+        <div class="block__buttons">
+          <a href="<%=pack.install%>">
+            <button class="block__details-install icon icon-package">
+              Install
+            </button>
+          </a>
+        </div>
+      </div>
+    </section>
+  <% } %>
+</div>

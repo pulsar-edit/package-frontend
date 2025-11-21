@@ -1,0 +1,139 @@
+.search-area {
+  // max-width: 60vw;
+  // margin: 0 auto;
+  // display: flex;
+  &__tagline {
+    text-align: center;
+  }
+
+  &__advanced-search {
+    margin-top: 1rem;
+  }
+}
+
+.search-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  &__input {
+    width: 66.6%;
+    max-width: 48rem;
+    padding-left: 0;
+    margin-bottom: 0;
+  }
+}
+
+search {
+  max-width: 60vw;
+  margin: 0 auto;
+}
+
+option[disabled] {
+  color: #999;
+}
+
+form#search {
+  max-width: 48rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  // Vertically align the button text with the button icon.
+  button[type="submit"] {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    line-height: 38px;
+
+    i::before {
+      line-height: 38px !important;
+    }
+  }
+}
+
+.as {
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+
+  &__header {
+    margin: 0 0 1.5rem;
+  }
+
+  &__section {
+    margin: 0 0 1.5rem;
+  }
+
+  &__section-header {
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+  }
+
+  &__section-content {
+    padding-left: 1rem;
+    border-left: 0.25rem solid var(--thematic-break-color);
+  }
+
+  &__section-subcontent {
+    display: grid;
+    grid: auto-flow / 1fr;
+  }
+
+  aside {
+    font-size: 12px;
+    margin: 0.25rem 0;
+  }
+
+  label {
+    font-weight: 500;
+    // Add some padding to labels so that they appear visually aligned with
+    // their input/select fields.
+    padding: 6px 0;
+  }
+
+  &__list {
+    margin: 0 !important;
+    list-style-type: none;
+
+    li {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.5rem;
+
+      input, label {
+        margin: 0 !important;
+      }
+    }
+  }
+}
+
+
+@media (min-width: @bp-larger-than-tablet) {
+  .as {
+    &__list {
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+    }
+
+    &__section-subcontent {
+      grid: auto-flow / 150px 1fr;
+      gap: 1rem;
+
+      label, input, select {
+        margin: 0;
+      }
+    }
+  }
+}
+
+select.empty {
+  color: inherit;
+  opacity: 0.5;
+}

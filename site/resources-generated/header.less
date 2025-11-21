@@ -1,0 +1,71 @@
+.header {
+  &__details {
+    padding-bottom: 1.5rem;
+    border-bottom: .5rem solid var(--thematic-break-color);
+    margin-bottom: 3rem;
+
+    & > * {
+      margin-right: .5em;
+    }
+  }
+
+  &__details-list-item {
+    list-style-type: none;
+    margin: 0;
+    padding: 0 0.5ch 0 0;
+
+    &:last-of-type {
+      padding-right: 0;
+    }
+  }
+
+  .icon:before {
+    text-align: center;
+  }
+}
+
+
+.page-header {
+
+  &__items {
+    // Patches the CSS from the docs site
+    width: auto;
+    flex: 1 1;
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    align-items: flex-start;
+  }
+}
+
+.github-button {
+  & > a {
+    display: block;
+    line-height: 0;
+    color: inherit;
+    width: var(--theme-switcher-height) !important;
+    height: var(--theme-switcher-height) !important;
+
+    svg {
+      width: var(--theme-switcher-height) !important;
+      height: var(--theme-switcher-height) !important;
+    }
+  }
+}
+
+.header.header--package-single {
+  --sidebar-width: 0px;
+  --content-gap: 0rem;
+  .top-level-element();
+  padding-left: calc(var(--content-margin) + var(--sidebar-width) + var(--content-gap));
+}
+
+@media (min-width: @bp-larger-than-tablet) {
+  .header.header--package-single {
+    --sidebar-width: 250px;
+    --content-gap: 2rem;
+  }
+}

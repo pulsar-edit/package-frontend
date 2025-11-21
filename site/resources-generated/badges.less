@@ -1,0 +1,65 @@
+.badges {
+  .badges__item.badges__item--success {
+    color: var(--alert-color-tip);
+    background-color: var(--alert-bg-tip);
+    border-color: var(--alert-border-tip);
+  }
+
+  .badges__item.badges__item--warn {
+    color: var(--alert-color-danger);
+    background-color: var(--alert-bg-danger);
+    border-color: var(--alert-border-danger);
+  }
+
+  .badges__item.badges__item--info {
+    .badges__item-title {
+      color: var(--alert-color-info);
+    }
+    background-color: var(--alert-bg-info);
+    border-color: var(--alert-border-info);
+  }
+
+  &__list {
+    margin: 0;
+    list-style: none;
+  }
+
+  .badges__item {
+    margin: 1rem 3rem 2rem 0;
+    padding: 0rem 1rem 0.25rem;
+    border-radius: 0.8rem;
+    border-left: 0.45rem solid var(--alert-border);
+    box-sizing: border-box;
+
+    .badges__item-title {
+      &.icon::before {
+        display: inline-block;
+      }
+    }
+
+    .badges__item-title:before {
+      padding-right: 5px;
+    }
+
+    .badges__item-text {
+
+    }
+
+    .badges__item-title {
+      margin: 0rem -1rem 0.25rem;
+      padding-top: 0.75rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+
+      color: var(--alert-color-title);
+      font-weight: 700;
+      text-transform: uppercase;
+      display: block;
+    }
+
+    .badges__item-description {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+}

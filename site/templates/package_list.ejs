@@ -1,0 +1,14 @@
+<%- include("header") %>
+<body class="layout--home">
+  <%- include("page_header") %>
+  <div class="content">
+    <main class="container">
+      <%- include("search_bar", { advanced_search: true }) %>
+      <%- include("pagination") %>
+      <%- include("package_grid", { packages: packages }) %>
+      <%- include("pagination") %>
+    </main>
+  </div>
+  <%- include("page_footer") %>
+</body>
+<%- include("footer") %>

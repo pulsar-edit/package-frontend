@@ -1,0 +1,40 @@
+@import "./site/resources-generated/variables.less";
+@import "./site/resources-generated/mixins.less";
+@import "./site/resources-generated/header.less";
+@import "./site/resources-generated/page_footer.less";
+@import "./site/resources-generated/blocks.less";
+@import "./site/resources-generated/button.less";
+@import "./site/resources-generated/sidebar.less";
+@import "./site/resources-generated/badges.less";
+@import "./site/resources-generated/search.less";
+@import "./site/resources-generated/auth.less";
+@import "./site/resources-generated/readme.less";
+
+body {
+  min-width: 480px;
+}
+
+label {
+  display: unset !important;
+}
+
+.content.content--package-page {
+  // At narrow breakpoints, the sidebar and main content area are shown one
+  // atop the other. But even though the sidebar comes first in the markup, we
+  // want it to come _after_ the main content on the page.
+  flex-direction: column-reverse;
+}
+
+main.container {
+  margin-bottom: 5rem !important;
+}
+
+@media (min-width: @bp-larger-than-tablet) {
+  .content.content--package-page {
+    flex-direction: row;
+  }
+
+  main.container {
+    margin-bottom: 10rem !important;
+  }
+}

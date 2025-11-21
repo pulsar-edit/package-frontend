@@ -1,0 +1,98 @@
+<section class="as">
+  <header class="as__header">All fields are <strong>optional</strong>.</header>
+
+  <section class="as__section">
+    <header class="as__section-header">Sort by</header>
+    <div class="as__section-content">
+      <ul class="as__list">
+        <li>
+          <%#
+            `data-skip-expand` is on this radio button because it's the default
+            value. Unless other values in advanced search are also present, we
+            don't want the presence of `sort=downloads` in the URL to trigger
+            the expansion of this advanced search area.
+          %>
+          <input type="radio" name="sort" id="sort-downloads" value="downloads" data-skip-expand checked>
+          <label for="sort-downloads">Downloads</label>
+        </li>
+        <li>
+          <input type="radio" name="sort" id="sort-created" value="created_at">
+          <label for="sort-created">Created</label>
+        </li>
+        <li>
+          <input type="radio" name="sort" id="sort-updated" value="updated_at">
+          <label for="sort-updated">Updated</label>
+        </li>
+        <li>
+          <input type="radio" name="sort" id="sort-stars" value="stars">
+          <label for="sort-stars">Stars</label>
+        </li>
+        <li>
+          <input type="radio" name="sort" id="sort-relevance" value="relevance">
+          <label for="sort-relevance">Relevance</label>
+        </li>
+      </ul>
+      <div>
+        <select name="direction" id="direction" data-skip-expand>
+          <option value="desc" checked>descending</option>
+          <option value="asc">ascending</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <section class="as__section">
+    <header class="as__section-header">Grammar</header>
+    <div class="as__section-content">
+      <div class="as__section-subcontent">
+        <label for="file-extension">File extension…</label>
+        <div>
+          <input type="text" name="fileExtension" id="file-extension">
+          <aside>Find all packages that provide syntax highlighting for files of the given extension.</aside>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="as__section">
+    <header class="as__section-header">Service</header>
+    <div class="as__section-content">
+      <div class="as__section-subcontent">
+        <label for="service-type">Find a…</label>
+        <select name="serviceType" id="service-type" data-skip-expand>
+          <option value=""></option>
+          <option value="provided">provider</option>
+          <option value="consumed">consumer</option>
+        </select>
+        <label for="service-name">of a service called…</label>
+        <div>
+          <input
+            type="text"
+            name="service"
+            id="service-name"
+            placeholder="e.g., autocomplete.provider">
+        </div>
+        <label for="service-version">of version…</label>
+        <div>
+          <input
+            type="text"
+            name="serviceVersion"
+            id="service-version"
+            placeholder="e.g., 1.0.0">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="as__section">
+    <header class="as__section-header">
+      Author
+    </header>
+    <div class="as__section-content">
+      <div class="as__section-subcontent">
+        <label for="owner">Published by…</label>
+        <input type="text" name="owner" id="owner">
+      </div>
+    </div>
+  </section>
+</section>
