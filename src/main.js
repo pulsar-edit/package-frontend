@@ -16,6 +16,7 @@ app.use((req, res, next) => {
   // Setup redirect of all `web` requests to `packages`
   if (req.subdomains[0] === "web") {
     res.status(301).redirect(`https://packages.pulsar-edit.dev${req.originalUrl}`);
+    return;
   }
   req.start = Date.now();
   res.append("Server", `Pulsar Package Frontend/${server_version} (${process.platform})`);
