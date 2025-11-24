@@ -1,0 +1,4 @@
+bindings:
+  - members:
+    - serviceAccount:frontend-sr-bot@pulsar-357404.iam.gserviceaccount.com
+    role: roles/run.invoker

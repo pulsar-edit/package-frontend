@@ -1,0 +1,23 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: status-run
+spec:
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/execution-environment: gen2
+    spec:
+      serviceAccountName:
+      containers:
+      - image: "us-west2-docker.pkg.dev/pulsar-357404/package-frontend/status-run:1.0.0"
+        volumeMounts:
+        - name: GCS
+          mountPath: /usr/src/app/
+      volumes:
+      - name: GCS
+        csi:
+          driver: gcsfuse.run.googleapis.com
+          readOnly: False
+          volumeAttributes:
+            bucketName: "pulsar-system-status"

@@ -1,10 +1,8 @@
 const http = require("node:http");
 const https = require("node:https");
-const { Storage } = require("@google-cloud/storage");
+const fs = require("node:fs");
 
 const PORT = parseInt(process.env.PORT) || 8080;
-const GOOGLE_APPLICATION_CREDENTIALS = process.env.GOOGLE_APPLICATION_CREDENTIALS;
-const GCLOUD_STORAGE_BUCKET = process.env.GCLOUD_STORAGE_BUCKET;
 
 const server = http.createServer(async (req, res) => {
   const path = req.url.split("?"); // strip any query params
@@ -15,10 +13,9 @@ const server = http.createServer(async (req, res) => {
     const job = await run();
 
     // With our status check done, lets write it to GCP storage
-    const storage = new StorageHandler();
+    // Which is actually mounted on the volume as plain-ole local storage
     try {
-      storage.setup();
-      await storage.overwriteStatusFile(JSON.stringify(job));
+      fs.writeFileSync("./status.json", JSON.stringify(job), { encoding: "utf8" });
       res.writeHead(201, { "Content-Type": "application/json" });
       res.write(JSON.stringify({ message: "Successfully updated status file." }));
       res.end();
@@ -277,22 +274,4 @@ function request(options) {
 
     req.end();
   });
-}
-
-class StorageHandler {
-  constructor() {
-    this.gcs;
-    this.keyfile = GOOGLE_APPLICATION_CREDENTIALS;
-    this.bucketName = GCLOUD_STORAGE_BUCKET;
-  }
-
-  setup() {
-    this.gcs = new Storage({ keyFilename: this.keyfile });
-  }
-
-  async overwriteStatusFile(contents) {
-    await this.gcs.bucket(this.bucketName).file("status.json").save(contents);
-    return;
-  }
-
 }
