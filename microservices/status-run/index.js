@@ -1,6 +1,10 @@
 const http = require("node:http");
 const https = require("node:https");
-const port = parseInt(process.env.PORT) || 8080;
+const { Storage } = require("@google-cloud/storage");
+
+const PORT = parseInt(process.env.PORT) || 8080;
+const GOOGLE_APPLICATION_CREDENTIALS = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+const GCLOUD_STORAGE_BUCKET = process.env.GCLOUD_STORAGE_BUCKET;
 
 const server = http.createServer(async (req, res) => {
   const path = req.url.split("?"); // strip any query params
@@ -9,14 +13,21 @@ const server = http.createServer(async (req, res) => {
     console.log(`Status-Run triggered by '${req.headers["user-agent"]}'`);
 
     const job = await run();
-    console.log(job);
-    res.end();
-    if (!job.ok) {
-      // Failure
+
+    // With our status check done, lets write it to GCP storage
+    const storage = new StorageHandler();
+    try {
+      storage.setup();
+      await storage.overwriteStatusFile(JSON.stringify(job));
+      res.writeHead(201, { "Content-Type": "application/json" });
+      res.write(JSON.stringify({ message: "Successfully updated status file." }));
+      res.end();
+    } catch(err) {
+      console.error(err);
+      res.writeHead(500, { "Content-Type": "application/json" });
+      res.write(JSON.stringify({ message: "Failed to write new status file details", err: err.toString() }));
+      res.end();
     }
-
-    // Success
-
   } else {
     res.writeHead(404, { "Content-Type": "application/json" });
     res.write(JSON.stringify({ message: "Location Not Found" }));
@@ -24,8 +35,8 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(port, () => {
-  console.log(`Status-Run Microservice exposed on port: ${port}`);
+server.listen(PORT, () => {
+  console.log(`Status-Run Microservice exposed on port: ${PORT}`);
 });
 
 async function run() {
@@ -58,12 +69,6 @@ async function run() {
       condition: "unknown"
     },
     image: { // https://image.pulsar-edit.dev
-      ok: false,
-      updated: Date.now(),
-      details: null,
-      condition: "unknown"
-    },
-    db: { // Package Registry Database
       ok: false,
       updated: Date.now(),
       details: null,
@@ -213,8 +218,6 @@ async function run() {
     status.image.details = err.toString();
   }
 
-  // === Database Check
-
   // === Download Check
   try {
     const download = await request({
@@ -274,4 +277,22 @@ function request(options) {
 
     req.end();
   });
+}
+
+class StorageHandler {
+  constructor() {
+    this.gcs;
+    this.keyfile = GOOGLE_APPLICATION_CREDENTIALS;
+    this.bucketName = GCLOUD_STORAGE_BUCKET;
+  }
+
+  setup() {
+    this.gcs = new Storage({ keyFilename: this.keyfile });
+  }
+
+  async overwriteStatusFile(contents) {
+    await this.gcs.bucket(this.bucketName).file("status.json").save(contents);
+    return;
+  }
+
 }

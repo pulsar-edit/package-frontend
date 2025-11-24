@@ -9,5 +9,8 @@
   },
   "keywords": [],
   "author": "confused-Techie",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/storage": "^7.17.3"
+  }
 }

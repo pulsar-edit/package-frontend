@@ -79,7 +79,6 @@ class Status {
       blog: document.getElementById("blog-status"),
       api: document.getElementById("api-status"),
       image: document.getElementById("image-status"),
-      db: document.getElementById("db-status"),
       download: document.getElementById("download-status")
     };
     this.status = {};
@@ -126,12 +125,6 @@ class Status {
             condition: "unknown"
           },
           image: {
-            ok: false,
-            updated: Date.now(),
-            details: err.toString(),
-            condition: "unknown"
-          },
-          db: {
             ok: false,
             updated: Date.now(),
             details: err.toString(),
