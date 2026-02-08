@@ -4,6 +4,7 @@
     <title><%=page.name%></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
+    <% if (page.include_og) { %>
     <meta property="og:title" content="<%=page.name%>">
     <meta property="og:url" content="<%=page.og_url%>">
     <meta property="og:site_name" content="Pulsar Package Registry">
@@ -20,6 +21,7 @@
     <meta name="twitter:title" content="<%=page.name%>">
     <meta name="twitter:description" content="<%=page.og_description%>">
     <meta name="description" content="<%=page.og_description%>">
+    <% } %>
     <meta name="application-name" content="Pulsar Package Explorer">
     <link rel="alternate" href="https://packages.pulsar-edit.dev/" hreflang="x-default">
     <link rel="alternate" href="https://packages.pulsar-edit.dev/" hreflang="en">

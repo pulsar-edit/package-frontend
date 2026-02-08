@@ -6,4 +6,4 @@ User-agent: AdsBot-Google-Mobile-Apps
 Allow: /
 User-agent: FriendlyCrawler
 Disallow: /
-Sitemap: https://web.pulsar-edit.dev/sitemap.xml
+Sitemap: https://packages.pulsar-edit.dev/sitemap.xml

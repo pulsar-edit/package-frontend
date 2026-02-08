@@ -7,8 +7,6 @@ const server_version = require("../package.json").version;
 const { apiurl } = require("./config.js").getConfig();
 const cache = require("./cache.js");
 
-const DEV = process.env.PULSAR_STATUS === "dev" ? true : false;
-
 app.set("views", "./site/templates");
 app.set("view engine", "ejs");
 
@@ -16,6 +14,7 @@ app.use((req, res, next) => {
   // Setup redirect of all `web` requests to `packages`
   if (req.subdomains[0] === "web") {
     res.status(301).redirect(`https://packages.pulsar-edit.dev${req.originalUrl}`);
+    return;
   }
   req.start = Date.now();
   res.append("Server", `Pulsar Package Frontend/${server_version} (${process.platform})`);
@@ -36,7 +35,6 @@ app.get("/", async (req, res) => {
     // We know our cache is good and lets serve the data
     res.append("Server-Timing", timecop.toHeader());
     res.render("home", {
-      dev: DEV,
       featured: cached,
       page: utils.getOpenGraphData()
     });
@@ -51,7 +49,7 @@ app.get("/", async (req, res) => {
       let obj = await utils.prepareForListing(api.body);
       timecop.end("transcribe");
       res.append("Server-Timing", timecop.toHeader());
-      res.render("home", { dev: DEV, featured: obj, page: utils.getOpenGraphData() });
+      res.render("home", { featured: obj, page: utils.getOpenGraphData() });
       // then set featured cache
       cache.setFeatured(obj);
     } catch(err) {
@@ -65,8 +63,7 @@ app.get("/packages", async (req, res) => {
   let timecop = new utils.Timecop();
   timecop.start("api");
   try {
-    let api = await superagent.get(`${apiurl}/api/packages`)
-      .query(req.query);
+    let api = await superagent.get(`${apiurl}/api/packages`).query(req.query);
     const pagination = utils.getPagination(req, api);
     timecop.end("api");
     timecop.start("transcribe");
@@ -76,7 +73,6 @@ app.get("/packages", async (req, res) => {
     res.render(
       "package_list",
       {
-        dev: DEV,
         packages: obj,
         pagination,
         query: req.query,
@@ -84,11 +80,7 @@ app.get("/packages", async (req, res) => {
       }
     );
   } catch(err) {
-    utils.displayError(req, res, {
-      error: utils.modifyErrorText(err),
-      dev: DEV,
-      page: utils.getOpenGraphData({ og_url: "https://packages.pulsar-edit.dev/packages" })
-    });
+    utils.displayError(req, res, err);
   }
 });
 
@@ -104,7 +96,6 @@ app.get("/packages/featured", async (req, res) => {
     timecop.end("transcribe");
     res.append("Server-Timing", timecop.toHeader());
     res.render("package_list", {
-      dev: DEV,
       packages: obj,
       page: utils.getOpenGraphData({ name: "Featured Packages", og_url: "https://web.pulsar-edit.dev/packages/featured" })
     });
@@ -130,7 +121,6 @@ app.get("/packages/search", async (req, res) => {
     res.render(
       "package_list",
       {
-        dev: DEV,
         packages: obj,
         query: req.query,
         search: req.query.q,
@@ -142,7 +132,6 @@ app.get("/packages/search", async (req, res) => {
       }
     );
   } catch(err) {
-    console.log(err);
     utils.displayError(req, res, err);
   }
 });
@@ -164,7 +153,6 @@ app.get("/packages/:packageName", async (req, res) => {
     timecop.end("transcribe");
     res.append("Server-Timing", timecop.toHeader());
     res.render("package_page", {
-      dev: DEV,
       pack: obj,
       page: utils.getOpenGraphData({
         name: obj.name,
@@ -177,43 +165,15 @@ app.get("/packages/:packageName", async (req, res) => {
       })
     });
   } catch(err) {
-    let status_to_display = false; // Since the status is ignored if not a number,
-    // we initialize as boolean to no-op in the case we don't find a proper status
-
-    const validStatusIs = (val, key) => {
-      if (typeof val?.response?.[key] === "boolean" && val.response[key]) {
-        return true;
-      } else {
-        return false;
-      }
-    };
-
-    if (validStatusIs(err, "notFound")) {
-      status_to_display = 404;
-    } else if (validStatusIs(err, "unauthorized")) {
-      status_to_display = 401;
-    } else if (validStatusIs(err, "forbidden")) {
-      status_to_display = 403;
-    } else if (validStatusIs(err, "badRequest")) {
-      status_to_display = 400;
-    }
-
-    utils.displayError(req, res, {
-      error: utils.modifyErrorText(err),
-      dev: DEV,
-      page: utils.getOpenGraphData({ og_url: "https://packages.pulsar-edit.dev/packages" }),
-      status_to_display: status_to_display
-    });
+    utils.displayError(req, res, err);
   }
 });
 
 app.get("/users", async (req, res) => {
   // The Signed in User Details Page
-
-  // This is the signed in user page.
   // Since we will let the JavaScript on the page handle any API call needed here lets just
   // render a page and not do anything
-  res.render("user", { dev: DEV, page: utils.getOpenGraphData({
+  res.render("user", { page: utils.getOpenGraphData({
     name: "Pulsar User Account",
     og_url: "https://packages.pulsar-edit.dev/users"
   })});
@@ -223,7 +183,7 @@ app.get("/login", async (req, res) => {
   // The Login/Sign Up Page showing all sign in options
 
   // This is a very simple return with no api, so we will just render
-  res.render("login", { dev: DEV, page: utils.getOpenGraphData({
+  res.render("login", { page: utils.getOpenGraphData({
     name: "Pulsar Sign In/Up",
     og_url: "https://packages.pulsar-edit.dev/login",
     og_description: "The Pulsar User Sign In Page"
@@ -234,21 +194,24 @@ app.get("/logout", async (req, res) => {
   // The Login/Sign Up Page showing all sign in options
 
   // This is a very simple return with no api, so we will just render
-  res.render("logout", { dev: DEV, page: utils.getOpenGraphData({
+  res.render("logout", { page: utils.getOpenGraphData({
     name: "Pulsar Logout",
     og_url: "https://packages.pulsar-edit.dev/logout",
     og_description: "The Pulsar Log Out Page"
   })});
 });
 
-app.use(async (req, res) => {
+app.use((req, res) => {
   // 404 here, keep at last position
-  await utils.displayError(req, res, {
-    error: `The page '${req.url}' cannot be found.`,
-    dev: DEV,
-    page: utils.getOpenGraphData(),
-    status_to_display: 404
+  utils.displayError(req, res, {
+    status: 404,
+    msg: `The page '${req.url}' cannot be found.`
   });
+});
+
+app.use((err, req, res, _next) => {
+  // Last call error handler, overriding ExpressJS's default
+  utils.displayError(req, res, err);
 });
 
 const BADGE_META = {
