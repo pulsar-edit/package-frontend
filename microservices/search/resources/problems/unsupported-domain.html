@@ -9,7 +9,6 @@
       {
         let theme = (window.matchMedia("(prefers-color-scheme: light)").matches) ? "light" : "dark";
         document.getElementById("meta-scheme").setAttribute("content", theme);
-        document.documentElement.dataset.themeSetting = theme;
         document.documentElement.dataset.theme = theme;
       }
     </script>
