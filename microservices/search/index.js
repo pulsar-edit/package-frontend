@@ -1,3 +1,4 @@
+const path = require("node:path");
 const express = require("express");
 const Search = require("./search.js");
 
@@ -18,7 +19,7 @@ app.post("/reindex/:domain", async (req, res) => {
   if (!domain) {
     // We don't support whatever domain was provided
     res.status(400).append("Content-Type", "application/problem+json").json({
-      type: "https://search.pulsar-edit.dev/problems/unsupported-domain",
+      type: `${apiurl}/problems/unsupported-domain`,
       status: 400,
       title: "The Domain provided is not supported."
     });
@@ -33,10 +34,9 @@ app.post("/reindex/:domain", async (req, res) => {
 
     if (err.toString() === "The data stream is undefined!") {
       res.status(500).append("Content-Type", "application/problem+json").json({
-        type: "about:blank",
+        type: `${apiurl}/problems/unknown-data-stream`,
         status: 500,
-        title: "The data stream location couldn't be identified.",
-        detail: err.toString()
+        title: "The data stream location couldn't be identified."
       });
     } else {
       res.status(500).append("Content-Type", "application/problem+json").json({
@@ -65,7 +65,7 @@ app.get("/search/:domain", async (req, res) => {
   if (!domain) {
     // We don't support whatever domain was provided
     res.status(400).append("Content-Type", "application/problem+json").json({
-      type: "https://search.pulsar-edit.dev/problems/unsupported-domain",
+      type: `${apiurl}/problems/unsupported-domain`,
       status: 400,
       title: "The Domain provided is not supported."
     });
@@ -97,8 +97,11 @@ app.get("/search/:domain", async (req, res) => {
 });
 
 app.get("/problems/unsupported-domain", async (req, res) => {
-  const path = require("node:path");
   res.sendFile(path.join(__dirname, "resources/problems/unsupported-domain.html"));
+});
+
+app.get("/problems/unknown-data-stream", async (req, res) => {
+  res.sendFile(path.join(__dirname, "resources/problems/unknown-data-stream.html"));
 });
 
 app.use(async (req, res) => {
