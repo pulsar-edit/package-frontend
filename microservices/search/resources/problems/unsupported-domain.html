@@ -1,7 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" data-theme="light">
   <head>
-    <title>Unsupported Domain</title>
+    <title>Problem | Unsupported Domain</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta id="meta-scheme" name="color-scheme" content="light">
+    <link rel="stylesheet" href="https://docs.pulsar-edit.dev/main.css">
+    <script type="text/javascript">
+      {
+        let theme = (window.matchMedia("(prefers-color-scheme: light)").matches) ? "light" : "dark";
+        document.getElementById("meta-scheme").setAttribute("content", theme);
+        document.documentElement.dataset.themeSetting = theme;
+        document.documentElement.dataset.theme = theme;
+      }
+    </script>
   </head>
   <body>
     <b>Type URI:</b> https://search.pulsar-edit.dev/problems/unsupported-domain
