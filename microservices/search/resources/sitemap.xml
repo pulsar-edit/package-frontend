@@ -1,0 +1,23 @@
+<urlset>
+  <url>
+    <loc>
+      https://search.pulsar-edit.dev/
+    </loc>
+    <lastmod>2026-02-09T00:00:00.000Z</lastmod>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>
+      https://search.pulsar-edit.dev/problems/unknown-data-stream
+    </loc>
+    <lastmod>2026-02-09T00:00:00.000Z</lastmod>
+    <changefreq>yearly</changefreq>
+  </url>
+  <url>
+    <loc>
+      https://search.pulsar-edit.dev/problems/unsupported-domain
+    </loc>
+    <lastmod>2026-02-09T00:00:00.000Z</lastmod>
+    <changefreq>yearly</changefreq>
+  </url>
+</urlset>

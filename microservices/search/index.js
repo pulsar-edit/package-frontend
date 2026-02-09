@@ -96,12 +96,24 @@ app.get("/search/:domain", async (req, res) => {
   res.status(200).json({ results: result });
 });
 
+app.get("/", async (req, res) => {
+  res.sendFile(path.join(__dirname, "resources/index.html"));
+});
+
 app.get("/problems/unsupported-domain", async (req, res) => {
   res.sendFile(path.join(__dirname, "resources/problems/unsupported-domain.html"));
 });
 
 app.get("/problems/unknown-data-stream", async (req, res) => {
   res.sendFile(path.join(__dirname, "resources/problems/unknown-data-stream.html"));
+});
+
+app.get("/robots.txt", async (req, res) => {
+  res.sendFile(path.join(__dirname, "resources/robots.txt"));
+});
+
+app.get("/sitemap.xml", async (req, res) => {
+  res.sendFile(path.join(__dirname, "resources/sitemap.xml"));
 });
 
 app.use(async (req, res) => {
