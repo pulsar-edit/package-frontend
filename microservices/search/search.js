@@ -9,6 +9,7 @@ class Search {
     this.isLoaded = false; // If the search index is currently loaded
     this.dirty = false; // If our working index is different from the one on disk
     this.devEnv = false; // If we are in a dev environment
+    this.devFileIndex = "./search-index.jsonl";
   }
 
   // Create a new index
@@ -17,7 +18,7 @@ class Search {
 
     let stream;
     if (this.devEnv) {
-      stream = fs.createReadStream("./search-index.jsonl");
+      stream = fs.createReadStream(this.devFileIndex);
     } else {
       const https = require("node:https");
       const assignStream = async () => {
