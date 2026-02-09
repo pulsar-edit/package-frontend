@@ -8,7 +8,7 @@ class Search {
     this.index; // The in-memory index from lunr
     this.isLoaded = false; // If the search index is currently loaded
     this.dirty = false; // If our working index is different from the one on disk
-    this.devEnv = true; // If we are in a dev environment
+    this.devEnv = false; // If we are in a dev environment
   }
 
   // Create a new index
@@ -16,7 +16,7 @@ class Search {
     const readline = require("node:readline");
 
     let stream;
-    if (this.devEnv && false) {
+    if (this.devEnv) {
       stream = fs.createReadStream("./search-index.jsonl");
     } else {
       const https = require("node:https");
