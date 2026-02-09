@@ -96,6 +96,11 @@ app.get("/search/:domain", async (req, res) => {
   res.status(200).json({ results: result });
 });
 
+app.get("/problems/unsupported-domain", async (req, res) => {
+  const path = require("node:path");
+  res.sendFile(path.join(__dirname, "resources/problems/unsupported-domain.html"));
+});
+
 app.use(async (req, res) => {
   // 404 error
   res.status(404).append("Content-Type", "application/problem+json").json({
