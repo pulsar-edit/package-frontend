@@ -1,6 +1,6 @@
 {
   "name": "search-microservice",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "description": "Microservice to search Pulsar resources.",
   "main": "index.js",
   "scripts": {

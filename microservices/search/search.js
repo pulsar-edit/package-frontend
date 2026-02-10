@@ -1,4 +1,5 @@
 const fs = require("node:fs");
+const path = require("node:path");
 const lunr = require("lunr");
 
 module.exports =
@@ -7,7 +8,6 @@ class Search {
     this.domain = domain; // The domain this search is for
     this.index; // The in-memory index from lunr
     this.isLoaded = false; // If the search index is currently loaded
-    this.dirty = false; // If our working index is different from the one on disk
     this.devEnv = false; // If we are in a dev environment
     this.devFileIndex = "./search-index.jsonl";
   }
@@ -63,8 +63,9 @@ class Search {
         }, this);
       });
 
+      // Save our changes to disk, and indicate we are ready to serve requests
       this.isLoaded = true;
-      this.dirty = true;
+      this.save();
     });
   }
 
@@ -75,16 +76,14 @@ class Search {
       return;
     }
     // Load index from disk
-    const file = fs.readFileSync(`./mnt/${this.domain}.index.json`, { encoding: "utf8" });
+    const file = fs.readFileSync(path.join(__dirname, `./mnt/${this.domain}.index.json`), { encoding: "utf8" });
     this.index = lunr.Index.load(JSON.parse(file));
   }
 
   // Save the search engine for this domain to disk
   save() {
-    if (this.dirty) {
-      // Only save when we have a different copy of the index in memory than on disk
-      fs.writeFileSync(`./mnt/${this.domain}.index.json`, JSON.stringify(this.index), { encoding: "utf8" });
-    }
+    console.log("Saving search index to disk");
+    fs.writeFileSync(path.join(__dirname, `./mnt/${this.domain}.index.json`), JSON.stringify(this.index), { encoding: "utf8" });
   }
 
   // Search the index

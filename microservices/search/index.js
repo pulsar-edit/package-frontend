@@ -30,6 +30,7 @@ app.post("/reindex/:domain", async (req, res) => {
   try {
     await idx.reindex();
   } catch(err) {
+    console.error("An error occurred when attempting to reindex the domain!");
     console.error(err);
 
     if (err.toString() === "The data stream is undefined!") {
@@ -52,9 +53,6 @@ app.post("/reindex/:domain", async (req, res) => {
   INDEXES[domain] = idx;
 
   res.status(201).send();
-
-  // After we have returned our response to the user, save our new index
-  INDEXES[domain].save();
 });
 
 app.get("/search/:domain", async (req, res) => {
@@ -139,3 +137,15 @@ app.use((err, req, res, _next) => {
 app.listen(port, () => {
   console.log(`Search Microservice exposed on port: ${port}`);
 });
+
+process.on("SIGTERM", async () => {
+  await exterminate();
+});
+
+process.on("SIGINT", async () => {
+  await exterminate();
+});
+
+async function exterminate() {
+  app.close();
+}
