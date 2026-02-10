@@ -75,7 +75,7 @@ class Search {
       return;
     }
     // Load index from disk
-    const file = fs.readFileSync(`./${this.domain}.index.json`, { encoding: "utf8" });
+    const file = fs.readFileSync(`./mnt/${this.domain}.index.json`, { encoding: "utf8" });
     this.index = lunr.Index.load(JSON.parse(file));
   }
 
@@ -83,7 +83,7 @@ class Search {
   save() {
     if (this.dirty) {
       // Only save when we have a different copy of the index in memory than on disk
-      fs.writeFileSync(`./${this.domain}.index.json`, JSON.stringify(this.index), { encoding: "utf8" });
+      fs.writeFileSync(`./mnt/${this.domain}.index.json`, JSON.stringify(this.index), { encoding: "utf8" });
     }
   }
 
