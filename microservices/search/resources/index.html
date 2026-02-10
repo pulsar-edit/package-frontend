@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <title>Pulsar Search</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta id="meta-scheme" name="color-scheme" content="light">
+    <link rel="stylesheet" href="https://docs.pulsar-edit.dev/main.css">
+    <script type="text/javascript">
+      {
+        let theme = (window.matchMedia("(prefers-color-scheme: light)").matches) ? "light" : "dark";
+        document.getElementById("meta-scheme").setAttribute("content", theme);
+        document.documentElement.dataset.theme = theme;
+      }
+    </script>
+  </head>
+  <body data-layout="summary">
+    <div class="content">
+      <main class="container">
+        <section class="header">
+          <h1 id="title" class="title">Pulsar Search</h1>
+        </section>
+        <p>
+          Welcome to the Pulsar Search Microservice, allowing easy search capabilities for
+          our different domains. Please refer to our <a href="https://docs.pulsar-edit.dev">docs</a>
+          for usage.
+        </p>
+      </main>
+    </div>
+  </body>
+</html>
