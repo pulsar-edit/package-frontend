@@ -1,3 +1,4 @@
 Sitemap: https://search.pulsar-edit.dev/sitemap.xml
 User-agent: *
 Allow: /
+Disallow: /reindex
