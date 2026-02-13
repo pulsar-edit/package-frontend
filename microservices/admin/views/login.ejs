@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <title><%=page.name%></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="<%=page.description%>">
+    <link rel="stylesheet" href="/site.css">
+  </head>
+  <body>
+
+    <div class="center">
+      <div class="text">
+        Please login to <%=page.name%> before continuing.
+        Authorized users only.
+      </div>
+      <button onclick="window.location.href='/auth/github'">
+        <span>Login via GitHub</span>
+      </button>
+    </div>
+
+  </body>
+</html>
