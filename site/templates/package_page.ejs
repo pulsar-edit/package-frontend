@@ -4,9 +4,7 @@
   <section class="header header--package-single">
     <div class="block block--package block--package-single">
       <header class="block__header">
-        <!-- <h1 class="title" id="title"> -->
         <a href="/packages/<%=pack.name%>"><%= pack.name %></a>
-        <!-- </h1> -->
       </header>
       <div class="block__summary">
         <%= pack.description %>
@@ -61,28 +59,12 @@
           <div class="sidebar__section-content service-section">
             <% if (helpers.hasServices(pack, 'provided')) { %>
               <p class="service-section__description">This package <em>provides</em>:</p>
-              <ul class="service-section__list">
-                <% for (let service in pack.providedServices) { %>
-                <li class="service-section__list-item">
-                  <a class="service-section__list-item-link" href="/packages?serviceType=consumed&service=<%=service%>">
-                    <%=service%>@<%=Object.keys(pack.providedServices[service].versions).join(', ')%>
-                  </a>
-                </li>
-                <% } %>
-              </ul>
+              <%- include("service_list", { services: pack.providedServices, oppositeServiceType: 'consumed' }) %>
             <% } %>
 
             <% if (helpers.hasServices(pack, 'consumed')) { %>
               <p class="service-section__description">This package <em>consumes</em>:</p>
-              <ul class="service-section__list">
-                <% for (let service in pack.consumedServices) { %>
-                <li class="service-list__item">
-                  <a class="service-list__item-link" href="/packages?serviceType=provided&service=<%=service%>">
-                    <%= service %>@<%=Object.keys(pack.consumedServices[service].versions).join(', ')%>
-                  </a>
-                </li>
-                <% } %>
-              </ul>
+              <%- include("service_list", { services: pack.consumedServices, oppositeServiceType: 'provided' }) %>
             <% } %>
           </div>
         </div>

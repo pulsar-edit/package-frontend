@@ -1,0 +1,10 @@
+
+<ul class="service-section__list">
+  <% for (let service in locals.services) { %>
+  <li class="service-section__list-item">
+    <a class="service-section__list-item-link" href="/packages?serviceType=<%= oppositeServiceType %>&service=<%= service %>">
+      <%= service %>@<%= Object.keys(services[service].versions).join(', ') %>
+    </a>
+  </li>
+  <% } %>
+</ul>
