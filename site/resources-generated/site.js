@@ -216,6 +216,19 @@ const AccountActions = {
     }
   });
 
+
+  const serviceSearchType = document.getElementById('service-type');
+  function handleServiceSelectClassName () {
+    if (!serviceSearchType) return;
+    if (serviceSearchType.value === '') {
+      serviceSearchType.classList.add('empty');
+    } else {
+      serviceSearchType.classList.remove('empty');
+    }
+  }
+  serviceSearchType?.addEventListener('change', handleServiceSelectClassName);
+  handleServiceSelectClassName();
+
   let url = new URL(location.toString());
 
   window.addEventListener('pageshow', () => {

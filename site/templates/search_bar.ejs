@@ -17,12 +17,7 @@
       </div>
 
       <% if (locals.advanced_search) { %>
-        <details class="search-area__advanced-search">
-          <summary>Advanced search</summary>
-          <div>
-            <%- include("advanced_search") %>
-          </div>
-        </details>
+      <%- include("advanced_search") %>
       <% } %>
     </form>
   </search>
