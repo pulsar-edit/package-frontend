@@ -8,6 +8,53 @@
 
   &__advanced-search {
     margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+    border: .25rem solid transparent;
+    padding: 0 .5rem;
+
+    summary {
+      cursor: pointer;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 1rem;
+
+      aside {
+        font-size: 13px;
+        font-style: italic;
+        align-self: center;
+        display: none;
+      }
+    }
+
+    summary + div {
+      padding-bottom: 1.5rem;
+    }
+
+    &[open] {
+      border-color: var(--thematic-break-color);
+
+      summary aside {
+        display: block;
+      }
+
+      .search-area__advanced-search-title {
+        transform: translateX(0);
+        &:before {
+          content: '▼';
+        }
+      }
+    }
+  }
+
+  &__advanced-search-title {
+    transition: transform 0.2s;
+    transform: translateX(-1.5rem);
+    &:before {
+      content: '▶';
+      padding-right: 0.5ch;
+    }
   }
 }
 
@@ -15,6 +62,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  gap: .5rem;
 
   &__input {
     width: 66.6%;
@@ -25,7 +73,7 @@
 }
 
 search {
-  max-width: 60vw;
+  max-width: 80vw;
   margin: 0 auto;
 }
 
@@ -34,7 +82,7 @@ option[disabled] {
 }
 
 form#search {
-  max-width: 48rem;
+  // max-width: 48rem;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -54,9 +102,125 @@ form#search {
   }
 }
 
+.radio-pill {
+  display: inline-block;
+  position: relative;
+  margin: 0;
+
+  input, label {
+    margin: 0 !important;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: none;
+    border: 2px solid;
+    height: 100%;
+    left: 0;
+    opacity: .00001;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 2;
+  }
+
+  input[type="radio"]:focus-visible + label {
+    box-shadow: 0 0 0 1.5px var(--input-field-border-focus);
+  }
+
+  input:checked + label {
+    background: var(--btn-bg-primary);
+    color: var(--btn-color-primary);
+  }
+
+  label {
+    font-size: 13.5px;
+    border-radius: 2em;
+    border: 1px solid var(--thematic-break-color);
+    border-radius: 999px;
+    transition: all .12s;
+    white-space: nowrap;
+    display: block;
+    padding: .5rem 1rem !important;
+
+    &:after {
+      border: 2px solid;
+      border-color: rgba(0,0,0,0);
+      border-radius: 2em;
+      bottom: 0;
+      content: "";
+      left: 0;
+      pointer-events: none; /* 1 */
+      position: absolute;
+      right: 0;
+      top: 0;
+      transition:
+      bottom .2s ease-in-out,
+      border-color .2s ease-in-out,
+      left .2s ease-in-out,
+      right .2s ease-in-out,
+      top .2s ease-in-out;
+    }
+  }
+}
+
+.radio-group {
+  --border-radius: 1rem;
+  gap: 0 !important;
+
+  li {
+    .radio-pill();
+  }
+
+  li label {
+    border-radius: 0;
+  }
+
+  li:first-of-type label {
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+  }
+
+  li:last-of-type label {
+    border-left-width: 0;
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+  }
+
+  i.icon-arrow-down:before,
+  i.icon-arrow-up:before {
+    position: relative;
+    top: 1px;
+    width: 12px;
+  }
+}
+
 .as {
-  padding: 1rem 0;
-  margin-bottom: 2rem;
+  padding: 1rem;
+
+  &__section-content--sort {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    padding-bottom: 2px;
+  }
+
+  &__row-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: 1.5rem;
+    row-gap: .5rem;
+  }
+
+  &__row-wrapper--criteria {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
 
   &__header {
     margin: 0 0 1.5rem;
@@ -64,22 +228,53 @@ form#search {
 
   &__section {
     margin: 0 0 1.5rem;
+    padding: 0.25rem 0 0.25rem 0;
+    min-width: 0;
+    max-width: 100%;
+    flex-basis: 1 1 30%;
+    overflow: clip;
+  }
+
+  &__section--service {
+    grid-column: 1 / -1;
+
+    .as__section-subcontent {
+
+      label, input, select {
+        margin: 0;
+      }
+
+      & > div {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+
+  &__section-subcontent--service {
+    row-gap: .5rem;
   }
 
   &__section-header {
     text-transform: uppercase;
     font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 1px;
     margin: 0 0 0.5rem;
   }
 
   &__section-content {
-    padding-left: 1rem;
-    border-left: 0.25rem solid var(--thematic-break-color);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 
   &__section-subcontent {
     display: grid;
     grid: auto-flow / 1fr;
+    width: 100%;
+    row-gap: .5rem;
+    // flex-basis: 30%;
   }
 
   aside {
@@ -87,35 +282,47 @@ form#search {
     margin: 0.25rem 0;
   }
 
+  input {
+    min-width: 0;
+    margin-bottom: 0;
+  }
+
   label {
     font-weight: 500;
+    font-size: 14px;
     // Add some padding to labels so that they appear visually aligned with
     // their input/select fields.
     padding: 6px 0;
   }
 
+  &__list--direction {
+    display: flex;
+    flex-direction: row;
+  }
+
   &__list {
     margin: 0 !important;
     list-style-type: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+  }
+}
 
-    li {
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 0.5rem;
-
-      input, label {
-        margin: 0 !important;
-      }
+@media (min-width: @bp-larger-than-phablet) {
+  .as {
+    &__row-wrapper--criteria {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 }
 
-
 @media (min-width: @bp-larger-than-tablet) {
   .as {
+    &__row-wrapper--criteria {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
     &__list {
       display: flex;
       flex-direction: row;
@@ -123,11 +330,21 @@ form#search {
     }
 
     &__section-subcontent {
-      grid: auto-flow / 150px 1fr;
-      gap: 1rem;
+      // grid: auto-flow / 150px 1fr;
+      // gap: 1rem;
 
-      label, input, select {
-        margin: 0;
+      input, select {
+        width: 100%;
+      }
+    }
+
+    &__section-subcontent--service {
+      grid-template-columns: repeat(3, 1fr);
+      row-gap: 0;
+      column-gap: .5rem;
+
+      & > div {
+        flex-direction: column;
       }
     }
   }
@@ -135,5 +352,6 @@ form#search {
 
 select.empty {
   color: inherit;
-  opacity: 0.5;
+  color: #ccc;
+  // opacity: 0.5;
 }
