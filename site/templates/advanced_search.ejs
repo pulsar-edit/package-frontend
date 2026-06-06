@@ -11,7 +11,7 @@
         <header class="as__section-header">Sort by</header>
         <div class="as__section-content as__section-content--sort">
           <ul class="as__list as__list--sort">
-            <li>
+            <li class="radio-pill">
               <%#
                 `data-skip-expand` is on this radio button because it's the default
                 value. Unless other values in advanced search are also present, we
@@ -21,25 +21,25 @@
               <input type="radio" name="sort" id="sort-downloads" value="downloads" data-skip-expand checked>
               <label for="sort-downloads">Downloads</label>
             </li>
-            <li>
+            <li class="radio-pill">
               <input type="radio" name="sort" id="sort-created" value="created_at">
               <label for="sort-created">Created</label>
             </li>
-            <li>
+            <li class="radio-pill">
               <input type="radio" name="sort" id="sort-updated" value="updated_at">
               <label for="sort-updated">Updated</label>
             </li>
-            <li>
+            <li class="radio-pill">
               <input type="radio" name="sort" id="sort-stars" value="stars">
               <label for="sort-stars">Stars</label>
             </li>
-            <li>
+            <li class="radio-pill">
               <input type="radio" name="sort" id="sort-relevance" value="relevance">
               <label for="sort-relevance">Relevance</label>
             </li>
           </ul>
 
-          <ul class="as__list as__list--direction">
+          <ul class="as__list radio-group">
             <li>
               <input type="radio" name="direction" id="direction-desc" value="desc">
               <label for="direction-desc">
