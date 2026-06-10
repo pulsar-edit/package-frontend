@@ -1,5 +1,6 @@
 const path = require("node:path");
 const express = require("express");
+const server_version = require("./package.json").version;
 const Search = require("./search.js");
 
 const app = express();
@@ -10,6 +11,13 @@ const DOMAIN_MAP = {
   "blog": "blog.pulsar-edit.dev"
 };
 const INDEXES = {}; // Instances of the search class w/ domain as the key
+
+app.use((req, res, next) => {
+  res.append("Server", `Pulsar Search Microservice/${server_version} (${process.platform})`);
+  res.append("Access-Control-Allow-Methods", "GET");
+
+  next();
+});
 
 app.post("/reindex/:domain", async (req, res) => {
   // Endpoint to trigger a re-index of content for a given sub-domain
@@ -69,6 +77,10 @@ app.get("/search/:domain", async (req, res) => {
     });
     return;
   }
+
+  // Add the Access-Control-Allow-Origin for the specific origin we received
+  // a request from
+  res.append("Access-Control-Allow-Origin", `https://${domain}`);
 
   if (!INDEXES[domain]) {
     // We don't have the search index for this domain loaded yet
