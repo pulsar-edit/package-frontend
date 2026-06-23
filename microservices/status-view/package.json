@@ -1,0 +1,13 @@
+{
+  "name": "status-view",
+  "version": "1.0.0",
+  "description": "View the current system status of various Pulsar webservices",
+  "scripts": {
+    "dev": "npx http-server ./site"
+  },
+  "author": "confused-Techie",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

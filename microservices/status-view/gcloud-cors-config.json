@@ -1,0 +1,9 @@
+[
+  {
+    "origin": ["https://status.pulsar-edit.dev"],
+    "method": ["GET"],
+    "responseHeader": ["Content-Type"],
+    "maxAgeSeconds": 3600
+  }
+
+]
